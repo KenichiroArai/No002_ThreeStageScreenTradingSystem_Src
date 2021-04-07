@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import kmg.im.stock.tssts.application.controller.TsstsController;
+
 /**
  * 三段階スクリーン・トレーディング・システム<br>
  *
@@ -23,10 +25,13 @@ public class No002ThreeStageScreenTradingSystemApplication {
      * @param args
      *             オプション
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try (ConfigurableApplicationContext context = SpringApplication
             .run(No002ThreeStageScreenTradingSystemApplication.class, args);) {
-            // 処理無し
+
+            final TsstsController tsstsController = context.getBean(TsstsController.class);
+            tsstsController.run();
+
         }
     }
 
