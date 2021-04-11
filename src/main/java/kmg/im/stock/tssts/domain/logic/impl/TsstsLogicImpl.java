@@ -3,8 +3,8 @@ package kmg.im.stock.tssts.domain.logic.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.tssts.data.dao.TsstsDao;
 import kmg.im.stock.tssts.domain.logic.TsstsLogic;
-import kmg.im.stock.tssts.infrastructure.dao.TsstsDao;
 
 //TODO サンプル
 /**
