@@ -29,8 +29,10 @@ public class No002ThreeStageScreenTradingSystemApplication {
         try (ConfigurableApplicationContext context = SpringApplication
             .run(No002ThreeStageScreenTradingSystemApplication.class, args);) {
 
-            final TsstsController tsstsController = context.getBean(TsstsController.class);
-            tsstsController.run();
+            final TsstsController tsstsCtl = context.getBean(TsstsController.class);
+
+            /** 株価データを登録する。 */
+            tsstsCtl.registerStockPriceData();
 
         }
     }

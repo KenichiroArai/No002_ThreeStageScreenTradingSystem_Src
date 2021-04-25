@@ -1,14 +1,13 @@
 package kmg.im.stock.tssts.data.dao;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
-
-//TODO サンプル
 /**
  * 三段階スクリーン・トレーディング・システムＤＡＯ<br>
  *
@@ -19,24 +18,36 @@ import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
 @Repository
 public class TsstsDao {
 
-    /** ロガー */
-    private static Logger LOGGER = LoggerFactory.getLogger(TsstsDao.class);
-
-    /** ログメッセージリゾルバ */
-    @Autowired
-    private LogMessageResolver logMessageResolver;
+    /** 株価データパス */
+    @Value("${stockPriceDataPath}")
+    private Path stockPriceDataPath;
 
     /**
-     * 実行する<br>
+     * 株価データを読み込む<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      */
-    public void run() {
+    public void loadStockPriceData() {
 
-        TsstsDao.LOGGER.info(this.logMessageResolver.getMessage(LogMessageTypes.I00001));
+        try {
+            Files.list(this.stockPriceDataPath).filter(Files::isReadable).forEach(path -> {
+                try {
+                    // TODO 2021/04/25 列挙型
+                    Files.readAllLines(path, Charset.forName("MS932")).forEach(System.out::println);
+                } catch (final IOException e) {
+                    // TODO 2021/04/25 例外処理
+                    e.printStackTrace();
+                }
+            });
+        } catch (final IOException e) {
+            {
+                // TODO 2021/04/25 例外処理
+                e.printStackTrace();
+            }
+
+        }
 
     }
-
 }

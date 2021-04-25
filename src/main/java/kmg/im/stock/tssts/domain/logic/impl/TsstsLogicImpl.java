@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import kmg.im.stock.tssts.data.dao.TsstsDao;
 import kmg.im.stock.tssts.domain.logic.TsstsLogic;
 
-//TODO サンプル
 /**
  * 三段階スクリーン・トレーディング・システムロジック<br>
  *
@@ -22,15 +21,16 @@ public class TsstsLogicImpl implements TsstsLogic {
     private TsstsDao tsstsDao;
 
     /**
-     * 実行する<br>
+     * 株価データを登録する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      */
     @Override
-    public void run() {
-        this.tsstsDao.run();
-    }
+    public void registerStockPriceData() {
 
+        this.tsstsDao.loadStockPriceData();
+
+    }
 }

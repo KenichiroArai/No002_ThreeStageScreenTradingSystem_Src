@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 
 import kmg.im.stock.tssts.domain.service.TsstsService;
 
-//TODO サンプル
 /**
  * 三段階スクリーン・トレーディング・システムコントローラ<br>
  *
@@ -21,15 +20,15 @@ public class TsstsController {
     private TsstsService tsstsService;
 
     /**
-     * 実行する<br>
+     * 株価データを登録する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      */
-    public void run() {
+    public void registerStockPriceData() {
 
-        this.tsstsService.run();
+        this.tsstsService.registerStockPriceData();
 
     }
 
