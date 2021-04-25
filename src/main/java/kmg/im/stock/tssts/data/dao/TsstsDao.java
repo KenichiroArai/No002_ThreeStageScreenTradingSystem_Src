@@ -35,7 +35,7 @@ public class TsstsDao {
             Files.list(this.stockPriceDataPath).filter(Files::isReadable).forEach(path -> {
                 try {
                     // TODO 2021/04/25 列挙型
-                    Files.readAllLines(path, Charset.forName("MS932")).forEach(System.out::println);
+                    Files.readAllLines(path, Charset.forName("MS932")).forEach(System.out::println); //$NON-NLS-1$
                 } catch (final IOException e) {
                     // TODO 2021/04/25 例外処理
                     e.printStackTrace();
