@@ -1,9 +1,13 @@
 package kmg.im.stock.tssts.domain.logic.impl;
 
+import java.nio.file.Path;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kmg.im.stock.tssts.data.dao.TsstsDao;
+import kmg.im.stock.tssts.data.dao.StockPriceDataDao;
+import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
 import kmg.im.stock.tssts.domain.logic.TsstsLogic;
 
 /**
@@ -16,9 +20,13 @@ import kmg.im.stock.tssts.domain.logic.TsstsLogic;
 @Service
 public class TsstsLogicImpl implements TsstsLogic {
 
-    /** 三段階スクリーン・トレーディング・システムＤＡＯ */
+    /** 株価データＤＡＯ */
     @Autowired
-    private TsstsDao tsstsDao;
+    private StockPriceDataDao stockPriceDataDao;
+
+    /** 株価時系列ＤＡＯ */
+    @Autowired
+    private StockPriceTimeSeriesDao stockPriceTimeSeriesDao;
 
     /**
      * 株価データを登録する<br>
@@ -30,7 +38,9 @@ public class TsstsLogicImpl implements TsstsLogic {
     @Override
     public void registerStockPriceData() {
 
-        this.tsstsDao.loadStockPriceData();
+        final List<Path> stockPriceDataPathList = this.stockPriceDataDao.findAllStockPriceDataPath();
+        stockPriceDataPathList.forEach(path -> this.stockPriceDataDao.findAllStockPriceTimeSeriesDtoList(path)
+            .forEach(dto -> this.stockPriceTimeSeriesDao.insert(dto)));
 
     }
 }

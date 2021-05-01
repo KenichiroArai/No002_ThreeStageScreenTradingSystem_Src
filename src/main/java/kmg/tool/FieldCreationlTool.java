@@ -1,0 +1,148 @@
+/**
+ * ＫＭＧ．ツール
+ */
+package kmg.tool;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Collectors;
+
+import kmg.tool.ssts.infrastructure.type.KmgString;
+import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
+import kmg.tool.ssts.infrastructure.types.FieldCreationTypeTypes;
+
+/**
+ * フィールド作成ツール
+ *
+ * @author KenichiroArai
+ * @sine 1.0.0
+ * @version 1.0.0
+ */
+public class FieldCreationlTool {
+
+    /** 基準パス */
+    private static final Path BASE_PATH = Paths.get(String.format("src/main/resources/tool/io")); //$NON-NLS-1$
+
+    /** テンプレートファイルパス */
+    private static final Path TEMPLATE_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(),
+        "template/fieldCreationlTool.txt"); //$NON-NLS-1$
+
+    /** 入力ファイルパス */
+    private static final Path INPUT_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(), "input.txt"); //$NON-NLS-1$
+
+    /** 出力ファイルパス */
+    private static final Path OUTPUT_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(), "output.txt"); //$NON-NLS-1$
+
+    /** パラメータ：コメント */
+    private static final String PARAM_COMMENT = "$comment"; //$NON-NLS-1$
+
+    /** パラメータ：フィールド */
+    private static final String PARAM_FIELD = "$field"; //$NON-NLS-1$
+
+    /** パラメータ：型 */
+    private static final String PARAM_TYPE = "$type"; //$NON-NLS-1$
+
+    /**
+     * 実行する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return TRUE：成功、FLASE：失敗
+     * @throws FileNotFoundException
+     *                               ファイルが存在しない例外
+     * @throws IOException
+     *                               入出力例外
+     */
+    @SuppressWarnings("static-method")
+    public Boolean run() throws FileNotFoundException, IOException {
+
+        final Boolean result = Boolean.FALSE;
+
+        /* テンプレートの取得 */
+        String template = null;
+        try {
+
+            template = Files.readAllLines(FieldCreationlTool.TEMPLATE_PATH).stream()
+                .collect(Collectors.joining(DelimiterTypes.LINE_SEPARATOR.getValue()));
+
+        } catch (final FileNotFoundException e) {
+            throw e;
+        } catch (final IOException e) {
+            throw e;
+        }
+
+        /* 入力から出力の処理 */
+        try (final BufferedReader brInput = Files.newBufferedReader(FieldCreationlTool.INPUT_PATH);
+            final BufferedWriter bw = Files.newBufferedWriter(FieldCreationlTool.OUTPUT_PATH);) {
+            String line;
+            while ((line = brInput.readLine()) != null) {
+
+                /* データ取得 */
+                final String[] inputDatas  = DelimiterTypes.SERIES_HALF_SPACE.split(line);
+                int            dataIdx     = 0;
+                final String   commentData = inputDatas[dataIdx++];                       // コメント
+                final String   fieldData   = inputDatas[dataIdx++];                       // フィールド名
+                final String   typeData    = inputDatas[dataIdx++];                       // 型
+
+                /* 変換処理 */
+
+                final String                 changeFieldData = new KmgString(fieldData).toCamelCase();
+                String                       changeTypeData  = null;
+                final FieldCreationTypeTypes type            = FieldCreationTypeTypes.getEnum(typeData);
+                if (type == null) {
+                    changeTypeData = typeData;
+                } else {
+                    changeTypeData = type.getType().getTypeName().replaceAll("(\\w+\\.)+", KmgString.EMPTY); //$NON-NLS-1$
+                }
+
+                String output = template;
+                output = output.replace(FieldCreationlTool.PARAM_COMMENT, commentData);
+                output = output.replace(FieldCreationlTool.PARAM_FIELD, changeFieldData);
+                output = output.replace(FieldCreationlTool.PARAM_TYPE, changeTypeData);
+
+                /* 出力 */
+                bw.write(output);
+                bw.write(System.lineSeparator());
+            }
+        } catch (final FileNotFoundException e) {
+            throw e;
+        } catch (final IOException e) {
+            throw e;
+        }
+
+        return result;
+    }
+
+    /**
+     * エントリポイント<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param args
+     *             オプション
+     */
+    public static void main(final String[] args) {
+
+        final Class<FieldCreationlTool> clasz = FieldCreationlTool.class;
+        try {
+            final FieldCreationlTool main = new FieldCreationlTool();
+            if (main.run()) {
+                System.out.println(String.format("%s：失敗", clasz.toString())); //$NON-NLS-1$
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println(String.format("%s：成功", clasz.toString())); //$NON-NLS-1$
+            System.out.println(String.format("%s：終了", clasz.toString())); //$NON-NLS-1$
+        }
+
+    }
+
+}

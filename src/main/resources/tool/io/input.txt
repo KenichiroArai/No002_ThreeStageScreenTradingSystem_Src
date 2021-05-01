@@ -1,0 +1,17 @@
+識別番号    id  自動8バイト
+開始日 start_date  日付型
+終了日 end_date    日付型
+ロケールID  locale_id   文字列型
+作成者 creator 文字列型
+作成日 created_date    日付型
+更新者 updater 文字列型
+更新日 update_date 日付型
+備考  note    文字列型
+名称  name    文字列型
+番号  no  8バイト整数
+日付  date    日付型
+始値  op  8バイト実数
+高値  hp  8バイト実数
+安値  lp  8バイト実数
+終値  cp  8バイト実数
+出来高 volume  8バイト整数

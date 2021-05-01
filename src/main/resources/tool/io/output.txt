@@ -1,0 +1,51 @@
+
+/** 識別番号 */
+private Long id;
+
+/** 開始日 */
+private LocalDate startDate;
+
+/** 終了日 */
+private LocalDate endDate;
+
+/** ロケールID */
+private String localeId;
+
+/** 作成者 */
+private String creator;
+
+/** 作成日 */
+private LocalDate createdDate;
+
+/** 更新者 */
+private String updater;
+
+/** 更新日 */
+private LocalDate updateDate;
+
+/** 備考 */
+private String note;
+
+/** 名称 */
+private String name;
+
+/** 番号 */
+private Long no;
+
+/** 日付 */
+private LocalDate date;
+
+/** 始値 */
+private BigDecimal op;
+
+/** 高値 */
+private BigDecimal hp;
+
+/** 安値 */
+private BigDecimal lp;
+
+/** 終値 */
+private BigDecimal cp;
+
+/** 出来高 */
+private Long volume;
