@@ -1,17 +1,16 @@
 package kmg.im.stock.tssts.data.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
- * 株価時系列ＤＴＯ<br>
+ * 株銘柄ＤＴＯ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-//TODO KenichiroArai 2021/04/30 ベースとなるクラスを作成する
-public class StockPriceTimeSeriesDto {
+public class StockBrandDto {
 
     /** 識別番号 */
     private Long id;
@@ -29,13 +28,13 @@ public class StockPriceTimeSeriesDto {
     private String creator;
 
     /** 作成日 */
-    private LocalDate createdDate;
+    private LocalTime createdDate;
 
     /** 更新者 */
     private String updater;
 
     /** 更新日 */
-    private LocalDate updateDate;
+    private LocalTime updateDate;
 
     /** 備考 */
     private String note;
@@ -43,29 +42,35 @@ public class StockPriceTimeSeriesDto {
     /** 名称 */
     private String name;
 
-    /** 株銘柄ID */
-    private Long stockBrandId;
+    /** 株市場ID */
+    private Long stockMarketId;
 
-    /** 番号 */
-    private Long no;
+    /** コード */
+    private Long code;
 
-    /** 日付 */
-    private LocalDate date;
+    /** 業種 */
+    private String industryType;
 
-    /** 始値 */
-    private BigDecimal op;
+    /** 特色 */
+    private String characteristic;
 
-    /** 高値 */
-    private BigDecimal hp;
+    /** 決算月 */
+    private String settlementOfAccountsMonth;
 
-    /** 安値 */
-    private BigDecimal lp;
+    /** 設立日 */
+    private LocalDate establishmentDay;
 
-    /** 終値 */
-    private BigDecimal cp;
+    /** 上場日 */
+    private LocalDate listedDay;
 
-    /** 出来高 */
-    private Long volume;
+    /** 株主数 */
+    private Long stockholdersNumber;
+
+    /** 株式数 */
+    private Long stocksNumber;
+
+    /** 単元数 */
+    private Long unitsNumber;
 
     /**
      * 識別番号を設定する<br>
@@ -206,7 +211,7 @@ public class StockPriceTimeSeriesDto {
      * @param createdDate
      *                    作成日
      */
-    public void setCreatedDate(final LocalDate createdDate) {
+    public void setCreatedDate(final LocalTime createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -218,8 +223,8 @@ public class StockPriceTimeSeriesDto {
      * @version 1.0.0
      * @return 作成日
      */
-    public LocalDate getCreatedDate() {
-        final LocalDate result = this.createdDate;
+    public LocalTime getCreatedDate() {
+        final LocalTime result = this.createdDate;
         return result;
     }
 
@@ -258,7 +263,7 @@ public class StockPriceTimeSeriesDto {
      * @param updateDate
      *                   更新日
      */
-    public void setUpdateDate(final LocalDate updateDate) {
+    public void setUpdateDate(final LocalTime updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -270,8 +275,8 @@ public class StockPriceTimeSeriesDto {
      * @version 1.0.0
      * @return 更新日
      */
-    public LocalDate getUpdateDate() {
-        final LocalDate result = this.updateDate;
+    public LocalTime getUpdateDate() {
+        final LocalTime result = this.updateDate;
         return result;
     }
 
@@ -328,210 +333,262 @@ public class StockPriceTimeSeriesDto {
     }
 
     /**
-     * 株銘柄IDを設定する<br>
+     * 株市場IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockBrandId
-     *                     株銘柄ID
+     * @param stockMarketId
+     *                      株市場ID
      */
-    public void setStockBrandId(final Long stockBrandId) {
-        this.stockBrandId = stockBrandId;
+    public void setStockMarketId(final Long stockMarketId) {
+        this.stockMarketId = stockMarketId;
     }
 
     /**
-     * 株銘柄IDを返す<br>
+     * 株市場IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株銘柄ID
+     * @return 株市場ID
      */
-    public Long getStockBrandId() {
-        final Long result = this.stockBrandId;
+    public Long getStockMarketId() {
+        final Long result = this.stockMarketId;
         return result;
     }
 
     /**
-     * 番号を設定する<br>
+     * コードを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param no
-     *           番号
+     * @param code
+     *             コード
      */
-    public void setNo(final Long no) {
-        this.no = no;
+    public void setCode(final Long code) {
+        this.code = code;
     }
 
     /**
-     * 番号を返す<br>
+     * コードを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 番号
+     * @return コード
      */
-    public Long getNo() {
-        final Long result = this.no;
+    public Long getCode() {
+        final Long result = this.code;
         return result;
     }
 
     /**
-     * 日付を設定する<br>
+     * 業種を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param date
-     *             日付
+     * @param industryType
+     *                     業種
      */
-    public void setDate(final LocalDate date) {
-        this.date = date;
+    public void setIndustryType(final String industryType) {
+        this.industryType = industryType;
     }
 
     /**
-     * 日付を返す<br>
+     * 業種を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 日付
+     * @return 業種
      */
-    public LocalDate getDate() {
-        final LocalDate result = this.date;
+    public String getIndustryType() {
+        final String result = this.industryType;
         return result;
     }
 
     /**
-     * 始値を設定する<br>
+     * 特色を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param op
-     *           始値
+     * @param characteristic
+     *                       特色
      */
-    public void setOp(final BigDecimal op) {
-        this.op = op;
+    public void setCharacteristic(final String characteristic) {
+        this.characteristic = characteristic;
     }
 
     /**
-     * 始値を返す<br>
+     * 特色を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 始値
+     * @return 特色
      */
-    public BigDecimal getOp() {
-        final BigDecimal result = this.op;
+    public String getCharacteristic() {
+        final String result = this.characteristic;
         return result;
     }
 
     /**
-     * 高値を設定する<br>
+     * 決算月を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param hp
-     *           高値
+     * @param settlementOfAccountsMonth
+     *                                  決算月
      */
-    public void setHp(final BigDecimal hp) {
-        this.hp = hp;
+    public void setSettlementOfAccountsMonth(final String settlementOfAccountsMonth) {
+        this.settlementOfAccountsMonth = settlementOfAccountsMonth;
     }
 
     /**
-     * 高値を返す<br>
+     * 決算月を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 高値
+     * @return 決算月
      */
-    public BigDecimal getHp() {
-        final BigDecimal result = this.hp;
+    public String getSettlementOfAccountsMonth() {
+        final String result = this.settlementOfAccountsMonth;
         return result;
     }
 
     /**
-     * 安値を設定する<br>
+     * 設立日を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param lp
-     *           安値
+     * @param establishmentDay
+     *                         設立日
      */
-    public void setLp(final BigDecimal lp) {
-        this.lp = lp;
+    public void setEstablishmentDay(final LocalDate establishmentDay) {
+        this.establishmentDay = establishmentDay;
     }
 
     /**
-     * 安値を返す<br>
+     * 設立日を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 安値
+     * @return 設立日
      */
-    public BigDecimal getLp() {
-        final BigDecimal result = this.lp;
+    public LocalDate getEstablishmentDay() {
+        final LocalDate result = this.establishmentDay;
         return result;
     }
 
     /**
-     * 終値を設定する<br>
+     * 上場日を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param cp
-     *           終値
+     * @param listedDay
+     *                  上場日
      */
-    public void setCp(final BigDecimal cp) {
-        this.cp = cp;
+    public void setListedDay(final LocalDate listedDay) {
+        this.listedDay = listedDay;
     }
 
     /**
-     * 終値を返す<br>
+     * 上場日を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 終値
+     * @return 上場日
      */
-    public BigDecimal getCp() {
-        final BigDecimal result = this.cp;
+    public LocalDate getListedDay() {
+        final LocalDate result = this.listedDay;
         return result;
     }
 
     /**
-     * 出来高を設定する<br>
+     * 株主数を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param volume
-     *               出来高
+     * @param stockholdersNumber
+     *                           株主数
      */
-    public void setVolume(final Long volume) {
-        this.volume = volume;
+    public void setStockholdersNumber(final Long stockholdersNumber) {
+        this.stockholdersNumber = stockholdersNumber;
     }
 
     /**
-     * 出来高を返す<br>
+     * 株主数を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 出来高
+     * @return 株主数
      */
-    public Long getVolume() {
-        final Long result = this.volume;
+    public Long getStockholdersNumber() {
+        final Long result = this.stockholdersNumber;
+        return result;
+    }
+
+    /**
+     * 株式数を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param stocksNumber
+     *                     株式数
+     */
+    public void setStocksNumber(final Long stocksNumber) {
+        this.stocksNumber = stocksNumber;
+    }
+
+    /**
+     * 株式数を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株式数
+     */
+    public Long getStocksNumber() {
+        final Long result = this.stocksNumber;
+        return result;
+    }
+
+    /**
+     * 単元数を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param unitsNumber
+     *                    単元数
+     */
+    public void setUnitsNumber(final Long unitsNumber) {
+        this.unitsNumber = unitsNumber;
+    }
+
+    /**
+     * 単元数を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 単元数
+     */
+    public Long getUnitsNumber() {
+        final Long result = this.unitsNumber;
         return result;
     }
 

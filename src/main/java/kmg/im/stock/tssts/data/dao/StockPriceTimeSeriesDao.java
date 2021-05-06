@@ -23,8 +23,8 @@ import kmg.tool.ssts.infrastructure.type.KmgString;
 public class StockPriceTimeSeriesDao {
 
     /** 株価時系列を挿入するSQL */
-    private static final String INSERT_SQL = "INSERT INTO stock_price_time_series(start_date, end_date, locale_id, creator, created_date, updater, update_date, note, name, no, date, op, hp, lp, cp, volume)"
-        + " VALUES(:startDate, :endDate, :localeId, :creator, :createdDate, :updater, :updateDate, :note, :name, :no, :date, :op, :hp, :lp, :cp, :volume)";
+    private static final String INSERT_SQL = "INSERT INTO stock_price_time_series(start_date, end_date, locale_id, creator, created_date, updater, update_date, note, name, stock_brand_id, no, date, op, hp, lp, cp, volume)"
+        + " VALUES(:startDate, :endDate, :localeId, :creator, :createdDate, :updater, :updateDate, :note, :name, :stockBrandId, :no, :date, :op, :hp, :lp, :cp, :volume)";
 
     /** データベース接続 */
     @Autowired

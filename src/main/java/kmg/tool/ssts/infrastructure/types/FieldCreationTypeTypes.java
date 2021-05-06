@@ -3,6 +3,7 @@ package kmg.tool.ssts.infrastructure.types;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,9 @@ public enum FieldCreationTypeTypes {
 
     /** 日付型 */
     DATE("日付型", "日付型", LocalDate.class),
+
+    /** 日時型 */
+    TIME("日時型", "日時型", LocalTime.class),
 
     /** 文字列型 */
     STRING("文字列型", "文字列型", String.class),

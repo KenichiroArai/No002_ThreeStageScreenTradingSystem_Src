@@ -19,6 +19,7 @@ import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.tool.ssts.infrastructure.type.KmgString;
 import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
 
+//TODO KenichiroArai 2021/05/06 株価時系列ＤＡＯにまとめる
 /**
  * 株価データＤＡＯ<br>
  *
@@ -29,9 +30,9 @@ import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
 @Repository
 public class StockPriceDataDao {
 
-    /** 株価データパス */
-    @Value("${stockPriceDataPath}")
-    private Path stockPriceDataPath;
+    /** 株価銘柄格納パス */
+    @Value("${stockPriceStockStoragePath}")
+    private Path stockPriceStockStoragePath;
 
     /**
      * 株価データパスを検索する<br>
@@ -39,14 +40,14 @@ public class StockPriceDataDao {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価データパスのリスト
+     * @return パスのリスト
      */
-    public List<Path> findAllStockPriceDataPath() {
+    public List<Path> findAllStockPriceStockStoragePath() {
 
         List<Path> result = null;
 
         try {
-            result = Files.list(this.stockPriceDataPath).filter(Files::isReadable).collect(Collectors.toList());
+            result = Files.list(this.stockPriceStockStoragePath).filter(Files::isReadable).collect(Collectors.toList());
 
         } catch (final IOException e) {
             {
@@ -113,7 +114,7 @@ public class StockPriceDataDao {
 
                 // 株価時系列に変換する
                 final String[] datas = DelimiterTypes.COMMA.split(line);
-                // TODO KenichiroArai 2021/05/01 LocalDateのゆーりティティーに変える
+                // TODO KenichiroArai 2021/05/01 LocalDateのユーティリティに変える
                 final StockPriceTimeSeriesDto sptsDto = new StockPriceTimeSeriesDto();
                 sptsDto.setNo(no); // 番号
                 try {
