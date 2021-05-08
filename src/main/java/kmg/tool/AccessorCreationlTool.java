@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import kmg.tool.ssts.infrastructure.type.KmgString;
 import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
 
 /**
@@ -70,6 +71,8 @@ public class AccessorCreationlTool {
             String output = template;
             String line   = null;
             while ((line = brInput.readLine()) != null) {
+                line = line.replace("final", KmgString.EMPTY);
+                line = line.replace("static", KmgString.EMPTY);
                 final Pattern patternComment = Pattern.compile("/\\*\\* (\\S+)"); //$NON-NLS-1$
                 final Matcher matcherComment = patternComment.matcher(line);
                 if (matcherComment.find()) {
@@ -77,13 +80,13 @@ public class AccessorCreationlTool {
                     continue;
                 }
 
-                final Pattern patternSrc = Pattern.compile("private\\s+(\\w+)\\s+(\\w+);"); //$NON-NLS-1$
+                final Pattern patternSrc = Pattern.compile("private\\s+((\\w|\\[\\])+)\\s+(\\w+);"); //$NON-NLS-1$
                 final Matcher matcherSrc = patternSrc.matcher(line);
                 if (matcherSrc.find()) {
                     output = output.replace("$type", matcherSrc.group(1)); //$NON-NLS-1$
-                    output = output.replace("$item", matcherSrc.group(2)); //$NON-NLS-1$
+                    output = output.replace("$item", matcherSrc.group(3)); //$NON-NLS-1$
                     output = output.replace("$Item", //$NON-NLS-1$
-                        matcherSrc.group(2).substring(0, 1).toUpperCase() + matcherSrc.group(2).substring(1));
+                        matcherSrc.group(3).substring(0, 1).toUpperCase() + matcherSrc.group(3).substring(1));
                     bw.write(output);
                     bw.write(System.lineSeparator());
                     output = template;
