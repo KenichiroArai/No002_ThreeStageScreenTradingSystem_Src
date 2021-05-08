@@ -14,9 +14,6 @@ public class TsstsException extends Exception {
     /** デフォルトシリアルバージョンＵＩＤ */
     private static final long serialVersionUID = 1L;
 
-    /** エラーメッセージ */
-    private final String errMsg;
-
     /** ログメッセージの種類 */
     private final LogMessageTypes logMsgTypes;
 
@@ -38,7 +35,6 @@ public class TsstsException extends Exception {
      */
     public TsstsException(final String errMsg, final LogMessageTypes logMsgTypes, final Object[] logMsgArgs) {
         super(errMsg);
-        this.errMsg = errMsg;
         this.logMsgTypes = logMsgTypes;
         this.logMsgArgs = logMsgArgs;
     }
@@ -61,7 +57,6 @@ public class TsstsException extends Exception {
     public TsstsException(final String errMsg, final LogMessageTypes logMsgTypes, final Object[] logMsgArgs,
         final Throwable cause) {
         super(errMsg, cause);
-        this.errMsg = errMsg;
         this.logMsgTypes = logMsgTypes;
         this.logMsgArgs = logMsgArgs;
     }
