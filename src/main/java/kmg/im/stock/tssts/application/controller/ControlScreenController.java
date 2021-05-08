@@ -127,7 +127,7 @@ public class ControlScreenController {
         final long startTime = System.nanoTime();
         try {
 
-            /** 株価データを登録する。 */
+            /* 株価データを登録する。 */
             this.tsstsCtl.registerStockPriceData();
 
         } finally {
