@@ -60,6 +60,14 @@ public class ControlScreenController {
     @FXML
     private Button btnBrandFileLoad;
 
+    /** シミュレーションするボタン */
+    @FXML
+    private Button btnSim;
+
+    /** シグナルを確認するボタン */
+    @FXML
+    private Button btnSigChk;
+
     /** 処理時間ラベル */
     @FXML
     private Label lblProcTime;
@@ -163,6 +171,36 @@ public class ControlScreenController {
         fileChooser.setInitialDirectory(defaultFile);
         final File file = fileChooser.showOpenDialog(null);
         this.txtBrandFile.setText(file.getAbsolutePath());
+    }
+
+    /**
+     * シミュレーションするボタンクリックイベント<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param event
+     *              アクションイベント
+     */
+    @FXML
+    private void simulate(final ActionEvent event) {
+
+        // TODO KenichiroArai 2021/05/08 未実装
+    }
+
+    /**
+     * シグナルを確認するボタンクリックイベント<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param event
+     *              アクションイベント
+     */
+    @FXML
+    private void chkSig(final ActionEvent event) {
+
+        // TODO KenichiroArai 2021/05/08 未実装
     }
 
     /**
