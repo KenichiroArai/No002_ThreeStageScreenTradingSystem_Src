@@ -11,11 +11,18 @@ import org.springframework.stereotype.Component;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import kmg.core.domain.PfaMeasModel;
+import kmg.im.stock.tssts.domain.service.ImportService;
+import kmg.im.stock.tssts.domain.service.SigService;
+import kmg.im.stock.tssts.domain.service.SimService;
 import kmg.tool.ssts.infrastructure.type.KmgString;
 
 /**
@@ -31,10 +38,6 @@ public class ControlScreenController {
     /** 株価銘柄格納パス */
     @Value("${stockPriceStockStoragePath}")
     private Path stockPriceStockStoragePath;
-
-    /** 三段階スクリーン・トレーディング・システムコントローラ */
-    @Autowired
-    private TsstsController tsstsCtl;
 
     /** 格納ディレクトリテキストボックス */
     @FXML
@@ -60,9 +63,17 @@ public class ControlScreenController {
     @FXML
     private Button btnBrandFileLoad;
 
+    /** シミュレーションコンボボックス */
+    @FXML
+    private ComboBox<String> cbSim;
+
     /** シミュレーションするボタン */
     @FXML
     private Button btnSim;
+
+    /** シグナルコンボボックス */
+    @FXML
+    private ComboBox<String> cbSig;
 
     /** シグナルを確認するボタン */
     @FXML
@@ -76,6 +87,18 @@ public class ControlScreenController {
     @FXML
     private Label lblProcTimeUnit;
 
+    /** インポートサービス */
+    @Autowired
+    private ImportService importService;
+
+    /** シミュレーションサービス */
+    @Autowired
+    private SimService simService;
+
+    /** シグナルサービス */
+    @Autowired
+    private SigService sigService;
+
     /**
      * 初期化<br>
      *
@@ -88,6 +111,18 @@ public class ControlScreenController {
 
         // 格納ディレクトリテキストボックスに株価格納パスを設定する
         this.txtStorageDirectory.setText(this.stockPriceStockStoragePath.toAbsolutePath().toString());
+
+        // 銘柄ファイルテキストボックスに株価格納パスを設定する
+        this.txtBrandFile.setText(this.stockPriceStockStoragePath.toAbsolutePath().toString());
+
+        // シミュレーションコンボボックスに項目を追加する
+        this.cbSim.getItems().add("すべて");
+        this.cbSim.getSelectionModel().select(0);
+
+        // シグナルコンボボックスに項目を追加する
+        this.cbSig.getItems().add("すべて");
+        this.cbSig.getSelectionModel().select(0);
+
     }
 
     /**
@@ -132,17 +167,26 @@ public class ControlScreenController {
 
         this.lblProcTime.setText(KmgString.EMPTY);
         this.lblProcTimeUnit.setText(KmgString.EMPTY);
-        final long startTime = System.nanoTime();
+
+        final PfaMeasModel pfaMeas = new PfaMeasModel();
+        pfaMeas.start();
         try {
+            final Path importPath = Paths.get(this.txtStorageDirectory.getText());
+            if (!Files.isDirectory(importPath)) {
+                final Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("エラー");
+                alert.setHeaderText(null);
+                alert.setContentText("存在するディレクトリではありません。存在するディレクトリを指定してください。");
+                alert.showAndWait();
+                return;
+            }
 
-            /* 株価データを登録する。 */
-            this.tsstsCtl.registerStockPriceData();
-
+            /* 株価データを登録する */
+            this.importService.registerStockPriceDataOfDirectory(importPath);
         } finally {
-            final long     endTime = System.nanoTime();
-            final String[] time    = ControlScreenController.getTime(startTime, endTime);
-            this.lblProcTime.setText(String.valueOf(time[0]));
-            this.lblProcTimeUnit.setText(String.valueOf(time[1]));
+            pfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
         }
     }
 
@@ -162,45 +206,13 @@ public class ControlScreenController {
         fileChooser.setTitle("ファイル選択");
         String defaultFilePath = this.txtBrandFile.getText();
         if ((defaultFilePath == null) || defaultFilePath.isEmpty()) {
-            defaultFilePath = "c:/";
+            // 格納ディレクトリテキストボックスに株価格納パスを設定する
+            defaultFilePath = this.stockPriceStockStoragePath.toAbsolutePath().toString();
         }
-        File defaultFile = new File(defaultFilePath);
-        if (defaultFile.isFile()) {
-            defaultFile = defaultFile.getParentFile();
-        }
+        final File defaultFile = new File(defaultFilePath);
         fileChooser.setInitialDirectory(defaultFile);
         final File file = fileChooser.showOpenDialog(null);
         this.txtBrandFile.setText(file.getAbsolutePath());
-    }
-
-    /**
-     * シミュレーションするボタンクリックイベント<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param event
-     *              アクションイベント
-     */
-    @FXML
-    private void simulate(final ActionEvent event) {
-
-        // TODO KenichiroArai 2021/05/08 未実装
-    }
-
-    /**
-     * シグナルを確認するボタンクリックイベント<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param event
-     *              アクションイベント
-     */
-    @FXML
-    private void chkSig(final ActionEvent event) {
-
-        // TODO KenichiroArai 2021/05/08 未実装
     }
 
     /**
@@ -215,45 +227,107 @@ public class ControlScreenController {
     @FXML
     private void loadFileOfBrandFile(final ActionEvent event) {
 
-        // TODO KenichiroArai 2021/05/08 未実装
+        this.lblProcTime.setText(KmgString.EMPTY);
+        this.lblProcTimeUnit.setText(KmgString.EMPTY);
+
+        final PfaMeasModel pfaMeas = new PfaMeasModel();
+        pfaMeas.start();
+        try {
+            final Path importPath = Paths.get(this.txtBrandFile.getText());
+            if (Files.isDirectory(importPath)) {
+                final Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("エラー");
+                alert.setHeaderText(null);
+                alert.setContentText("存在するファイルではありません。存在するファイルを指定してください。");
+                alert.showAndWait();
+                return;
+            }
+
+            /* 株価データを登録する */
+            this.importService.registerStockPriceDataOfDirectory(importPath);
+        } finally {
+            pfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
+        }
     }
 
-    // TODO KenichiroArai 2021/05/08 ユーティリティ化する
     /**
-     * 開始時間と終了時間の差を返す。 <br>
-     * 単位は時間に応じて設定する。
+     * シミュレーションするボタンクリックイベント<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param startTime
-     *                  開始時刻
-     * @param endTime
-     *                  終了時刻
-     * @return 差の時刻と単位
+     * @param event
+     *              アクションイベント
      */
-    private static String[] getTime(final long startTime, final long endTime) {
+    @FXML
+    private void simulate(final ActionEvent event) {
 
-        final String[] result = new String[2];
+        this.lblProcTime.setText(KmgString.EMPTY);
+        this.lblProcTimeUnit.setText(KmgString.EMPTY);
 
-        double diffTime = endTime - startTime;
-        result[0] = String.valueOf(diffTime);
-        result[1] = "ナノ秒";
+        final PfaMeasModel pfaMeas = new PfaMeasModel();
+        pfaMeas.start();
+        try {
+            /* シミュレーションする */
+            // 選択対象がすべてか
+            if (KmgString.equals(this.cbSim.getSelectionModel().getSelectedItem(), "すべて")) {
+                // すべての場合
 
-        if (diffTime >= 1000.0) {
-            diffTime /= 1000.0;
-            result[1] = "マイクロ秒";
+                // 全ての銘柄をシミュレーションする
+                this.simService.simulate();
+            } else {
+                // すべて以外の場合
+
+                // 指定した株コードのシミュレーションする
+                final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
+                this.simService.simulate(code);
+            }
+        } finally {
+            pfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
         }
-        if (diffTime >= 1000.0) {
-            diffTime /= 1000.0;
-            result[1] = "ミリ秒";
-        }
-        if (diffTime >= 1000.0) {
-            diffTime /= 1000.0;
-            result[1] = "秒";
-        }
-        result[0] = String.valueOf(diffTime);
-
-        return result;
     }
+
+    /**
+     * シグナルを確認するボタンクリックイベント<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param event
+     *              アクションイベント
+     */
+    @FXML
+    private void chkSig(final ActionEvent event) {
+
+        this.lblProcTime.setText(KmgString.EMPTY);
+        this.lblProcTimeUnit.setText(KmgString.EMPTY);
+
+        final PfaMeasModel pfaMeas = new PfaMeasModel();
+        pfaMeas.start();
+        try {
+            /* シグナルを確認する */
+            // 選択対象がすべてか
+            if (KmgString.equals(this.cbSim.getSelectionModel().getSelectedItem(), "すべて")) {
+                // すべての場合
+
+                // 全ての銘柄をシミュレーションする
+                this.sigService.chkSig();
+            } else {
+                // すべて以外の場合
+
+                // 指定した株コードのシミュレーションする
+                final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
+                this.sigService.chkSig(code);
+            }
+        } finally {
+            pfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
+        }
+    }
+
 }

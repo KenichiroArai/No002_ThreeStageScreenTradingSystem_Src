@@ -1,26 +1,26 @@
 package kmg.im.stock.tssts.infrastructure.types;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ログメッセージの種類<br>
+ * 文字セットの種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum LogMessageTypes {
+public enum CharsetTypes {
 
     /* 定義：開始 */
 
     /** 指定無し */
     NONE("指定無し", null),
 
-    // TODO 2021/04/25 不要なので削除する
-    /** 三段階スクリーン・トレーディング・システムＤＡＯ */
-    I00001("三段階スクリーン・トレーディング・システムＤＡＯ", "I00001"),
+    /** MS932 */
+    MS932("MS932", "MS932"),
 
     /* 定義：終了 */
     ;
@@ -32,13 +32,13 @@ public enum LogMessageTypes {
     private String value;
 
     /** 種類のマップ */
-    private static final Map<String, LogMessageTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<String, CharsetTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final LogMessageTypes type : LogMessageTypes.values()) {
-            LogMessageTypes.VALUES_MAP.put(type.getValue(), type);
+        for (final CharsetTypes type : CharsetTypes.values()) {
+            CharsetTypes.VALUES_MAP.put(type.getValue(), type);
         }
     }
 
@@ -53,7 +53,7 @@ public enum LogMessageTypes {
      * @param value
      *              値
      */
-    LogMessageTypes(final String name, final String value) {
+    CharsetTypes(final String name, final String value) {
 
         this.name = name;
         this.value = value;
@@ -73,9 +73,9 @@ public enum LogMessageTypes {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static LogMessageTypes getEnum(final String value) {
+    public static CharsetTypes getEnum(final String value) {
 
-        LogMessageTypes result = LogMessageTypes.VALUES_MAP.get(value);
+        CharsetTypes result = CharsetTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -91,8 +91,10 @@ public enum LogMessageTypes {
      * @version 1.0.0
      * @return 初期値
      */
-    public static LogMessageTypes getInitValue() {
-        return NONE;
+    public static CharsetTypes getInitValue() {
+
+        final CharsetTypes result = NONE;
+        return result;
 
     }
 
@@ -104,8 +106,10 @@ public enum LogMessageTypes {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static LogMessageTypes getDefault() {
-        return NONE;
+    public static CharsetTypes getDefault() {
+
+        final CharsetTypes result = NONE;
+        return result;
     }
 
     /**
@@ -148,4 +152,23 @@ public enum LogMessageTypes {
         return result;
     }
 
+    /**
+     * 文字セットを返す<br>
+     * <p>
+     * NONEの場合は、nullを返す。
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 文字セット
+     */
+    public Charset toCharset() {
+        Charset result = null;
+        if (this.value == null) {
+            return result;
+        }
+        result = Charset.forName(this.value);
+        return result;
+    }
 }

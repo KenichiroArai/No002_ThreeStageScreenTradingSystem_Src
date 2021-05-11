@@ -22,20 +22,21 @@ import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
  *
  * @author KenichiroArai
  */
+@SuppressWarnings("nls") // TODO KenichiroArai 2021/05/11 外部文字列化
 public class AccessorCreationlTool {
 
     /** 基準パス */
-    private static final Path BASE_PATH = Paths.get(String.format("src/main/resources/tool/io")); //$NON-NLS-1$
+    private static final Path BASE_PATH = Paths.get(String.format("src/main/resources/tool/io"));
 
     /** テンプレートファイルパス */
     private static final Path TEMPLATE_PATH = Paths.get(AccessorCreationlTool.BASE_PATH.toString(),
-        "template/accessorCreationlTool.txt"); //$NON-NLS-1$
+        "template/accessorCreationlTool.txt");
 
     /** 入力ファイルパス */
-    private static final Path INPUT_PATH = Paths.get(AccessorCreationlTool.BASE_PATH.toString(), "input.txt"); //$NON-NLS-1$
+    private static final Path INPUT_PATH = Paths.get(AccessorCreationlTool.BASE_PATH.toString(), "input.txt");
 
     /** 出力ファイルパス */
-    private static final Path OUTPUT_PATH = Paths.get(AccessorCreationlTool.BASE_PATH.toString(), "output.txt"); //$NON-NLS-1$
+    private static final Path OUTPUT_PATH = Paths.get(AccessorCreationlTool.BASE_PATH.toString(), "output.txt");
 
     /**
      * 走る
@@ -73,19 +74,19 @@ public class AccessorCreationlTool {
             while ((line = brInput.readLine()) != null) {
                 line = line.replace("final", KmgString.EMPTY);
                 line = line.replace("static", KmgString.EMPTY);
-                final Pattern patternComment = Pattern.compile("/\\*\\* (\\S+)"); //$NON-NLS-1$
+                final Pattern patternComment = Pattern.compile("/\\*\\* (\\S+)");
                 final Matcher matcherComment = patternComment.matcher(line);
                 if (matcherComment.find()) {
-                    output = output.replace("$name", matcherComment.group(1)); //$NON-NLS-1$
+                    output = output.replace("$name", matcherComment.group(1));
                     continue;
                 }
 
-                final Pattern patternSrc = Pattern.compile("private\\s+((\\w|\\[\\])+)\\s+(\\w+);"); //$NON-NLS-1$
+                final Pattern patternSrc = Pattern.compile("private\\s+((\\w|\\[\\])+)\\s+(\\w+);");
                 final Matcher matcherSrc = patternSrc.matcher(line);
                 if (matcherSrc.find()) {
-                    output = output.replace("$type", matcherSrc.group(1)); //$NON-NLS-1$
-                    output = output.replace("$item", matcherSrc.group(3)); //$NON-NLS-1$
-                    output = output.replace("$Item", //$NON-NLS-1$
+                    output = output.replace("$type", matcherSrc.group(1));
+                    output = output.replace("$item", matcherSrc.group(3));
+                    output = output.replace("$Item",
                         matcherSrc.group(3).substring(0, 1).toUpperCase() + matcherSrc.group(3).substring(1));
                     bw.write(output);
                     bw.write(System.lineSeparator());
@@ -115,13 +116,13 @@ public class AccessorCreationlTool {
         try {
             final AccessorCreationlTool main = new AccessorCreationlTool();
             if (main.run()) {
-                System.out.println(String.format("%s：失敗", clasz.toString())); //$NON-NLS-1$
+                System.out.println(String.format("%s：失敗", clasz.toString()));
             }
         } catch (final Exception e) {
             e.printStackTrace();
         } finally {
-            System.out.println(String.format("%s：成功", clasz.toString())); //$NON-NLS-1$
-            System.out.println(String.format("%s：終了", clasz.toString())); //$NON-NLS-1$
+            System.out.println(String.format("%s：成功", clasz.toString()));
+            System.out.println(String.format("%s：終了", clasz.toString()));
         }
 
     }

@@ -3,23 +3,20 @@ package kmg.im.stock.tssts.data.dao;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import kmg.core.infrastructure.utils.LocalDateUtils;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
+import kmg.im.stock.tssts.infrastructure.types.CharsetTypes;
 import kmg.tool.ssts.infrastructure.type.KmgString;
 import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
 
-//TODO KenichiroArai 2021/05/06 株価時系列ＤＡＯにまとめる
 /**
  * 株価データＤＡＯ<br>
  *
@@ -30,31 +27,30 @@ import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
 @Repository
 public class StockPriceDataDao {
 
-    /** 株価銘柄格納パス */
-    @Value("${stockPriceStockStoragePath}")
-    private Path stockPriceStockStoragePath;
+    /** データなしの行末尾文字列 */
+    private static final String LINE_ENDING_STRING_WITH_NO_DATA = ",,,,,"; //$NON-NLS-1$
 
     /**
-     * 株価データパスを検索する<br>
+     * 株価銘柄格納パスの検索する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param stockPriceStockStoragePath
+     *                                   株価銘柄格納パス
      * @return パスのリスト
      */
-    public List<Path> findAllStockPriceStockStoragePath() {
+    @SuppressWarnings("static-method")
+    public List<Path> findOfStockPriceStockStoragePath(final Path stockPriceStockStoragePath) {
 
         List<Path> result = null;
 
         try {
-            result = Files.list(this.stockPriceStockStoragePath).filter(Files::isReadable).collect(Collectors.toList());
+            result = Files.list(stockPriceStockStoragePath).filter(Files::isReadable).collect(Collectors.toList());
 
         } catch (final IOException e) {
-            {
-                // TODO 2021/05/01 例外処理
-                e.printStackTrace();
-            }
-
+            // TODO 2021/05/01 例外処理
+            e.printStackTrace();
         }
 
         return result;
@@ -81,8 +77,8 @@ public class StockPriceDataDao {
 
         /* ファイルを読み込む */
 
-        // TODO KenichiroArai 2021/05/01 列挙型
-        try (final BufferedReader br = Files.newBufferedReader(stockPriceDataFilePath, Charset.forName("MS932"));) { //$NON-NLS-1$
+        try (final BufferedReader br = Files.newBufferedReader(stockPriceDataFilePath,
+            CharsetTypes.MS932.toCharset());) {
 
             // 一行読み込む
             String line = br.readLine();
@@ -93,7 +89,8 @@ public class StockPriceDataDao {
             /* 先頭部分でデータがない部分を飛ばす */
             while ((line = br.readLine()) != null) {
 
-                if (!line.endsWith(",,,,,")) { // TODO KenichiroArai 2021/05/01 定数
+                if (!line.endsWith(StockPriceDataDao.LINE_ENDING_STRING_WITH_NO_DATA)) {
+
                     break;
                 }
 
@@ -104,7 +101,7 @@ public class StockPriceDataDao {
             while ((line = br.readLine()) != null) {
 
                 // データがないか
-                if (line.endsWith(",,,,,")) { // TODO KenichiroArai 2021/05/01 定数
+                if (line.endsWith(StockPriceDataDao.LINE_ENDING_STRING_WITH_NO_DATA)) {
                     // ない場合
 
                     continue;
@@ -113,12 +110,11 @@ public class StockPriceDataDao {
                 no++;
 
                 // 株価時系列に変換する
-                final String[] datas = DelimiterTypes.COMMA.split(line);
-                // TODO KenichiroArai 2021/05/01 LocalDateのユーティリティに変える
+                final String[]                datas   = DelimiterTypes.COMMA.split(line);
                 final StockPriceTimeSeriesDto sptsDto = new StockPriceTimeSeriesDto();
                 sptsDto.setNo(no); // 番号
                 try {
-                    sptsDto.setDate(LocalDate.parse(datas[0], DateTimeFormatter.ofPattern("yyyy/MM/dd"))); // 日付
+                    sptsDto.setDate(LocalDateUtils.parseYyyyMmDd(datas[0])); // 日付
                     sptsDto.setOp(new BigDecimal(datas[1])); // 始値
                     sptsDto.setHp(new BigDecimal(datas[2])); // 高値
                     sptsDto.setLp(new BigDecimal(datas[3])); // 安値

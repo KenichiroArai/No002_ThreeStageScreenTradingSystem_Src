@@ -43,7 +43,7 @@ public class LogMessageResolver {
             argsArrays = new Object[0];
         }
 
-        result = String.format("[%s]%s", code.getValue(), //$NON-NLS-1$
+        result = String.format("[%s]%s", code.getValue(),
             this.logMessageSource.getMessage(code.getValue(), argsArrays, Locale.getDefault()));
 
         return result;

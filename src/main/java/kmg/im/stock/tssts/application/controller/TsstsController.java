@@ -3,7 +3,7 @@ package kmg.im.stock.tssts.application.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import kmg.im.stock.tssts.domain.service.TsstsService;
+import kmg.im.stock.tssts.domain.service.ImportService;
 
 /**
  * 三段階スクリーン・トレーディング・システムコントローラ<br>
@@ -15,20 +15,20 @@ import kmg.im.stock.tssts.domain.service.TsstsService;
 @Controller
 public class TsstsController {
 
-    /** 三段階スクリーン・トレーディング・システムサービスインタフェース */
+    /** インポートサービス */
     @Autowired
-    private TsstsService tsstsService;
+    private ImportService importService;
 
     /**
-     * 株価データを登録する<br>
+     * 全株価データを登録する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      */
-    public void registerStockPriceData() {
+    public void registerAllStockPriceData() {
 
-        this.tsstsService.registerStockPriceData();
+        this.importService.registerAllStockPriceData();
 
     }
 

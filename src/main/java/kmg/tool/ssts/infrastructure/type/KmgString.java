@@ -119,6 +119,38 @@ public class KmgString {
     }
 
     /**
+     * 一致するか<br>
+     * <p>
+     * 文字列１と文字列２が一致するか
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param str1
+     *             文字列１
+     * @param str2
+     *             文字列２
+     * @return true：一致、false：一致しない
+     */
+    public static boolean equals(final String str1, final String str2) {
+
+        boolean result = false;
+
+        if (str1 == null) {
+            return result;
+        }
+        if (str2 == null) {
+            return result;
+        }
+
+        result = str1.equals(str2);
+
+        return result;
+
+    }
+
+    /**
      * 空文字かどうかを返す<br>
      *
      * @author KenichiroArai
@@ -191,7 +223,7 @@ public class KmgString {
 
         /* スネークケースの文字列を作成 */
         final StringBuilder snakeCaseSb = new StringBuilder();
-        int pos = 0;
+        int                 pos         = 0;
         for (int i = 1; i < this.value.length(); ++i) {
 
             // ローケースか

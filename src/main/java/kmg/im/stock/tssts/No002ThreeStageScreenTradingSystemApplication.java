@@ -31,8 +31,8 @@ public class No002ThreeStageScreenTradingSystemApplication {
 
             final TsstsController tsstsCtl = context.getBean(TsstsController.class);
 
-            /** 株価データを登録する。 */
-            tsstsCtl.registerStockPriceData();
+            /** 全株価データを登録する。 */
+            tsstsCtl.registerAllStockPriceData();
 
         }
     }

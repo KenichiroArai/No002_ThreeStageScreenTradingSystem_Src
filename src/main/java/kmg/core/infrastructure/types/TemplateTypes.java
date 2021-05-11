@@ -1,26 +1,22 @@
-package kmg.im.stock.tssts.infrastructure.types;
+package kmg.core.infrastructure.types;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ログメッセージの種類<br>
+ * テンプレートの種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum LogMessageTypes {
+public enum TemplateTypes {
 
     /* 定義：開始 */
 
     /** 指定無し */
     NONE("指定無し", null),
-
-    // TODO 2021/04/25 不要なので削除する
-    /** 三段階スクリーン・トレーディング・システムＤＡＯ */
-    I00001("三段階スクリーン・トレーディング・システムＤＡＯ", "I00001"),
 
     /* 定義：終了 */
     ;
@@ -32,13 +28,13 @@ public enum LogMessageTypes {
     private String value;
 
     /** 種類のマップ */
-    private static final Map<String, LogMessageTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<String, TemplateTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final LogMessageTypes type : LogMessageTypes.values()) {
-            LogMessageTypes.VALUES_MAP.put(type.getValue(), type);
+        for (final TemplateTypes type : TemplateTypes.values()) {
+            TemplateTypes.VALUES_MAP.put(type.getValue(), type);
         }
     }
 
@@ -53,7 +49,7 @@ public enum LogMessageTypes {
      * @param value
      *              値
      */
-    LogMessageTypes(final String name, final String value) {
+    TemplateTypes(final String name, final String value) {
 
         this.name = name;
         this.value = value;
@@ -73,9 +69,9 @@ public enum LogMessageTypes {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static LogMessageTypes getEnum(final String value) {
+    public static TemplateTypes getEnum(final String value) {
 
-        LogMessageTypes result = LogMessageTypes.VALUES_MAP.get(value);
+        TemplateTypes result = TemplateTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -91,8 +87,10 @@ public enum LogMessageTypes {
      * @version 1.0.0
      * @return 初期値
      */
-    public static LogMessageTypes getInitValue() {
-        return NONE;
+    public static TemplateTypes getInitValue() {
+
+        final TemplateTypes result = NONE;
+        return result;
 
     }
 
@@ -104,8 +102,10 @@ public enum LogMessageTypes {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static LogMessageTypes getDefault() {
-        return NONE;
+    public static TemplateTypes getDefault() {
+
+        final TemplateTypes result = NONE;
+        return result;
     }
 
     /**
@@ -147,5 +147,4 @@ public enum LogMessageTypes {
         final String result = this.name;
         return result;
     }
-
 }

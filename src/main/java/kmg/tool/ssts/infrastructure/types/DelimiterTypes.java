@@ -82,7 +82,7 @@ public enum DelimiterTypes {
     }
 
     /**
-     * コンストラクタ
+     * コンストラクタ<br>
      *
      * @author KenichiroArai
      * @since 1.0.0
@@ -99,7 +99,9 @@ public enum DelimiterTypes {
 
     /**
      * 値に該当する種類を返す<br>
-     * 但し、値が存在しない場合は、指定無し（NONE）を返す。
+     * <p>
+     * 但し、値が存在しない場合は、指定無し（NONE）を返す
+     * </p>
      *
      * @author KenichiroArai
      * @sine 1.0.0
