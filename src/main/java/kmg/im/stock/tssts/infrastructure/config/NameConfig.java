@@ -6,31 +6,31 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 /**
- * メッセージ定義<br>
+ * 名称定義<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class MessageConfig {
+public class NameConfig {
 
     /**
-     * メッセージの定義<br>
+     * 名称の定義<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return メッセージソース
+     * @return 名称ソース
      */
     @SuppressWarnings({
         "static-method", "nls"
     })
     @Bean
-    public MessageSource logMessageSource() {
+    public MessageSource nameSource() {
 
         final ResourceBundleMessageSource result = new ResourceBundleMessageSource();
-        result.setBasenames("messages-log", "messages-log_ja");
+        result.setBasenames("name", "name_ja");
         result.setDefaultEncoding("UTF-8");
         return result;
     }

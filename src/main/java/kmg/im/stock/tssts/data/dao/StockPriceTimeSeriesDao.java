@@ -8,8 +8,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import kmg.core.infrastructure.type.KmgString;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
-import kmg.tool.ssts.infrastructure.type.KmgString;
 
 /**
  * 株価時系列ＤＡＯ<br>

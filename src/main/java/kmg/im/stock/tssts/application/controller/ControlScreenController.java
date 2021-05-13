@@ -20,10 +20,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.PfaMeasModel;
+import kmg.core.infrastructure.type.KmgString;
 import kmg.im.stock.tssts.domain.service.ImportService;
 import kmg.im.stock.tssts.domain.service.SigService;
 import kmg.im.stock.tssts.domain.service.SimService;
-import kmg.tool.ssts.infrastructure.type.KmgString;
+import kmg.im.stock.tssts.infrastructure.resolver.MessageResolver;
+import kmg.im.stock.tssts.infrastructure.resolver.NameResolver;
+import kmg.im.stock.tssts.infrastructure.types.MessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.NameTypes;
 
 /**
  * 制御画面コントローラ<br>
@@ -36,8 +40,16 @@ import kmg.tool.ssts.infrastructure.type.KmgString;
 public class ControlScreenController {
 
     /** 株価銘柄格納パス */
-    @Value("${stockPriceStockStoragePath}")
+    @Value("${import.path.stockpricestockstoragepath}")
     private Path stockPriceStockStoragePath;
+
+    /** シミュレーションコンボボックスの項目のすべて */
+    @Value("${ctlscn.cbsim.item.all}")
+    private String cbSimItemAll;
+
+    /** シグナルコンボボックスの項目のすべて */
+    @Value("${ctlscn.cbsig.item.all}")
+    private String cbSigItemAll;
 
     /** 格納ディレクトリテキストボックス */
     @FXML
@@ -87,6 +99,14 @@ public class ControlScreenController {
     @FXML
     private Label lblProcTimeUnit;
 
+    /** 名称リゾルバ */
+    @Autowired
+    private NameResolver nameResolver;
+
+    /** メッセージリゾルバ */
+    @Autowired
+    private MessageResolver messageResolver;
+
     /** インポートサービス */
     @Autowired
     private ImportService importService;
@@ -116,11 +136,11 @@ public class ControlScreenController {
         this.txtBrandFile.setText(this.stockPriceStockStoragePath.toAbsolutePath().toString());
 
         // シミュレーションコンボボックスに項目を追加する
-        this.cbSim.getItems().add("すべて");
+        this.cbSim.getItems().add(this.cbSimItemAll);
         this.cbSim.getSelectionModel().select(0);
 
         // シグナルコンボボックスに項目を追加する
-        this.cbSig.getItems().add("すべて");
+        this.cbSig.getItems().add(this.cbSigItemAll);
         this.cbSig.getSelectionModel().select(0);
 
     }
@@ -138,7 +158,7 @@ public class ControlScreenController {
     private void openDirectoryOfStorageDirectory(final ActionEvent event) {
 
         final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("ディレクトリ選択");
+        directoryChooser.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10001));
         String defaultDirectoryPath = this.txtStorageDirectory.getText();
         if (KmgString.isEmpty(defaultDirectoryPath)) {
             // 格納ディレクトリテキストボックスに株価格納パスを設定する
@@ -149,8 +169,12 @@ public class ControlScreenController {
             defaultDirectory = defaultDirectory.getParent();
         }
         directoryChooser.setInitialDirectory(defaultDirectory.toFile());
-        final File directory = directoryChooser.showDialog(null);
-        this.txtStorageDirectory.setText(directory.getAbsolutePath());
+        final File directory    = directoryChooser.showDialog(null);
+        String     directoryStr = KmgString.EMPTY;
+        if (directory != null) {
+            directoryStr = directory.getAbsolutePath();
+        }
+        this.txtStorageDirectory.setText(directoryStr);
     }
 
     /**
@@ -174,9 +198,9 @@ public class ControlScreenController {
             final Path importPath = Paths.get(this.txtStorageDirectory.getText());
             if (!Files.isDirectory(importPath)) {
                 final Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("エラー");
+                alert.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10002));
                 alert.setHeaderText(null);
-                alert.setContentText("存在するディレクトリではありません。存在するディレクトリを指定してください。");
+                alert.setContentText(this.messageResolver.getMessage(MessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10001));
                 alert.showAndWait();
                 return;
             }
@@ -203,7 +227,7 @@ public class ControlScreenController {
     private void openFileOfBrandFile(final ActionEvent event) {
 
         final FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("ファイル選択");
+        fileChooser.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10003));
         String defaultFilePath = this.txtBrandFile.getText();
         if ((defaultFilePath == null) || defaultFilePath.isEmpty()) {
             // 格納ディレクトリテキストボックスに株価格納パスを設定する
@@ -211,8 +235,12 @@ public class ControlScreenController {
         }
         final File defaultFile = new File(defaultFilePath);
         fileChooser.setInitialDirectory(defaultFile);
-        final File file = fileChooser.showOpenDialog(null);
-        this.txtBrandFile.setText(file.getAbsolutePath());
+        final File file    = fileChooser.showOpenDialog(null);
+        String     fileStr = KmgString.EMPTY;
+        if (file != null) {
+            fileStr = file.getAbsolutePath();
+        }
+        this.txtBrandFile.setText(fileStr);
     }
 
     /**
@@ -234,11 +262,19 @@ public class ControlScreenController {
         pfaMeas.start();
         try {
             final Path importPath = Paths.get(this.txtBrandFile.getText());
+            if (!Files.exists(importPath)) {
+                final Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10004));
+                alert.setHeaderText(null);
+                alert.setContentText(this.messageResolver.getMessage(MessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10002));
+                alert.showAndWait();
+                return;
+            }
             if (Files.isDirectory(importPath)) {
                 final Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("エラー");
+                alert.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10005));
                 alert.setHeaderText(null);
-                alert.setContentText("存在するファイルではありません。存在するファイルを指定してください。");
+                alert.setContentText(this.messageResolver.getMessage(MessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10003));
                 alert.showAndWait();
                 return;
             }
@@ -272,7 +308,7 @@ public class ControlScreenController {
         try {
             /* シミュレーションする */
             // 選択対象がすべてか
-            if (KmgString.equals(this.cbSim.getSelectionModel().getSelectedItem(), "すべて")) {
+            if (KmgString.equals(this.cbSim.getSelectionModel().getSelectedItem(), this.cbSimItemAll)) {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする
@@ -311,7 +347,7 @@ public class ControlScreenController {
         try {
             /* シグナルを確認する */
             // 選択対象がすべてか
-            if (KmgString.equals(this.cbSim.getSelectionModel().getSelectedItem(), "すべて")) {
+            if (KmgString.equals(this.cbSim.getSelectionModel().getSelectedItem(), this.cbSigItemAll)) {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする

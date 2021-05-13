@@ -1,4 +1,4 @@
-package kmg.tool.ssts.infrastructure.types;
+package kmg.core.infrastructure.types;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import kmg.tool.ssts.infrastructure.type.KmgString;
+import kmg.core.infrastructure.type.KmgString;
 
 /**
  * フィールド作成の型の種類<br>

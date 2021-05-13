@@ -14,39 +14,41 @@ import java.util.stream.Collectors;
 
 import kmg.core.infrastructure.type.KmgString;
 import kmg.core.infrastructure.types.DelimiterTypes;
-import kmg.core.infrastructure.types.FieldCreationTypeTypes;
 
 /**
- * フィールド作成ツール
+ * 名称・メッセージ作成ツール
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-@SuppressWarnings("nls") // TODO KenichiroArai 2021/05/11 外部文字列化
-public class FieldCreationlTool {
+@SuppressWarnings("nls") // TODO KenichiroArai 2021/05/12 外部文字列化
+public class NameMsgCreationlTool {
 
     /** 基準パス */
     private static final Path BASE_PATH = Paths.get(String.format("src/main/resources/tool/io"));
 
     /** テンプレートファイルパス */
-    private static final Path TEMPLATE_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(),
-        "template/fieldCreationlTool.txt");
+    private static final Path TEMPLATE_PATH = Paths.get(NameMsgCreationlTool.BASE_PATH.toString(),
+        "template/nameMsgCreationlTool.txt");
 
     /** 入力ファイルパス */
-    private static final Path INPUT_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(), "input.txt");
+    private static final Path INPUT_PATH = Paths.get(NameMsgCreationlTool.BASE_PATH.toString(), "input.txt");
 
     /** 出力ファイルパス */
-    private static final Path OUTPUT_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(), "output.txt");
+    private static final Path OUTPUT_PATH = Paths.get(NameMsgCreationlTool.BASE_PATH.toString(), "output.txt");
 
     /** パラメータ：コメント */
     private static final String PARAM_COMMENT = "$comment";
 
-    /** パラメータ：フィールド */
-    private static final String PARAM_FIELD = "$field";
+    /** パラメータ：キー */
+    private static final String PARAM_KEY = "$key";
 
-    /** パラメータ：型 */
-    private static final String PARAM_TYPE = "$type";
+    /** パラメータ：名称 */
+    private static final String PARAM_NAME = "$name";
+
+    /** パラメータ：値 */
+    private static final String PARAM_VALUE = "$value";
 
     /**
      * 実行する<br>
@@ -69,7 +71,7 @@ public class FieldCreationlTool {
         String template = null;
         try {
 
-            template = Files.readAllLines(FieldCreationlTool.TEMPLATE_PATH).stream()
+            template = Files.readAllLines(NameMsgCreationlTool.TEMPLATE_PATH).stream()
                 .collect(Collectors.joining(DelimiterTypes.LINE_SEPARATOR.getValue()));
 
         } catch (final FileNotFoundException e) {
@@ -79,33 +81,23 @@ public class FieldCreationlTool {
         }
 
         /* 入力から出力の処理 */
-        try (final BufferedReader brInput = Files.newBufferedReader(FieldCreationlTool.INPUT_PATH);
-            final BufferedWriter bw = Files.newBufferedWriter(FieldCreationlTool.OUTPUT_PATH);) {
+        try (final BufferedReader brInput = Files.newBufferedReader(NameMsgCreationlTool.INPUT_PATH);
+            final BufferedWriter bw = Files.newBufferedWriter(NameMsgCreationlTool.OUTPUT_PATH);) {
             String line;
             while ((line = brInput.readLine()) != null) {
 
                 /* データ取得 */
-                final String[] inputDatas  = DelimiterTypes.SERIES_HALF_SPACE.split(line);
-                int            dataIdx     = 0;
-                final String   commentData = inputDatas[dataIdx++];                       // コメント
-                final String   fieldData   = inputDatas[dataIdx++];                       // フィールド名
-                final String   typeData    = inputDatas[dataIdx++];                       // 型
+                final String[]  inputDatas = DelimiterTypes.SERIES_HALF_SPACE.split(line);
+                int             dataIdx    = 0;
+                final KmgString idData     = new KmgString(inputDatas[dataIdx++]);        // ID
+                final KmgString nameData   = new KmgString(inputDatas[dataIdx++]);        // 名称
 
                 /* 変換処理 */
-
-                final String                 changeFieldData = new KmgString(fieldData).toCamelCase();
-                String                       changeTypeData  = null;
-                final FieldCreationTypeTypes type            = FieldCreationTypeTypes.getEnum(typeData);
-                if (type == null) {
-                    changeTypeData = typeData;
-                } else {
-                    changeTypeData = type.getType().getTypeName().replaceAll("(\\w+\\.)+", KmgString.EMPTY);
-                }
-
                 String output = template;
-                output = output.replace(FieldCreationlTool.PARAM_COMMENT, commentData);
-                output = output.replace(FieldCreationlTool.PARAM_FIELD, changeFieldData);
-                output = output.replace(FieldCreationlTool.PARAM_TYPE, changeTypeData);
+                output = output.replace(NameMsgCreationlTool.PARAM_COMMENT, nameData.toString()); // コメント
+                output = output.replace(NameMsgCreationlTool.PARAM_KEY, idData.toString()); // キー
+                output = output.replace(NameMsgCreationlTool.PARAM_NAME, nameData.toString()); // 名称
+                output = output.replace(NameMsgCreationlTool.PARAM_VALUE, idData.toString()); // 値
 
                 /* 出力 */
                 bw.write(output);
@@ -131,9 +123,9 @@ public class FieldCreationlTool {
      */
     public static void main(final String[] args) {
 
-        final Class<FieldCreationlTool> clasz = FieldCreationlTool.class;
+        final Class<NameMsgCreationlTool> clasz = NameMsgCreationlTool.class;
         try {
-            final FieldCreationlTool main = new FieldCreationlTool();
+            final NameMsgCreationlTool main = new NameMsgCreationlTool();
             if (main.run()) {
                 System.out.println(String.format("%s：失敗", clasz.toString()));
             }

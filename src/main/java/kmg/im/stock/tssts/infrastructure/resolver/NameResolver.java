@@ -7,36 +7,35 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
 
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.NameTypes;
 
 /**
- * ログメッセージリゾルバ<br>
+ * 名称リゾルバ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class LogMessageResolver {
+public class NameResolver {
 
-    /** ログメッセージソース */
+    /** 名称ソース */
     @Autowired
-    private MessageSource logMessageSource;
+    private MessageSource nameSource;
 
     /**
-     * メッセージを返す<br>
+     * 名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param code
-     *             ログメッセージコード
+     *             名称コード
      * @param args
      *             メッセージ引数
      * @return メッセージ
      */
-    @SuppressWarnings("nls")
-    public String getMessage(final LogMessageTypes code, final Object... args) {
+    public String getName(final NameTypes code, final Object... args) {
 
         String result = null;
 
@@ -46,10 +45,9 @@ public class LogMessageResolver {
         }
 
         try {
-            result = String.format("[%s]%s", code.getValue(),
-                this.logMessageSource.getMessage(code.getValue(), argsArrays, Locale.getDefault()));
+            result = this.nameSource.getMessage(code.getValue(), argsArrays, Locale.getDefault());
         } catch (final NoSuchMessageException e) {
-            // TODO KenichiroArai 2021/05/13 例外処理
+            // 例外処理
             System.err.println(code.getValue());
             e.printStackTrace();
             return result;

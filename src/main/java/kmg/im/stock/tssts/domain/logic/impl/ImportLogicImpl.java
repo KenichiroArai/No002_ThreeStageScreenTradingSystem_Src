@@ -25,7 +25,7 @@ import kmg.im.stock.tssts.domain.logic.ImportLogic;
 public class ImportLogicImpl implements ImportLogic {
 
     /** 株価銘柄格納パス */
-    @Value("${stockPriceStockStoragePath}")
+    @Value("${import.path.stockpricestockstoragepath}")
     private Path stockPriceStockStoragePath;
 
     /** 株価データＤＡＯ */

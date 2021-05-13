@@ -1,10 +1,10 @@
-package kmg.tool.ssts.infrastructure.types;
+package kmg.core.infrastructure.types;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kmg.tool.ssts.infrastructure.type.KmgString;
+import kmg.core.infrastructure.type.KmgString;
 
 /**
  * 区切り文字の種類<br>

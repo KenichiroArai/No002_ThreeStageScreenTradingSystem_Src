@@ -1,35 +1,37 @@
 package kmg.im.stock.tssts.infrastructure.types;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 時間単位の種類<br>
+ * 名称の種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum TimeUnitTypes {
+public enum NameTypes {
 
     /* 定義：開始 */
 
     /** 指定無し */
-    NONE("指定無し", null, "指定無し", BigDecimal.ZERO),
+    NONE("指定無し", null),
 
-    /** 秒 */
-    SECONDS("秒", "seconds", "秒", BigDecimal.ONE),
+    /** ディレクトリ選択 */
+    KMG_IM_STOCK_TSSTS_NAME10001("ディレクトリ選択", "KMG_IM_STOCK_TSSTS_NAME10001"),
 
-    /** ミリ秒 */
-    MILLISECOND("ミリ秒", "millisecond,", "ミリ秒", new BigDecimal("0.001")),
+    /** エラー */
+    KMG_IM_STOCK_TSSTS_NAME10002("エラー", "KMG_IM_STOCK_TSSTS_NAME10002"),
 
-    /** マイクロ秒 */
-    MICROSECONDS("マイクロ秒", "microseconds", "マイクロ秒", new BigDecimal("0.000001")),
+    /** ファイル選択 */
+    KMG_IM_STOCK_TSSTS_NAME10003("ファイル選択", "KMG_IM_STOCK_TSSTS_NAME10003"),
 
-    /** ナノ秒 */
-    NANOSECONDS("ナノ秒", "nanoseconds", "ナノ秒", new BigDecimal("0.000000001")),
+    /** エラー */
+    KMG_IM_STOCK_TSSTS_NAME10004("エラー", "KMG_IM_STOCK_TSSTS_NAME10004"),
+
+    /** エラー */
+    KMG_IM_STOCK_TSSTS_NAME10005("エラー", "KMG_IM_STOCK_TSSTS_NAME10005"),
 
     /* 定義：終了 */
     ;
@@ -40,20 +42,14 @@ public enum TimeUnitTypes {
     /** 値 */
     private String value;
 
-    /** 単位名 */
-    private String unitName;
-
-    /** 単位値 */
-    private BigDecimal unitValue;
-
     /** 種類のマップ */
-    private static final Map<String, TimeUnitTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<String, NameTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final TimeUnitTypes type : TimeUnitTypes.values()) {
-            TimeUnitTypes.VALUES_MAP.put(type.getValue(), type);
+        for (final NameTypes type : NameTypes.values()) {
+            NameTypes.VALUES_MAP.put(type.getValue(), type);
         }
     }
 
@@ -64,20 +60,15 @@ public enum TimeUnitTypes {
      * @sine 1.0.0
      * @version 1.0.0
      * @param name
-     *                  名称
+     *              名称
      * @param value
-     *                  値
-     * @param unitName
-     *                  単位名
-     * @param unitValue
-     *                  単位値
+     *              値
      */
-    TimeUnitTypes(final String name, final String value, final String unitName, final BigDecimal unitValue) {
+    NameTypes(final String name, final String value) {
 
         this.name = name;
         this.value = value;
-        this.unitName = unitName;
-        this.unitValue = unitValue;
+
     }
 
     /**
@@ -85,7 +76,6 @@ public enum TimeUnitTypes {
      * <p>
      * 但し、値が存在しない場合は、指定無し（NONE）を返す。
      * </p>
-     * <br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -94,9 +84,9 @@ public enum TimeUnitTypes {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static TimeUnitTypes getEnum(final String value) {
+    public static NameTypes getEnum(final String value) {
 
-        TimeUnitTypes result = TimeUnitTypes.VALUES_MAP.get(value);
+        NameTypes result = NameTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -112,9 +102,9 @@ public enum TimeUnitTypes {
      * @version 1.0.0
      * @return 初期値
      */
-    public static TimeUnitTypes getInitValue() {
+    public static NameTypes getInitValue() {
 
-        final TimeUnitTypes result = NONE;
+        final NameTypes result = NONE;
         return result;
 
     }
@@ -127,9 +117,9 @@ public enum TimeUnitTypes {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static TimeUnitTypes getDefault() {
+    public static NameTypes getDefault() {
 
-        final TimeUnitTypes result = NONE;
+        final NameTypes result = NONE;
         return result;
     }
 
@@ -170,32 +160,6 @@ public enum TimeUnitTypes {
      */
     public String getValue() {
         final String result = this.value;
-        return result;
-    }
-
-    /**
-     * 単位名を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 単位名
-     */
-    public String getUnitName() {
-        final String result = this.unitName;
-        return result;
-    }
-
-    /**
-     * 単位値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 単位値
-     */
-    public BigDecimal getUnitValue() {
-        final BigDecimal result = this.unitValue;
         return result;
     }
 

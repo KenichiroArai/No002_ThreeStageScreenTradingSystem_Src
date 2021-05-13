@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import kmg.core.infrastructure.type.KmgString;
+import kmg.core.infrastructure.types.DelimiterTypes;
 import kmg.core.infrastructure.utils.LocalDateUtils;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.infrastructure.types.CharsetTypes;
-import kmg.tool.ssts.infrastructure.type.KmgString;
-import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
 
 /**
  * 株価データＤＡＯ<br>

@@ -1,6 +1,6 @@
-package kmg.tool.ssts.infrastructure.type;
+package kmg.core.infrastructure.type;
 
-import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
+import kmg.core.infrastructure.types.DelimiterTypes;
 
 /**
  * ＫＭＧ文字列

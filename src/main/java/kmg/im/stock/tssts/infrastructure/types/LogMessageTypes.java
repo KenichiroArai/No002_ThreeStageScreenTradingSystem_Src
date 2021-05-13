@@ -92,7 +92,9 @@ public enum LogMessageTypes {
      * @return 初期値
      */
     public static LogMessageTypes getInitValue() {
-        return NONE;
+
+        final LogMessageTypes result = NONE;
+        return result;
 
     }
 
@@ -105,7 +107,9 @@ public enum LogMessageTypes {
      * @return デフォルト値
      */
     public static LogMessageTypes getDefault() {
-        return NONE;
+
+        final LogMessageTypes result = NONE;
+        return result;
     }
 
     /**
@@ -144,7 +148,7 @@ public enum LogMessageTypes {
      * @return 値
      */
     public String getValue() {
-        final String result = this.name;
+        final String result = this.value;
         return result;
     }
 

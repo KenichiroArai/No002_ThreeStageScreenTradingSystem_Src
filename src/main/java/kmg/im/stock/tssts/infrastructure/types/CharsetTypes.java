@@ -148,7 +148,7 @@ public enum CharsetTypes {
      * @return 値
      */
     public String getValue() {
-        final String result = this.name;
+        final String result = this.value;
         return result;
     }
 

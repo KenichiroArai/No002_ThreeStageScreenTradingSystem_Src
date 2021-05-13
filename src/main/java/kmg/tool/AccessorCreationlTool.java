@@ -14,8 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import kmg.tool.ssts.infrastructure.type.KmgString;
-import kmg.tool.ssts.infrastructure.types.DelimiterTypes;
+import kmg.core.infrastructure.type.KmgString;
+import kmg.core.infrastructure.types.DelimiterTypes;
 
 /**
  * アクセサ作成ツール
