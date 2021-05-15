@@ -51,10 +51,10 @@ public class StockPriceTimeSeriesDaoTests {
         stockPriceTimeSeriesDto.setCp(BigDecimal.valueOf(120.0));
         stockPriceTimeSeriesDto.setVolume(999L);
 
-        /* テスト対象を呼び出し */
+        /* テスト対象を呼び出す */
         final long insertNum = this.testTarget.insert(stockPriceTimeSeriesDto);
 
-        /* 期待値との比較 */
+        /* 期待値と比較 */
         Assertions.assertEquals(expectedInsertNum, insertNum);
 
     }
