@@ -3,7 +3,7 @@ package kmg.core.infrastructure.types;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public enum FieldCreationTypeTypes {
     DATE("日付型", "日付型", LocalDate.class),
 
     /** 日時型 */
-    TIME("日時型", "日時型", LocalTime.class),
+    TIME("日時型", "日時型", LocalDateTime.class),
 
     /** 文字列型 */
     STRING("文字列型", "文字列型", String.class),

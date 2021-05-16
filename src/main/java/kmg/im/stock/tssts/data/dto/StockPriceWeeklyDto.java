@@ -5,14 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 株価時系列ＤＴＯ<br>
+ * 株価週足ＤＴＯ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-//TODO KenichiroArai 2021/04/30 ベースとなるクラスを作成する
-public class StockPriceTimeSeriesDto {
+//TODO KenichiroArai 2021/05/16 ベースとなるクラスを作成する
+public class StockPriceWeeklyDto {
 
     /** 識別番号 */
     private Long id;
@@ -50,8 +50,11 @@ public class StockPriceTimeSeriesDto {
     /** 番号 */
     private Long no;
 
-    /** 日付 */
-    private LocalDate date;
+    /** 週開始日付 */
+    private LocalDate weeklyStartDate;
+
+    /** 週終了日付 */
+    private LocalDate weeklyEndDate;
 
     /** 始値 */
     private BigDecimal op;
@@ -381,28 +384,54 @@ public class StockPriceTimeSeriesDto {
     }
 
     /**
-     * 日付を設定する<br>
+     * 週開始日付を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param date
-     *             日付
+     * @param weeklyStartDate
+     *                        週開始日付
      */
-    public void setDate(final LocalDate date) {
-        this.date = date;
+    public void setWeeklyStartDate(final LocalDate weeklyStartDate) {
+        this.weeklyStartDate = weeklyStartDate;
     }
 
     /**
-     * 日付を返す<br>
+     * 週開始日付を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 日付
+     * @return 週開始日付
      */
-    public LocalDate getDate() {
-        final LocalDate result = this.date;
+    public LocalDate getWeeklyStartDate() {
+        final LocalDate result = this.weeklyStartDate;
+        return result;
+    }
+
+    /**
+     * 週終了日付を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param weeklyEndDate
+     *                      週終了日付
+     */
+    public void setWeeklyEndDate(final LocalDate weeklyEndDate) {
+        this.weeklyEndDate = weeklyEndDate;
+    }
+
+    /**
+     * 週終了日付を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 週終了日付
+     */
+    public LocalDate getWeeklyEndDate() {
+        final LocalDate result = this.weeklyEndDate;
         return result;
     }
 

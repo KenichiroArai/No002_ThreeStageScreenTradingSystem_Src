@@ -1,6 +1,7 @@
 package kmg.im.stock.tssts.data.dao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -48,9 +49,9 @@ public class StockPriceTimeSeriesDao {
         stockPriceTimeSeriesDto.setEndDate(LocalDate.MAX);
         stockPriceTimeSeriesDto.setLocaleId("ja"); // TODO KenichiroArai 2021/05/01 列挙型
         stockPriceTimeSeriesDto.setCreator("TSSTS_MAIN_USER"); // TODO KenichiroArai 2021/05/01 後で考える
-        stockPriceTimeSeriesDto.setCreatedDate(LocalDate.now());
+        stockPriceTimeSeriesDto.setCreatedDate(LocalDateTime.now());
         stockPriceTimeSeriesDto.setUpdater("TSSTS_MAIN_USER"); // TODO KenichiroArai 2021/05/01 後で考える
-        stockPriceTimeSeriesDto.setUpdateDate(LocalDate.now());
+        stockPriceTimeSeriesDto.setUpdateDate(LocalDateTime.now());
         stockPriceTimeSeriesDto.setNote(KmgString.EMPTY);
         stockPriceTimeSeriesDto.setName(KmgString.EMPTY);
 
