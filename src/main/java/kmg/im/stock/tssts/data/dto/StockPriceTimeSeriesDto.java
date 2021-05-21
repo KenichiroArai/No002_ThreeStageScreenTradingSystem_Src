@@ -50,8 +50,14 @@ public class StockPriceTimeSeriesDto {
     /** 番号 */
     private Long no;
 
-    /** 日付 */
-    private LocalDate date;
+    /** 期間の種類ID */
+    private Long typeOfPeriodId;
+
+    /** 期間開始日 */
+    private LocalDate periodStartDate;
+
+    /** 期間終了日 */
+    private LocalDate periodEndDate;
 
     /** 始値 */
     private BigDecimal op;
@@ -381,28 +387,80 @@ public class StockPriceTimeSeriesDto {
     }
 
     /**
-     * 日付を設定する<br>
+     * 期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param date
-     *             日付
+     * @param typeOfPeriodId
+     *                       期間の種類ID
      */
-    public void setDate(final LocalDate date) {
-        this.date = date;
+    public void setTypeOfPeriodId(final Long typeOfPeriodId) {
+        this.typeOfPeriodId = typeOfPeriodId;
     }
 
     /**
-     * 日付を返す<br>
+     * 期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 日付
+     * @return 期間の種類ID
      */
-    public LocalDate getDate() {
-        final LocalDate result = this.date;
+    public Long getTypeOfPeriodId() {
+        final Long result = this.typeOfPeriodId;
+        return result;
+    }
+
+    /**
+     * 期間開始日を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param periodStartDate
+     *                        期間開始日
+     */
+    public void setPeriodStartDate(final LocalDate periodStartDate) {
+        this.periodStartDate = periodStartDate;
+    }
+
+    /**
+     * 期間開始日を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 期間開始日
+     */
+    public LocalDate getPeriodStartDate() {
+        final LocalDate result = this.periodStartDate;
+        return result;
+    }
+
+    /**
+     * 期間終了日を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param periodEndDate
+     *                      期間終了日
+     */
+    public void setPeriodEndDate(final LocalDate periodEndDate) {
+        this.periodEndDate = periodEndDate;
+    }
+
+    /**
+     * 期間終了日を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 期間終了日
+     */
+    public LocalDate getPeriodEndDate() {
+        final LocalDate result = this.periodEndDate;
         return result;
     }
 

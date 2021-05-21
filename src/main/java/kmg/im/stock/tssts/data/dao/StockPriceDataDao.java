@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import kmg.core.infrastructure.type.KmgString;
 import kmg.core.infrastructure.types.DelimiterTypes;
 import kmg.core.infrastructure.utils.LocalDateUtils;
-import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
+import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
 import kmg.im.stock.tssts.infrastructure.types.CharsetTypes;
 
 /**
@@ -58,9 +58,9 @@ public class StockPriceDataDao {
     }
 
     /**
-     * 株価時系列を検索する<br>
+     * 株価データを検索する<br>
      * <p>
-     * 株価データパスから株価時系列を検索する。
+     * 株価データパスから株価データを検索する。
      * </p>
      *
      * @author KenichiroArai
@@ -68,12 +68,12 @@ public class StockPriceDataDao {
      * @version 1.0.0
      * @param stockPriceDataFilePath
      *                               株価データファイルパス
-     * @return 株価時系列のリスト
+     * @return 株価データのリスト
      */
     @SuppressWarnings("static-method")
-    public List<StockPriceTimeSeriesDto> findAllStockPriceTimeSeriesDtoList(final Path stockPriceDataFilePath) {
+    public List<StockPriceDataDto> findAllStockPriceDataDtoList(final Path stockPriceDataFilePath) {
 
-        final List<StockPriceTimeSeriesDto> result = new ArrayList<>();
+        final List<StockPriceDataDto> result = new ArrayList<>();
 
         /* ファイルを読み込む */
 
@@ -110,8 +110,8 @@ public class StockPriceDataDao {
                 no++;
 
                 // 株価時系列に変換する
-                final String[]                datas   = DelimiterTypes.COMMA.split(line);
-                final StockPriceTimeSeriesDto sptsDto = new StockPriceTimeSeriesDto();
+                final String[] datas = DelimiterTypes.COMMA.split(line);
+                final StockPriceDataDto sptsDto = new StockPriceDataDto();
                 sptsDto.setNo(no); // 番号
                 try {
                     sptsDto.setDate(LocalDateUtils.parseYyyyMmDd(datas[0])); // 日付

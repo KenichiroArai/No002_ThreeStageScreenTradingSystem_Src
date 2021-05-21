@@ -1,22 +1,31 @@
-package kmg.core.infrastructure.types;
+package kmg.im.stock.tssts.infrastructure.types;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * テンプレートの種類<br>
+ * 期間の種類の種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum TemplateTypes {
+public enum TypeOfPeriodypes {
 
     /* 定義：開始 */
 
     /** 指定無し */
-    NONE("指定無し", null),
+    NONE("指定無し", -1L),
+
+    /** 日足 */
+    DAILY("日足", 0L),
+
+    /** 週足 */
+    WEEKLY("週足", 1L),
+
+    /** 月足 */
+    MONTHLY("月足", 2L),
 
     /* 定義：終了 */
     ;
@@ -25,16 +34,16 @@ public enum TemplateTypes {
     private String name;
 
     /** 値 */
-    private String value;
+    private Long value;
 
     /** 種類のマップ */
-    private static final Map<String, TemplateTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<Long, TypeOfPeriodypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final TemplateTypes type : TemplateTypes.values()) {
-            TemplateTypes.VALUES_MAP.put(type.getValue(), type);
+        for (final TypeOfPeriodypes type : TypeOfPeriodypes.values()) {
+            TypeOfPeriodypes.VALUES_MAP.put(type.getValue(), type);
         }
     }
 
@@ -49,7 +58,7 @@ public enum TemplateTypes {
      * @param value
      *              値
      */
-    TemplateTypes(final String name, final String value) {
+    TypeOfPeriodypes(final String name, final Long value) {
 
         this.name = name;
         this.value = value;
@@ -69,9 +78,9 @@ public enum TemplateTypes {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static TemplateTypes getEnum(final String value) {
+    public static TypeOfPeriodypes getEnum(final Long value) {
 
-        TemplateTypes result = TemplateTypes.VALUES_MAP.get(value);
+        TypeOfPeriodypes result = TypeOfPeriodypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -87,9 +96,9 @@ public enum TemplateTypes {
      * @version 1.0.0
      * @return 初期値
      */
-    public static TemplateTypes getInitValue() {
+    public static TypeOfPeriodypes getInitValue() {
 
-        final TemplateTypes result = NONE;
+        final TypeOfPeriodypes result = NONE;
         return result;
 
     }
@@ -102,9 +111,9 @@ public enum TemplateTypes {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static TemplateTypes getDefault() {
+    public static TypeOfPeriodypes getDefault() {
 
-        final TemplateTypes result = NONE;
+        final TypeOfPeriodypes result = NONE;
         return result;
     }
 
@@ -118,7 +127,7 @@ public enum TemplateTypes {
      */
     @Override
     public String toString() {
-        final String result = this.value;
+        final String result = this.value.toString();
         return result;
     }
 
@@ -143,8 +152,8 @@ public enum TemplateTypes {
      * @version 1.0.0
      * @return 値
      */
-    public String getValue() {
-        final String result = this.value;
+    public Long getValue() {
+        final Long result = this.value;
         return result;
     }
 }

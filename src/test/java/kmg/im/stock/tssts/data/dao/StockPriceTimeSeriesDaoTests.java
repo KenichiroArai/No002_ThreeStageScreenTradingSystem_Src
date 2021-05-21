@@ -44,7 +44,8 @@ public class StockPriceTimeSeriesDaoTests {
         final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDto();
         stockPriceTimeSeriesDto.setStockBrandId(897L);
         stockPriceTimeSeriesDto.setNo(1L);
-        stockPriceTimeSeriesDto.setDate(LocalDate.now());
+        stockPriceTimeSeriesDto.setPeriodStartDate(LocalDate.now());
+        stockPriceTimeSeriesDto.setPeriodEndDate(LocalDate.now());
         stockPriceTimeSeriesDto.setOp(BigDecimal.valueOf(100.0));
         stockPriceTimeSeriesDto.setHp(BigDecimal.valueOf(150.0));
         stockPriceTimeSeriesDto.setLp(BigDecimal.valueOf(50.0));
