@@ -1,4 +1,4 @@
-package kmg.core.domain;
+package kmg.core.domain.model;
 
 import kmg.im.stock.tssts.infrastructure.types.TimeUnitTypes;
 
@@ -45,7 +45,7 @@ public class PfaMeasModel {
         this.endTime = System.nanoTime();
 
         /* 経過時間と時間単位を求める */
-        double        timeTmp     = this.endTime - this.startTime;
+        double timeTmp = this.endTime - this.startTime;
         TimeUnitTypes timeUnitTmp = TimeUnitTypes.NANOSECONDS;
         if (timeTmp >= 1000.0) {
             timeTmp /= 1000.0;

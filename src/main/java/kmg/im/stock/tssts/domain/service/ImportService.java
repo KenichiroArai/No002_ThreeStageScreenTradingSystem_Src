@@ -2,6 +2,8 @@ package kmg.im.stock.tssts.domain.service;
 
 import java.nio.file.Path;
 
+import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
+
 /**
  * インポートサービスのインタフェース<br>
  *
@@ -17,8 +19,10 @@ public interface ImportService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    void registerAllStockPriceData();
+    void registerAllStockPriceData() throws TsstsDomainException;
 
     /**
      * ディレクトリにある株価データを登録する<br>
@@ -31,8 +35,10 @@ public interface ImportService {
      * @version 1.0.0
      * @param directoryPath
      *                      ディレクトリパス
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    void registerStockPriceDataOfDirectory(Path directoryPath);
+    void registerStockPriceDataOfDirectory(Path directoryPath) throws TsstsDomainException;
 
     /**
      * ファイルの株価データを登録する<br>
@@ -45,7 +51,9 @@ public interface ImportService {
      * @version 1.0.0
      * @param filePath
      *                 ファイルパス
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    void registerStockPriceDataOfFile(Path filePath);
+    void registerStockPriceDataOfFile(Path filePath) throws TsstsDomainException;
 
 }

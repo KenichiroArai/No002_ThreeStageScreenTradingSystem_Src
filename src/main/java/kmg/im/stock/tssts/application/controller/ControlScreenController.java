@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,13 +21,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import kmg.core.domain.PfaMeasModel;
+import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
 import kmg.im.stock.tssts.domain.service.ImportService;
 import kmg.im.stock.tssts.domain.service.SigService;
 import kmg.im.stock.tssts.domain.service.SimService;
+import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
+import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.resolver.MessageResolver;
 import kmg.im.stock.tssts.infrastructure.resolver.NameResolver;
+import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
 import kmg.im.stock.tssts.infrastructure.types.MessageTypes;
 import kmg.im.stock.tssts.infrastructure.types.NameTypes;
 
@@ -38,6 +43,9 @@ import kmg.im.stock.tssts.infrastructure.types.NameTypes;
  */
 @Component
 public class ControlScreenController {
+
+    /** ロガー */
+    private static Logger LOGGER = LoggerFactory.getLogger(ControlScreenController.class);
 
     /** 株価銘柄格納パス */
     @Value("${import.path.stockpricestockstoragepath}")
@@ -107,6 +115,10 @@ public class ControlScreenController {
     @Autowired
     private MessageResolver messageResolver;
 
+    /** ログメッセージリゾルバ */
+    @Autowired
+    private LogMessageResolver logMessageResolver;
+
     /** インポートサービス */
     @Autowired
     private ImportService importService;
@@ -169,8 +181,8 @@ public class ControlScreenController {
             defaultDirectory = defaultDirectory.getParent();
         }
         directoryChooser.setInitialDirectory(defaultDirectory.toFile());
-        final File directory    = directoryChooser.showDialog(null);
-        String     directoryStr = KmgString.EMPTY;
+        final File directory = directoryChooser.showDialog(null);
+        String directoryStr = KmgString.EMPTY;
         if (directory != null) {
             directoryStr = directory.getAbsolutePath();
         }
@@ -207,6 +219,11 @@ public class ControlScreenController {
 
             /* 株価データを登録する */
             this.importService.registerStockPriceDataOfDirectory(importPath);
+        } catch (final TsstsDomainException e) {
+            // 三段階スクリーン・トレーディング・システムドメイン例外
+
+            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            ControlScreenController.LOGGER.error(logMsg, e);
         } finally {
             pfaMeas.end();
             this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
@@ -235,8 +252,8 @@ public class ControlScreenController {
         }
         final File defaultFile = new File(defaultFilePath);
         fileChooser.setInitialDirectory(defaultFile);
-        final File file    = fileChooser.showOpenDialog(null);
-        String     fileStr = KmgString.EMPTY;
+        final File file = fileChooser.showOpenDialog(null);
+        String fileStr = KmgString.EMPTY;
         if (file != null) {
             fileStr = file.getAbsolutePath();
         }
@@ -281,6 +298,11 @@ public class ControlScreenController {
 
             /* 株価データを登録する */
             this.importService.registerStockPriceDataOfDirectory(importPath);
+        } catch (final TsstsDomainException e) {
+            // 三段階スクリーン・トレーディング・システムドメイン例外
+
+            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            ControlScreenController.LOGGER.error(logMsg, e);
         } finally {
             pfaMeas.end();
             this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
