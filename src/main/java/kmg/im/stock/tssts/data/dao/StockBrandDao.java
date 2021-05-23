@@ -2,7 +2,6 @@ package kmg.im.stock.tssts.data.dao;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -25,8 +24,20 @@ public class StockBrandDao {
     private static final String GET_ID_SQL = "SELECT id FROM stock_brand WHERE start_date <= :startDate AND end_date > :startDate AND code = :code";
 
     /** データベース接続 */
-    @Autowired
-    private NamedParameterJdbcTemplate jdbc;
+    private final NamedParameterJdbcTemplate jdbc;
+
+    /**
+     * コンストラクタ<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param jdbc
+     *             データベース接続
+     */
+    public StockBrandDao(final NamedParameterJdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 
     /**
      * 識別番号を取得する<br>

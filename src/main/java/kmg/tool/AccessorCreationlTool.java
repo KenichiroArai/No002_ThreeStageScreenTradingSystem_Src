@@ -70,7 +70,7 @@ public class AccessorCreationlTool {
             final BufferedWriter bw = Files.newBufferedWriter(AccessorCreationlTool.OUTPUT_PATH);) {
 
             String output = template;
-            String line   = null;
+            String line = null;
             while ((line = brInput.readLine()) != null) {
                 line = line.replace("final", KmgString.EMPTY);
                 line = line.replace("static", KmgString.EMPTY);
@@ -81,7 +81,7 @@ public class AccessorCreationlTool {
                     continue;
                 }
 
-                final Pattern patternSrc = Pattern.compile("private\\s+((\\w|\\[\\])+)\\s+(\\w+);");
+                final Pattern patternSrc = Pattern.compile("private\\s+((\\w|\\[\\]|<|>)+)\\s+(\\w+);");
                 final Matcher matcherSrc = patternSrc.matcher(line);
                 if (matcherSrc.find()) {
                     output = output.replace("$type", matcherSrc.group(1));

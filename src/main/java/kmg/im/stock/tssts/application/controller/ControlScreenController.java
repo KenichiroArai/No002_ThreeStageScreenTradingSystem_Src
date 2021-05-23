@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +22,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.domain.service.ImportService;
-import kmg.im.stock.tssts.domain.service.SigService;
-import kmg.im.stock.tssts.domain.service.SimService;
+import kmg.im.stock.tssts.domain.service.StockService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.resolver.MessageResolver;
@@ -108,28 +105,39 @@ public class ControlScreenController {
     private Label lblProcTimeUnit;
 
     /** 名称リゾルバ */
-    @Autowired
-    private NameResolver nameResolver;
+    private final NameResolver nameResolver;
 
     /** メッセージリゾルバ */
-    @Autowired
-    private MessageResolver messageResolver;
+    private final MessageResolver messageResolver;
 
     /** ログメッセージリゾルバ */
-    @Autowired
-    private LogMessageResolver logMessageResolver;
+    private final LogMessageResolver logMessageResolver;
 
-    /** インポートサービス */
-    @Autowired
-    private ImportService importService;
+    /** 株サービス */
+    private final StockService stockService;
 
-    /** シミュレーションサービス */
-    @Autowired
-    private SimService simService;
-
-    /** シグナルサービス */
-    @Autowired
-    private SigService sigService;
+    /**
+     * コンストラクタ<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param nameResolver
+     *                           名称リゾルバ
+     * @param messageResolver
+     *                           メッセージリゾルバ
+     * @param logMessageResolver
+     *                           ログメッセージリゾルバ
+     * @param stockService
+     *                           株サービス
+     */
+    public ControlScreenController(final NameResolver nameResolver, final MessageResolver messageResolver,
+        final LogMessageResolver logMessageResolver, final StockService stockService) {
+        this.nameResolver = nameResolver;
+        this.messageResolver = messageResolver;
+        this.logMessageResolver = logMessageResolver;
+        this.stockService = stockService;
+    }
 
     /**
      * 初期化<br>
@@ -218,7 +226,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.importService.registerStockPriceDataOfDirectory(importPath);
+            this.stockService.registerStockPriceDataOfDirectory(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
@@ -297,7 +305,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.importService.registerStockPriceDataOfDirectory(importPath);
+            this.stockService.registerStockPriceDataOfDirectory(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
@@ -334,13 +342,13 @@ public class ControlScreenController {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする
-                this.simService.simulate();
+                this.stockService.simulate();
             } else {
                 // すべて以外の場合
 
                 // 指定した株コードのシミュレーションする
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
-                this.simService.simulate(code);
+                this.stockService.simulate(code);
             }
         } finally {
             pfaMeas.end();
@@ -373,13 +381,13 @@ public class ControlScreenController {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする
-                this.sigService.chkSig();
+                this.stockService.chkSig();
             } else {
                 // すべて以外の場合
 
                 // 指定した株コードのシミュレーションする
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
-                this.sigService.chkSig(code);
+                this.stockService.chkSig(code);
             }
         } finally {
             pfaMeas.end();

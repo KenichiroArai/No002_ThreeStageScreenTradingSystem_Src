@@ -2,7 +2,6 @@ package kmg.im.stock.tssts.infrastructure.resolver;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
@@ -20,8 +19,20 @@ import kmg.im.stock.tssts.infrastructure.types.NameTypes;
 public class NameResolver {
 
     /** 名称ソース */
-    @Autowired
-    private MessageSource nameSource;
+    private final MessageSource nameSource;
+
+    /**
+     * コンストラクタ<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param nameSource
+     *                   名称ソース
+     */
+    public NameResolver(final MessageSource nameSource) {
+        this.nameSource = nameSource;
+    }
 
     /**
      * 名称を返す<br>

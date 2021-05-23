@@ -11,7 +11,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum TypeOfPeriodypes {
+public enum TypeOfPeriodTypes {
 
     /* 定義：開始 */
 
@@ -37,13 +37,13 @@ public enum TypeOfPeriodypes {
     private Long value;
 
     /** 種類のマップ */
-    private static final Map<Long, TypeOfPeriodypes> VALUES_MAP = new HashMap<>();
+    private static final Map<Long, TypeOfPeriodTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final TypeOfPeriodypes type : TypeOfPeriodypes.values()) {
-            TypeOfPeriodypes.VALUES_MAP.put(type.getValue(), type);
+        for (final TypeOfPeriodTypes type : TypeOfPeriodTypes.values()) {
+            TypeOfPeriodTypes.VALUES_MAP.put(type.getValue(), type);
         }
     }
 
@@ -58,7 +58,7 @@ public enum TypeOfPeriodypes {
      * @param value
      *              値
      */
-    TypeOfPeriodypes(final String name, final Long value) {
+    TypeOfPeriodTypes(final String name, final Long value) {
 
         this.name = name;
         this.value = value;
@@ -78,9 +78,9 @@ public enum TypeOfPeriodypes {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static TypeOfPeriodypes getEnum(final Long value) {
+    public static TypeOfPeriodTypes getEnum(final Long value) {
 
-        TypeOfPeriodypes result = TypeOfPeriodypes.VALUES_MAP.get(value);
+        TypeOfPeriodTypes result = TypeOfPeriodTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -96,9 +96,9 @@ public enum TypeOfPeriodypes {
      * @version 1.0.0
      * @return 初期値
      */
-    public static TypeOfPeriodypes getInitValue() {
+    public static TypeOfPeriodTypes getInitValue() {
 
-        final TypeOfPeriodypes result = NONE;
+        final TypeOfPeriodTypes result = NONE;
         return result;
 
     }
@@ -111,9 +111,9 @@ public enum TypeOfPeriodypes {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static TypeOfPeriodypes getDefault() {
+    public static TypeOfPeriodTypes getDefault() {
 
-        final TypeOfPeriodypes result = NONE;
+        final TypeOfPeriodTypes result = NONE;
         return result;
     }
 

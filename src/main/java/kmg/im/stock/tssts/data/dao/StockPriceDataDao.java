@@ -9,13 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import kmg.core.infrastructure.type.KmgString;
 import kmg.core.infrastructure.types.DelimiterTypes;
 import kmg.core.infrastructure.utils.LocalDateUtils;
 import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
+import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
+import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.types.CharsetTypes;
+import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
 
 /**
  * 株価データＤＡＯ<br>
@@ -30,27 +34,48 @@ public class StockPriceDataDao {
     /** データなしの行末尾文字列 */
     private static final String LINE_ENDING_STRING_WITH_NO_DATA = ",,,,,"; //$NON-NLS-1$
 
+    /** 株価銘柄格納パス */
+    @Value("${import.path.stockpricestockstoragepath}")
+    private Path stockPriceStockStoragePath;
+
+    /** ログメッセージリソルバ */
+    private final LogMessageResolver logMessageResolver;
+
+    /**
+     * コンストラクタ<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param logMessageResolver
+     *                           ログメッセージリソルバ
+     */
+    public StockPriceDataDao(final LogMessageResolver logMessageResolver) {
+        this.logMessageResolver = logMessageResolver;
+    }
+
     /**
      * 株価銘柄格納パスの検索する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceStockStoragePath
-     *                                   株価銘柄格納パス
      * @return パスのリスト
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    @SuppressWarnings("static-method")
-    public List<Path> findOfStockPriceStockStoragePath(final Path stockPriceStockStoragePath) {
+    public List<Path> findOfStockPriceStockStoragePath() throws TsstsDomainException {
 
         List<Path> result = null;
 
         try {
-            result = Files.list(stockPriceStockStoragePath).filter(Files::isReadable).collect(Collectors.toList());
+            result = Files.list(this.stockPriceStockStoragePath).filter(Files::isReadable).collect(Collectors.toList());
 
         } catch (final IOException e) {
-            // TODO 2021/05/01 例外処理
-            e.printStackTrace();
+
+            // TODO KenichiroArai 2021/05/23 例外処理
+            final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, LogMessageTypes.NONE, e);
         }
 
         return result;
@@ -68,10 +93,12 @@ public class StockPriceDataDao {
      * @version 1.0.0
      * @param stockPriceDataFilePath
      *                               株価データファイルパス
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      * @return 株価データのリスト
      */
-    @SuppressWarnings("static-method")
-    public List<StockPriceDataDto> findAllStockPriceDataDtoList(final Path stockPriceDataFilePath) {
+    public List<StockPriceDataDto> findAllStockPriceDataList(final Path stockPriceDataFilePath)
+        throws TsstsDomainException {
 
         final List<StockPriceDataDto> result = new ArrayList<>();
 
@@ -132,8 +159,10 @@ public class StockPriceDataDao {
             }
 
         } catch (final IOException e) {
-            // TODO KenichiroArai 2021/05/01 例外処理
-            e.printStackTrace();
+
+            // TODO KenichiroArai 2021/05/23 例外処理
+            final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, LogMessageTypes.NONE, e);
         }
 
         return result;

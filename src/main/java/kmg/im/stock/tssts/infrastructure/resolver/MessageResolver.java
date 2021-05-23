@@ -2,7 +2,6 @@ package kmg.im.stock.tssts.infrastructure.resolver;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
@@ -20,8 +19,20 @@ import kmg.im.stock.tssts.infrastructure.types.MessageTypes;
 public class MessageResolver {
 
     /** メッセージソース */
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
+
+    /**
+     * コンストラクタ<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param messageSource
+     *                      メッセージソース
+     */
+    public MessageResolver(final MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     /**
      * メッセージを返す<br>
