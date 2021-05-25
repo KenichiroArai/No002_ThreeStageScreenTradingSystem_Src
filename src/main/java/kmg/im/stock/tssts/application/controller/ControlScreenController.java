@@ -22,7 +22,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.domain.service.StockService;
+import kmg.im.stock.tssts.domain.service.ImportService;
+import kmg.im.stock.tssts.domain.service.SigChkService;
+import kmg.im.stock.tssts.domain.service.SimulationService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.resolver.MessageResolver;
@@ -113,8 +115,14 @@ public class ControlScreenController {
     /** ログメッセージリゾルバ */
     private final LogMessageResolver logMessageResolver;
 
-    /** 株サービス */
-    private final StockService stockService;
+    /** インポートサービス */
+    private final ImportService importService;
+
+    /** シミュレーションサービス */
+    private final SimulationService simulationService;
+
+    /** シグナル確認サービス */
+    private final SigChkService sigChkService;
 
     /**
      * コンストラクタ<br>
@@ -128,15 +136,22 @@ public class ControlScreenController {
      *                           メッセージリゾルバ
      * @param logMessageResolver
      *                           ログメッセージリゾルバ
-     * @param stockService
-     *                           株サービス
+     * @param importService
+     *                           インポートサービス
+     * @param simulationService
+     *                           シミュレーションサービス
+     * @param sigChkService
+     *                           シグナル確認サービス
      */
     public ControlScreenController(final NameResolver nameResolver, final MessageResolver messageResolver,
-        final LogMessageResolver logMessageResolver, final StockService stockService) {
+        final LogMessageResolver logMessageResolver, final ImportService importService,
+        final SimulationService simulationService, final SigChkService sigChkService) {
         this.nameResolver = nameResolver;
         this.messageResolver = messageResolver;
         this.logMessageResolver = logMessageResolver;
-        this.stockService = stockService;
+        this.importService = importService;
+        this.simulationService = simulationService;
+        this.sigChkService = sigChkService;
     }
 
     /**
@@ -226,7 +241,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.stockService.registerStockPriceDataOfDirectory(importPath);
+            this.importService.registerStockPriceDataOfDirectory(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
@@ -305,7 +320,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.stockService.registerStockPriceDataOfDirectory(importPath);
+            this.importService.registerStockPriceDataOfDirectory(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
@@ -342,13 +357,13 @@ public class ControlScreenController {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする
-                this.stockService.simulate();
+                this.simulationService.simulate();
             } else {
                 // すべて以外の場合
 
                 // 指定した株コードのシミュレーションする
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
-                this.stockService.simulate(code);
+                this.simulationService.simulate(code);
             }
         } finally {
             pfaMeas.end();
@@ -381,13 +396,13 @@ public class ControlScreenController {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする
-                this.stockService.chkSig();
+                this.sigChkService.chkSig();
             } else {
                 // すべて以外の場合
 
                 // 指定した株コードのシミュレーションする
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
-                this.stockService.chkSig(code);
+                this.sigChkService.chkSig(code);
             }
         } finally {
             pfaMeas.end();

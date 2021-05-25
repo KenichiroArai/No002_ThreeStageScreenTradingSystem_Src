@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import kmg.im.stock.tssts.domain.service.StockService;
+import kmg.im.stock.tssts.domain.service.ImportService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
@@ -25,8 +25,8 @@ public class TsstsController {
     /** ログメッセージリゾルバ */
     private final LogMessageResolver logMessageResolver;
 
-    /** 株サービス */
-    private final StockService stockService;
+    /** インポートサービス */
+    private final ImportService importService;
 
     /**
      * コンストラクタ<br>
@@ -36,12 +36,12 @@ public class TsstsController {
      * @version 1.0.0
      * @param logMessageResolver
      *                           ログメッセージリゾルバ
-     * @param stockService
-     *                           株サービス
+     * @param importService
+     *                           インポートサービス
      */
-    public TsstsController(final LogMessageResolver logMessageResolver, final StockService stockService) {
+    public TsstsController(final LogMessageResolver logMessageResolver, final ImportService importService) {
         this.logMessageResolver = logMessageResolver;
-        this.stockService = stockService;
+        this.importService = importService;
     }
 
     /**
@@ -56,7 +56,7 @@ public class TsstsController {
     public void registerAllStockPriceData() throws TsstsDomainException {
 
         try {
-            this.stockService.registerAllStockPriceData();
+            this.importService.registerAllStockPriceData();
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 

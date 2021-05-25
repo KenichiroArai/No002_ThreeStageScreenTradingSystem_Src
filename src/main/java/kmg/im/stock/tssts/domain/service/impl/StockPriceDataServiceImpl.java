@@ -1,30 +1,27 @@
-package kmg.im.stock.tssts.domain.model.impl;
+package kmg.im.stock.tssts.domain.service.impl;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.data.dao.StockPriceDataDao;
 import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
-import kmg.im.stock.tssts.domain.model.StockPriceMgtModel;
+import kmg.im.stock.tssts.domain.service.StockPriceDataService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.spring.infrastructure.constants.BeanDefaultScopeConstants;
 
 /**
- * 株価データ管理モデル<br>
+ * 株価データサービス<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-@Component
-@Scope(BeanDefaultScopeConstants.PROTOTYPE)
-public class StockPriceMgtModelImpl implements StockPriceMgtModel {
+@Service
+public class StockPriceDataServiceImpl implements StockPriceDataService {
 
     /** 株価データＤＡＯ */
     private final StockPriceDataDao stockPriceDataDao;
@@ -38,7 +35,7 @@ public class StockPriceMgtModelImpl implements StockPriceMgtModel {
      * @param stockPriceDataDao
      *                          株価データＤＡＯ
      */
-    public StockPriceMgtModelImpl(final StockPriceDataDao stockPriceDataDao) {
+    public StockPriceDataServiceImpl(final StockPriceDataDao stockPriceDataDao) {
         this.stockPriceDataDao = stockPriceDataDao;
     }
 

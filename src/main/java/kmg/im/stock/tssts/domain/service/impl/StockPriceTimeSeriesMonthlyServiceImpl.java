@@ -1,36 +1,27 @@
-package kmg.im.stock.tssts.domain.model.impl;
+package kmg.im.stock.tssts.domain.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMonthlyMgtModel;
+import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesMonthlyService;
 import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
-import kmg.spring.infrastructure.constants.BeanDefaultScopeConstants;
 
 /**
- * 株価時系列月足管理モデルインタフェース<br>
+ * 株価時系列月足サービス<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-@Component
-@Scope(BeanDefaultScopeConstants.PROTOTYPE)
-public class StockPriceTimeSeriesMonthlyMgtModelImpl implements StockPriceTimeSeriesMonthlyMgtModel {
-
-    /** 株価銘柄ID */
-    private long stockBrandId;
-
-    /** 株価データのリスト */
-    private List<StockPriceDataModel> stockPriceDataModelList;
+@Service
+public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSeriesMonthlyService {
 
     /** 株価時系列ＤＡＯ */
     private final StockPriceTimeSeriesDao stockPriceTimeSeriesDao;
@@ -44,12 +35,12 @@ public class StockPriceTimeSeriesMonthlyMgtModelImpl implements StockPriceTimeSe
      * @param stockPriceTimeSeriesDao
      *                                株価時系列ＤＡＯ
      */
-    public StockPriceTimeSeriesMonthlyMgtModelImpl(final StockPriceTimeSeriesDao stockPriceTimeSeriesDao) {
+    public StockPriceTimeSeriesMonthlyServiceImpl(final StockPriceTimeSeriesDao stockPriceTimeSeriesDao) {
         this.stockPriceTimeSeriesDao = stockPriceTimeSeriesDao;
     }
 
     /**
-     * 初期化する<br>
+     * 登録する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -59,70 +50,28 @@ public class StockPriceTimeSeriesMonthlyMgtModelImpl implements StockPriceTimeSe
      * @param stockPriceDataModelList
      *                                株価データのリスト
      */
-    @SuppressWarnings("hiding")
     @Override
-    public void initialize(final long stockBrandId, final List<StockPriceDataModel> stockPriceDataModelList) {
-        this.stockBrandId = stockBrandId;
-        this.stockPriceDataModelList = stockPriceDataModelList;
-    }
+    public void register(final long stockBrandId, final List<StockPriceDataModel> stockPriceDataModelList) {
 
-    /**
-     * 株価銘柄IDを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株価銘柄ID
-     */
-    @Override
-    public long getStockBrandId() {
-        final long result = this.stockBrandId;
-        return result;
-    }
-
-    /**
-     * 株価データのリストを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株価データのリスト
-     */
-    @Override
-    public List<StockPriceDataModel> getStockPriceDataModelList() {
-        final List<StockPriceDataModel> result = this.stockPriceDataModelList;
-        return result;
-    }
-
-    /**
-     * 登録する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     */
-    @Override
-    public void register() {
-
-        if (!ListUtils.isNotEmpty(this.stockPriceDataModelList)) {
+        if (!ListUtils.isNotEmpty(stockPriceDataModelList)) {
             return;
         }
 
         // TODO KenichiroArai 2021/05/16 SQLとの作成とどちらが早いか試す
         final List<StockPriceTimeSeriesDto> stockPriceOfMonthlyDtoList = new ArrayList<>(); // 株価月足のリスト
         StockPriceTimeSeriesDto addStockPriceTimeSeriesDto = new StockPriceTimeSeriesDto(); // 追加する株価月足ＤＴＯ
-        addStockPriceTimeSeriesDto.setStockBrandId(this.stockBrandId);
+        addStockPriceTimeSeriesDto.setStockBrandId(stockBrandId);
         addStockPriceTimeSeriesDto.setNo(0L);
         // 期間の種類IDを設定する
         addStockPriceTimeSeriesDto.setTypeOfPeriodId(TypeOfPeriodTypes.MONTHLY.getValue());
-        addStockPriceTimeSeriesDto.setPeriodStartDate(this.stockPriceDataModelList.get(0).getDate());
-        addStockPriceTimeSeriesDto.setOp(this.stockPriceDataModelList.get(0).getOp()); // 始値は最初のデータを設定する
-        BigDecimal lp = this.stockPriceDataModelList.get(0).getLp();
-        BigDecimal hp = this.stockPriceDataModelList.get(0).getHp();
-        long volume = this.stockPriceDataModelList.get(0).getVolume();
-        for (int i = 1; i < this.stockPriceDataModelList.size(); i++) {
+        addStockPriceTimeSeriesDto.setPeriodStartDate(stockPriceDataModelList.get(0).getDate());
+        addStockPriceTimeSeriesDto.setOp(stockPriceDataModelList.get(0).getOp()); // 始値は最初のデータを設定する
+        BigDecimal lp = stockPriceDataModelList.get(0).getLp();
+        BigDecimal hp = stockPriceDataModelList.get(0).getHp();
+        long volume = stockPriceDataModelList.get(0).getVolume();
+        for (int i = 1; i < stockPriceDataModelList.size(); i++) {
 
-            final StockPriceDataModel stockPriceDataModel = this.stockPriceDataModelList.get(i);
+            final StockPriceDataModel stockPriceDataModel = stockPriceDataModelList.get(i);
 
             // 月が異なるか
             if (stockPriceDataModel.getDate().getMonthValue() != addStockPriceTimeSeriesDto.getPeriodStartDate()
@@ -130,7 +79,7 @@ public class StockPriceTimeSeriesMonthlyMgtModelImpl implements StockPriceTimeSe
                 // 月が開始の月と異なる場合
 
                 // ひとつ前の情報を終値に設定する
-                final StockPriceDataModel preStockPriceDataModel = this.stockPriceDataModelList.get(i - 1);
+                final StockPriceDataModel preStockPriceDataModel = stockPriceDataModelList.get(i - 1);
                 addStockPriceTimeSeriesDto.setPeriodEndDate(preStockPriceDataModel.getDate());
                 addStockPriceTimeSeriesDto.setCp(preStockPriceDataModel.getCp());
                 addStockPriceTimeSeriesDto.setLp(lp);
@@ -143,7 +92,7 @@ public class StockPriceTimeSeriesMonthlyMgtModelImpl implements StockPriceTimeSe
 
                 // 現在の情報を追加する株価月足ＤＴＯに設定する
                 addStockPriceTimeSeriesDto = new StockPriceTimeSeriesDto();
-                addStockPriceTimeSeriesDto.setStockBrandId(this.stockBrandId);
+                addStockPriceTimeSeriesDto.setStockBrandId(stockBrandId);
                 addStockPriceTimeSeriesDto.setNo(Integer.valueOf(i).longValue());
                 addStockPriceTimeSeriesDto.setPeriodStartDate(stockPriceDataModel.getDate());
                 addStockPriceTimeSeriesDto.setOp(stockPriceDataModel.getOp());
@@ -161,8 +110,8 @@ public class StockPriceTimeSeriesMonthlyMgtModelImpl implements StockPriceTimeSe
         }
 
         // ひとつ前の情報を終値に設定する
-        final StockPriceDataModel endStockPriceDataModel = this.stockPriceDataModelList
-            .get(this.stockPriceDataModelList.size() - 1);
+        final StockPriceDataModel endStockPriceDataModel = stockPriceDataModelList
+            .get(stockPriceDataModelList.size() - 1);
         addStockPriceTimeSeriesDto.setPeriodEndDate(endStockPriceDataModel.getDate());
         addStockPriceTimeSeriesDto.setCp(endStockPriceDataModel.getCp());
         addStockPriceTimeSeriesDto.setLp(lp);
@@ -186,5 +135,4 @@ public class StockPriceTimeSeriesMonthlyMgtModelImpl implements StockPriceTimeSe
         }
 
     }
-
 }

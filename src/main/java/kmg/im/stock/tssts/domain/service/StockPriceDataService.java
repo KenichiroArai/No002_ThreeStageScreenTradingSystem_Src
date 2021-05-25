@@ -1,18 +1,19 @@
-package kmg.im.stock.tssts.domain.model;
+package kmg.im.stock.tssts.domain.service;
 
 import java.nio.file.Path;
 import java.util.List;
 
+import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
- * 株価管理モデルインタフェース<br>
+ * 株価データサービスインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface StockPriceMgtModel {
+public interface StockPriceDataService {
 
     /**
      * 株価銘柄格納パスリストを返す<br>

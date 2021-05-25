@@ -5,13 +5,13 @@ import java.nio.file.Path;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
- * 株サービスインタフェース<br>
+ * インポートサービスインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface StockService {
+public interface ImportService {
 
     /**
      * 全株価データを登録する<br>
@@ -55,47 +55,4 @@ public interface StockService {
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     void registerStockPriceDataOfFile(Path filePath) throws TsstsDomainException;
-
-    /**
-     * 全ての銘柄をシミュレーションする<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     */
-    void simulate();
-
-    /**
-     * シミュレーションする<br>
-     * <p>
-     * 指定した株コードのシミュレーションする
-     * </p>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param stockCode
-     *                  株コード
-     */
-    void simulate(final long stockCode);
-
-    /**
-     * 全ての銘柄のシグナルを確認する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     */
-    void chkSig();
-
-    /**
-     * 指定した株コードのシグナルを確認する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param stockCode
-     *                  株コード
-     */
-    void chkSig(final long stockCode);
 }

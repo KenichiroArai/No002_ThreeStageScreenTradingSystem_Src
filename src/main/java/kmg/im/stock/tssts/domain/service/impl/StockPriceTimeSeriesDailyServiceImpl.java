@@ -1,35 +1,26 @@
-package kmg.im.stock.tssts.domain.model.impl;
+package kmg.im.stock.tssts.domain.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesDailyMgtModel;
+import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
 import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
-import kmg.spring.infrastructure.constants.BeanDefaultScopeConstants;
 
 /**
- * 株価時系列日足管理モデル<br>
+ * 株価時系列日足サービス<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-@Component
-@Scope(BeanDefaultScopeConstants.PROTOTYPE)
-public class StockPriceTimeSeriesDailyMgtModelImpl implements StockPriceTimeSeriesDailyMgtModel {
-
-    /** 株価銘柄ID */
-    private long stockBrandId;
-
-    /** 株価データのリスト */
-    private List<StockPriceDataModel> stockPriceDataModelList;
+@Service
+public class StockPriceTimeSeriesDailyServiceImpl implements StockPriceTimeSeriesDailyService {
 
     /** 株価時系列ＤＡＯ */
     private final StockPriceTimeSeriesDao stockPriceTimeSeriesDao;
@@ -43,12 +34,12 @@ public class StockPriceTimeSeriesDailyMgtModelImpl implements StockPriceTimeSeri
      * @param stockPriceTimeSeriesDao
      *                                株価時系列ＤＡＯ
      */
-    public StockPriceTimeSeriesDailyMgtModelImpl(final StockPriceTimeSeriesDao stockPriceTimeSeriesDao) {
+    public StockPriceTimeSeriesDailyServiceImpl(final StockPriceTimeSeriesDao stockPriceTimeSeriesDao) {
         this.stockPriceTimeSeriesDao = stockPriceTimeSeriesDao;
     }
 
     /**
-     * 初期化する<br>
+     * 登録する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -58,60 +49,18 @@ public class StockPriceTimeSeriesDailyMgtModelImpl implements StockPriceTimeSeri
      * @param stockPriceDataModelList
      *                                株価データのリスト
      */
-    @SuppressWarnings("hiding")
     @Override
-    public void initialize(final long stockBrandId, final List<StockPriceDataModel> stockPriceDataModelList) {
-        this.stockBrandId = stockBrandId;
-        this.stockPriceDataModelList = stockPriceDataModelList;
-    }
-
-    /**
-     * 株価銘柄IDを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株価銘柄ID
-     */
-    @Override
-    public long getStockBrandId() {
-        final long result = this.stockBrandId;
-        return result;
-    }
-
-    /**
-     * 株価データのリストを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株価データのリスト
-     */
-    @Override
-    public List<StockPriceDataModel> getStockPriceDataModelList() {
-        final List<StockPriceDataModel> result = this.stockPriceDataModelList;
-        return result;
-    }
-
-    /**
-     * 日足の株価時系列を登録する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     */
-    @Override
-    public void register() {
+    public void register(final long stockBrandId, final List<StockPriceDataModel> stockPriceDataModelList) {
 
         final List<StockPriceTimeSeriesDto> stockPriceTimeSeriesOfDialyList = new ArrayList<>();
-        for (final StockPriceDataModel stockPriceDataModel : this.stockPriceDataModelList) {
+        for (final StockPriceDataModel stockPriceDataModel : stockPriceDataModelList) {
 
             // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
             final StockPriceTimeSeriesDto stockPriceTimeSeriesOfDialy = new StockPriceTimeSeriesDto();
             BeanUtils.copyProperties(stockPriceDataModel, stockPriceTimeSeriesOfDialy);
 
             // 株価銘柄IDを設定する
-            stockPriceTimeSeriesOfDialy.setStockBrandId(this.stockBrandId);
+            stockPriceTimeSeriesOfDialy.setStockBrandId(stockBrandId);
             // 期間の種類IDを設定する
             stockPriceTimeSeriesOfDialy.setTypeOfPeriodId(TypeOfPeriodTypes.DAILY.getValue());
             // 期間開始日を設定する
@@ -126,5 +75,4 @@ public class StockPriceTimeSeriesDailyMgtModelImpl implements StockPriceTimeSeri
             this.stockPriceTimeSeriesDao.insert(stockPriceTimeSeriesDto);
         }
     }
-
 }

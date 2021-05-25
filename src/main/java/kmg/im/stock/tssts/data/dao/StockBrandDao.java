@@ -41,25 +41,23 @@ public class StockBrandDao {
 
     /**
      * 識別番号を取得する<br>
-     * <p>
-     * </p>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param code
-     *                 コード
+     * @param stockBrandCode
+     *                       株価銘柄コード
      * @param baseDate
-     *                 基準日
+     *                       基準日
      * @return 識別番号
      */
-    public long getId(final long code, final LocalDate baseDate) {
+    public long getId(final long stockBrandCode, final LocalDate baseDate) {
 
         long result = 0L;
 
         /* パラメータを設定する */
         final StockBrandDto stockBrandDto = new StockBrandDto();
-        stockBrandDto.setCode(code);
+        stockBrandDto.setCode(stockBrandCode);
         stockBrandDto.setStartDate(baseDate);
 
         /* DBを実行する */
