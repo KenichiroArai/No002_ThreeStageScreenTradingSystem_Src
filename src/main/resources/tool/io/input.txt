@@ -1,2 +1,0 @@
-    /** 株価データのリスト */
-    private List<StockPriceDataModel> stockPriceDataModelList;

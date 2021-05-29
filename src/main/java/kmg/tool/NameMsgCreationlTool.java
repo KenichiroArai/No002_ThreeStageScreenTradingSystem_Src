@@ -30,7 +30,7 @@ public class NameMsgCreationlTool {
 
     /** テンプレートファイルパス */
     private static final Path TEMPLATE_PATH = Paths.get(NameMsgCreationlTool.BASE_PATH.toString(),
-        "template/nameMsgCreationlTool.txt");
+        "template/nameMsgCreationlTool.txt"); // TODO KenichiroArai 2021/05/28 自動設定
 
     /** 入力ファイルパス */
     private static final Path INPUT_PATH = Paths.get(NameMsgCreationlTool.BASE_PATH.toString(), "input.txt");
@@ -87,10 +87,10 @@ public class NameMsgCreationlTool {
             while ((line = brInput.readLine()) != null) {
 
                 /* データ取得 */
-                final String[]  inputDatas = DelimiterTypes.SERIES_HALF_SPACE.split(line);
-                int             dataIdx    = 0;
-                final KmgString idData     = new KmgString(inputDatas[dataIdx++]);        // ID
-                final KmgString nameData   = new KmgString(inputDatas[dataIdx++]);        // 名称
+                final String[] inputDatas = DelimiterTypes.SERIES_HALF_SPACE.split(line);
+                int dataIdx = 0;
+                final KmgString idData = new KmgString(inputDatas[dataIdx++]); // ID
+                final KmgString nameData = new KmgString(inputDatas[dataIdx++]); // 名称
 
                 /* 変換処理 */
                 String output = template;

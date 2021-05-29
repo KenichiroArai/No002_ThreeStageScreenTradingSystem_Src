@@ -1,20 +1,21 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import kmg.im.stock.tssts.data.dao.StockPriceDataDao;
-import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
+import kmg.im.stock.tssts.domain.logic.StockPriceDataLogic;
+import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
+import kmg.im.stock.tssts.domain.model.impl.StockPriceDataMgtModelImpl;
 import kmg.im.stock.tssts.domain.service.StockPriceDataService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
- * 株価データサービス<br>
+ * 株価データ登録サービス<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
@@ -23,8 +24,8 @@ import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 @Service
 public class StockPriceDataServiceImpl implements StockPriceDataService {
 
-    /** 株価データＤＡＯ */
-    private final StockPriceDataDao stockPriceDataDao;
+    /** 株価データロジック */
+    private final StockPriceDataLogic stockPriceDataLogic;
 
     /**
      * コンストラクタ<br>
@@ -32,36 +33,42 @@ public class StockPriceDataServiceImpl implements StockPriceDataService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceDataDao
-     *                          株価データＤＡＯ
+     * @param stockPriceDataLogic
+     *                            株価データロジック
      */
-    public StockPriceDataServiceImpl(final StockPriceDataDao stockPriceDataDao) {
-        this.stockPriceDataDao = stockPriceDataDao;
+    public StockPriceDataServiceImpl(final StockPriceDataLogic stockPriceDataLogic) {
+        this.stockPriceDataLogic = stockPriceDataLogic;
     }
 
     /**
-     * 株価銘柄格納パスリストを返す<br>
+     * 株価データ管理マップを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価銘柄格納パスリスト
+     * @return 株価データ管理マップ<株価銘柄コード, 株価データ管理>
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public List<Path> getStockPriceStockStoragePathList() throws TsstsDomainException {
+    public Map<Long, StockPriceDataMgtModel> getStockPriceDataMgtMap() throws TsstsDomainException {
 
-        /* 銘柄ごとの株価データのファイルパスを取得する */
-        final List<Path> result = this.stockPriceDataDao.findOfStockPriceStockStoragePath();
+        final Map<Long, StockPriceDataMgtModel> result = new HashMap<>();
+
+        final List<Path> stockPriceStockStoragePathList = this.stockPriceDataLogic.getStockPriceStockStoragePathList();
+        for (final Path path : stockPriceStockStoragePathList) {
+            final StockPriceDataMgtModel model = this.getStockPriceDataMgtModel(path);
+            result.put(model.getStockBrandCode(), model);
+        }
 
         return result;
+
     }
 
     /**
-     * 株価データリストを返す<br>
+     * 株価データ管理モデルを返す<br>
      * <p>
-     * ファイルパスに該当する株価データリストを返す。
+     * ファイルパスに該当する株価データ管理モデルを返す。
      * </p>
      *
      * @author KenichiroArai
@@ -69,24 +76,21 @@ public class StockPriceDataServiceImpl implements StockPriceDataService {
      * @version 1.0.0
      * @param filePath
      *                 ファイルパス
-     * @return 株価データリスト
+     * @return 株価データ管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public List<StockPriceDataModel> getStockPriceDataList(final Path filePath) throws TsstsDomainException {
+    public StockPriceDataMgtModel getStockPriceDataMgtModel(final Path filePath) throws TsstsDomainException {
 
-        final List<StockPriceDataModel> result = new ArrayList<>();
+        final StockPriceDataMgtModel result = new StockPriceDataMgtModelImpl();
 
-        /* 株価データのリストを検索する */
-        final List<StockPriceDataDto> stockPriceDataDtoList = this.stockPriceDataDao
-            .findAllStockPriceDataList(filePath);
+        final long stockBrandCode = this.stockPriceDataLogic.getStockBrandCode(filePath);
+        result.setStockBrandCode(stockBrandCode);
 
-        for (final StockPriceDataDto dto : stockPriceDataDtoList) {
-            final StockPriceDataModel model = new StockPriceDataModel();
-            BeanUtils.copyProperties(dto, model);
-            result.add(model);
-        }
+        final List<StockPriceDataModel> stockPriceDataModelList = this.stockPriceDataLogic
+            .getStockPriceDataList(filePath);
+        result.addAllData(stockPriceDataModelList);
 
         return result;
     }

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +15,9 @@ import kmg.core.infrastructure.type.KmgString;
 import kmg.core.infrastructure.types.DelimiterTypes;
 import kmg.core.infrastructure.utils.LocalDateUtils;
 import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
+import kmg.im.stock.tssts.data.dto.StockPriceDataMgtDto;
+import kmg.im.stock.tssts.data.dto.impl.StockPriceDataDtoImpl;
+import kmg.im.stock.tssts.data.dto.impl.StockPriceDataMgtDtoImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.types.CharsetTypes;
@@ -95,12 +97,11 @@ public class StockPriceDataDao {
      *                               株価データファイルパス
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
-     * @return 株価データのリスト
+     * @return 株価データ管理ＤＴＯ
      */
-    public List<StockPriceDataDto> findAllStockPriceDataList(final Path stockPriceDataFilePath)
-        throws TsstsDomainException {
+    public StockPriceDataMgtDto findAll(final Path stockPriceDataFilePath) throws TsstsDomainException {
 
-        final List<StockPriceDataDto> result = new ArrayList<>();
+        final StockPriceDataMgtDto result = new StockPriceDataMgtDtoImpl();
 
         /* ファイルを読み込む */
 
@@ -138,7 +139,7 @@ public class StockPriceDataDao {
 
                 // 株価時系列に変換する
                 final String[] datas = DelimiterTypes.COMMA.split(line);
-                final StockPriceDataDto sptsDto = new StockPriceDataDto();
+                final StockPriceDataDto sptsDto = new StockPriceDataDtoImpl();
                 sptsDto.setNo(no); // 番号
                 try {
                     sptsDto.setDate(LocalDateUtils.parseYyyyMmDd(datas[0])); // 日付
@@ -154,7 +155,7 @@ public class StockPriceDataDao {
                 }
 
                 // リストに追加する
-                result.add(sptsDto);
+                result.addData(sptsDto);
 
             }
 

@@ -22,7 +22,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.domain.service.ImportService;
+import kmg.im.stock.tssts.domain.service.RegisterService;
 import kmg.im.stock.tssts.domain.service.SigChkService;
 import kmg.im.stock.tssts.domain.service.SimulationService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -115,8 +115,8 @@ public class ControlScreenController {
     /** ログメッセージリゾルバ */
     private final LogMessageResolver logMessageResolver;
 
-    /** インポートサービス */
-    private final ImportService importService;
+    /** 登録サービス */
+    private final RegisterService registerService;
 
     /** シミュレーションサービス */
     private final SimulationService simulationService;
@@ -136,20 +136,20 @@ public class ControlScreenController {
      *                           メッセージリゾルバ
      * @param logMessageResolver
      *                           ログメッセージリゾルバ
-     * @param importService
-     *                           インポートサービス
+     * @param registerService
+     *                           登録サービス
      * @param simulationService
      *                           シミュレーションサービス
      * @param sigChkService
      *                           シグナル確認サービス
      */
     public ControlScreenController(final NameResolver nameResolver, final MessageResolver messageResolver,
-        final LogMessageResolver logMessageResolver, final ImportService importService,
+        final LogMessageResolver logMessageResolver, final RegisterService registerService,
         final SimulationService simulationService, final SigChkService sigChkService) {
         this.nameResolver = nameResolver;
         this.messageResolver = messageResolver;
         this.logMessageResolver = logMessageResolver;
-        this.importService = importService;
+        this.registerService = registerService;
         this.simulationService = simulationService;
         this.sigChkService = sigChkService;
     }
@@ -241,7 +241,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.importService.registerStockPriceDataOfDirectory(importPath);
+            this.registerService.registerStockPriceDataOfDirectory(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
@@ -320,7 +320,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.importService.registerStockPriceDataOfDirectory(importPath);
+            this.registerService.registerStockPriceDataOfFile(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 

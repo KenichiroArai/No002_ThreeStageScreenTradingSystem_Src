@@ -1,16 +1,39 @@
-package kmg.im.stock.tssts.domain.model;
+package kmg.im.stock.tssts.data.dto.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
+
 /**
- * 株価データモデルインタフェース<br>
+ * 株価データＤＴＯ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface StockPriceDataModel {
+public class StockPriceDataDtoImpl implements StockPriceDataDto {
+
+    /** 番号 */
+    private Long no;
+
+    /** 日付 */
+    private LocalDate date;
+
+    /** 始値 */
+    private BigDecimal op;
+
+    /** 高値 */
+    private BigDecimal hp;
+
+    /** 安値 */
+    private BigDecimal lp;
+
+    /** 終値 */
+    private BigDecimal cp;
+
+    /** 出来高 */
+    private Long volume;
 
     /**
      * 番号を設定する<br>
@@ -21,7 +44,10 @@ public interface StockPriceDataModel {
      * @param no
      *           番号
      */
-    void setNo(final Long no);
+    @Override
+    public void setNo(final Long no) {
+        this.no = no;
+    }
 
     /**
      * 番号を返す<br>
@@ -31,7 +57,11 @@ public interface StockPriceDataModel {
      * @version 1.0.0
      * @return 番号
      */
-    Long getNo();
+    @Override
+    public Long getNo() {
+        final Long result = this.no;
+        return result;
+    }
 
     /**
      * 日付を設定する<br>
@@ -42,7 +72,10 @@ public interface StockPriceDataModel {
      * @param date
      *             日付
      */
-    void setDate(final LocalDate date);
+    @Override
+    public void setDate(final LocalDate date) {
+        this.date = date;
+    }
 
     /**
      * 日付を返す<br>
@@ -52,7 +85,11 @@ public interface StockPriceDataModel {
      * @version 1.0.0
      * @return 日付
      */
-    LocalDate getDate();
+    @Override
+    public LocalDate getDate() {
+        final LocalDate result = this.date;
+        return result;
+    }
 
     /**
      * 始値を設定する<br>
@@ -63,7 +100,10 @@ public interface StockPriceDataModel {
      * @param op
      *           始値
      */
-    void setOp(final BigDecimal op);
+    @Override
+    public void setOp(final BigDecimal op) {
+        this.op = op;
+    }
 
     /**
      * 始値を返す<br>
@@ -73,7 +113,11 @@ public interface StockPriceDataModel {
      * @version 1.0.0
      * @return 始値
      */
-    BigDecimal getOp();
+    @Override
+    public BigDecimal getOp() {
+        final BigDecimal result = this.op;
+        return result;
+    }
 
     /**
      * 高値を設定する<br>
@@ -84,7 +128,10 @@ public interface StockPriceDataModel {
      * @param hp
      *           高値
      */
-    void setHp(final BigDecimal hp);
+    @Override
+    public void setHp(final BigDecimal hp) {
+        this.hp = hp;
+    }
 
     /**
      * 高値を返す<br>
@@ -94,7 +141,11 @@ public interface StockPriceDataModel {
      * @version 1.0.0
      * @return 高値
      */
-    BigDecimal getHp();
+    @Override
+    public BigDecimal getHp() {
+        final BigDecimal result = this.hp;
+        return result;
+    }
 
     /**
      * 安値を設定する<br>
@@ -105,7 +156,10 @@ public interface StockPriceDataModel {
      * @param lp
      *           安値
      */
-    void setLp(final BigDecimal lp);
+    @Override
+    public void setLp(final BigDecimal lp) {
+        this.lp = lp;
+    }
 
     /**
      * 安値を返す<br>
@@ -115,7 +169,11 @@ public interface StockPriceDataModel {
      * @version 1.0.0
      * @return 安値
      */
-    BigDecimal getLp();
+    @Override
+    public BigDecimal getLp() {
+        final BigDecimal result = this.lp;
+        return result;
+    }
 
     /**
      * 終値を設定する<br>
@@ -126,7 +184,10 @@ public interface StockPriceDataModel {
      * @param cp
      *           終値
      */
-    void setCp(final BigDecimal cp);
+    @Override
+    public void setCp(final BigDecimal cp) {
+        this.cp = cp;
+    }
 
     /**
      * 終値を返す<br>
@@ -136,7 +197,11 @@ public interface StockPriceDataModel {
      * @version 1.0.0
      * @return 終値
      */
-    BigDecimal getCp();
+    @Override
+    public BigDecimal getCp() {
+        final BigDecimal result = this.cp;
+        return result;
+    }
 
     /**
      * 出来高を設定する<br>
@@ -147,7 +212,10 @@ public interface StockPriceDataModel {
      * @param volume
      *               出来高
      */
-    void setVolume(final Long volume);
+    @Override
+    public void setVolume(final Long volume) {
+        this.volume = volume;
+    }
 
     /**
      * 出来高を返す<br>
@@ -157,6 +225,10 @@ public interface StockPriceDataModel {
      * @version 1.0.0
      * @return 出来高
      */
-    Long getVolume();
+    @Override
+    public Long getVolume() {
+        final Long result = this.volume;
+        return result;
+    }
 
 }

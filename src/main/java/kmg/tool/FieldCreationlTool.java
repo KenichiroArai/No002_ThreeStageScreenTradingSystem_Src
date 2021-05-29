@@ -31,7 +31,7 @@ public class FieldCreationlTool {
 
     /** テンプレートファイルパス */
     private static final Path TEMPLATE_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(),
-        "template/fieldCreationlTool.txt");
+        "template/fieldCreationlTool.txt"); // TODO KenichiroArai 2021/05/28 自動設定
 
     /** 入力ファイルパス */
     private static final Path INPUT_PATH = Paths.get(FieldCreationlTool.BASE_PATH.toString(), "input.txt");
@@ -85,17 +85,17 @@ public class FieldCreationlTool {
             while ((line = brInput.readLine()) != null) {
 
                 /* データ取得 */
-                final String[] inputDatas  = DelimiterTypes.SERIES_HALF_SPACE.split(line);
-                int            dataIdx     = 0;
-                final String   commentData = inputDatas[dataIdx++];                       // コメント
-                final String   fieldData   = inputDatas[dataIdx++];                       // フィールド名
-                final String   typeData    = inputDatas[dataIdx++];                       // 型
+                final String[] inputDatas = DelimiterTypes.SERIES_HALF_SPACE.split(line);
+                int dataIdx = 0;
+                final String commentData = inputDatas[dataIdx++]; // コメント
+                final String fieldData = inputDatas[dataIdx++]; // フィールド名
+                final String typeData = inputDatas[dataIdx++]; // 型
 
                 /* 変換処理 */
 
-                final String                 changeFieldData = new KmgString(fieldData).toCamelCase();
-                String                       changeTypeData  = null;
-                final FieldCreationTypeTypes type            = FieldCreationTypeTypes.getEnum(typeData);
+                final String changeFieldData = new KmgString(fieldData).toCamelCase();
+                String changeTypeData = null;
+                final FieldCreationTypeTypes type = FieldCreationTypeTypes.getEnum(typeData);
                 if (type == null) {
                     changeTypeData = typeData;
                 } else {

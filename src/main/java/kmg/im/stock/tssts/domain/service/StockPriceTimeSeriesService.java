@@ -1,8 +1,6 @@
 package kmg.im.stock.tssts.domain.service;
 
-import java.util.List;
-
-import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
+import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 
 /**
  * 株価時系列サービスインタフェース<br>
@@ -19,10 +17,8 @@ public interface StockPriceTimeSeriesService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockBrandId
-     *                                株価銘柄ID
-     * @param stockPriceDataModelList
-     *                                株価データのリスト
+     * @param stockPriceDataMgtModel
+     *                               株価データ管理モデル
      */
-    void register(final long stockBrandId, final List<StockPriceDataModel> stockPriceDataModelList);
+    void register(final StockPriceDataMgtModel stockPriceDataMgtModel);
 }

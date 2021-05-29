@@ -1,14 +1,16 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
-import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
+import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
+import kmg.im.stock.tssts.domain.logic.impl.StockPriceTimeSeriesModelImpl;
+import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
+import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
+import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
+import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
 import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
 
@@ -22,8 +24,11 @@ import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
 @Service
 public class StockPriceTimeSeriesDailyServiceImpl implements StockPriceTimeSeriesDailyService {
 
-    /** 株価時系列ＤＡＯ */
-    private final StockPriceTimeSeriesDao stockPriceTimeSeriesDao;
+    /** 株価時系列ロジック */
+    private final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic;
+
+    /** 株銘柄サービス */
+    private final StockBrandService stockBrandService;
 
     /**
      * コンストラクタ<br>
@@ -31,11 +36,15 @@ public class StockPriceTimeSeriesDailyServiceImpl implements StockPriceTimeSerie
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceTimeSeriesDao
-     *                                株価時系列ＤＡＯ
+     * @param stockPriceTimeSeriesLogic
+     *                                  株価時系列ロジック
+     * @param stockBrandService
+     *                                  株銘柄サービス
      */
-    public StockPriceTimeSeriesDailyServiceImpl(final StockPriceTimeSeriesDao stockPriceTimeSeriesDao) {
-        this.stockPriceTimeSeriesDao = stockPriceTimeSeriesDao;
+    public StockPriceTimeSeriesDailyServiceImpl(final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
+        final StockBrandService stockBrandService) {
+        this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
+        this.stockBrandService = stockBrandService;
     }
 
     /**
@@ -44,35 +53,36 @@ public class StockPriceTimeSeriesDailyServiceImpl implements StockPriceTimeSerie
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockBrandId
-     *                                株価銘柄ID
-     * @param stockPriceDataModelList
-     *                                株価データのリスト
+     * @param stockPriceDataMgtModel
+     *                               株価データ管理モデル
      */
     @Override
-    public void register(final long stockBrandId, final List<StockPriceDataModel> stockPriceDataModelList) {
+    public void register(final StockPriceDataMgtModel stockPriceDataMgtModel) {
 
-        final List<StockPriceTimeSeriesDto> stockPriceTimeSeriesOfDialyList = new ArrayList<>();
-        for (final StockPriceDataModel stockPriceDataModel : stockPriceDataModelList) {
+        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel = new StockPriceTimeSeriesMgtModelImpl();
+        stockPriceDataMgtModel.setStockBrandCode(stockPriceDataMgtModel.getStockBrandCode());
+
+        /* 株価銘柄IDを取得する */
+        final long stockBrandId = this.stockBrandService.getStockBrandId(stockPriceDataMgtModel.getStockBrandCode());
+        // 株価銘柄IDを設定する
+        stockPriceTimeSeriesMgtModel.setStockBrandId(stockBrandId);
+
+        for (final StockPriceDataModel stockPriceDataModel : stockPriceDataMgtModel.getDataList()) {
 
             // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
-            final StockPriceTimeSeriesDto stockPriceTimeSeriesOfDialy = new StockPriceTimeSeriesDto();
-            BeanUtils.copyProperties(stockPriceDataModel, stockPriceTimeSeriesOfDialy);
+            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
+            BeanUtils.copyProperties(stockPriceDataModel, stockPriceTimeSeriesModel);
 
-            // 株価銘柄IDを設定する
-            stockPriceTimeSeriesOfDialy.setStockBrandId(stockBrandId);
             // 期間の種類IDを設定する
-            stockPriceTimeSeriesOfDialy.setTypeOfPeriodId(TypeOfPeriodTypes.DAILY.getValue());
+            stockPriceTimeSeriesModel.setTypeOfPeriodId(TypeOfPeriodTypes.DAILY.getValue());
             // 期間開始日を設定する
-            stockPriceTimeSeriesOfDialy.setPeriodStartDate(stockPriceDataModel.getDate());
+            stockPriceTimeSeriesModel.setPeriodStartDate(stockPriceDataModel.getDate());
             // 期間終了日を設定する
-            stockPriceTimeSeriesOfDialy.setPeriodEndDate(stockPriceDataModel.getDate());
+            stockPriceTimeSeriesModel.setPeriodEndDate(stockPriceDataModel.getDate());
 
-            stockPriceTimeSeriesOfDialyList.add(stockPriceTimeSeriesOfDialy);
+            stockPriceTimeSeriesMgtModel.addData(stockPriceTimeSeriesModel);
         }
-        // TODO KenichiroArai 2021/05/16 実装中
-        for (final StockPriceTimeSeriesDto stockPriceTimeSeriesDto : stockPriceTimeSeriesOfDialyList) {
-            this.stockPriceTimeSeriesDao.insert(stockPriceTimeSeriesDto);
-        }
+
+        this.stockPriceTimeSeriesLogic.register(stockPriceTimeSeriesMgtModel);
     }
 }

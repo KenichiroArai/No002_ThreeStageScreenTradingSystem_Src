@@ -5,13 +5,13 @@ import java.nio.file.Path;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
- * インポートサービスインタフェース<br>
+ * 登録サービスインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface ImportService {
+public interface RegisterService {
 
     /**
      * 全株価データを登録する<br>
@@ -27,7 +27,7 @@ public interface ImportService {
     /**
      * ディレクトリにある株価データを登録する<br>
      * <p>
-     * ディレクトリパスにある株価データを登録する
+     * ディレクトリパスにある株価データを登録する。
      * </p>
      *
      * @author KenichiroArai
@@ -43,7 +43,7 @@ public interface ImportService {
     /**
      * ファイルの株価データを登録する<br>
      * <p>
-     * ファイルパスに該当する株価データを登録する
+     * ファイルパスに該当する株価データを登録する。
      * </p>
      *
      * @author KenichiroArai

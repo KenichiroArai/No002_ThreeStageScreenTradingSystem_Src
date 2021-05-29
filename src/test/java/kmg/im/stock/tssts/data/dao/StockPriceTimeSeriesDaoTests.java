@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
+import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 
 /**
  * 株価時系列ＤＡＯテスト<br>
@@ -41,7 +42,7 @@ public class StockPriceTimeSeriesDaoTests {
 
         /* 準備 */
         // 株価時系列ＤＴＯの作成
-        final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDto();
+        final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
         stockPriceTimeSeriesDto.setStockBrandId(897L);
         stockPriceTimeSeriesDto.setNo(1L);
         stockPriceTimeSeriesDto.setPeriodStartDate(LocalDate.now());

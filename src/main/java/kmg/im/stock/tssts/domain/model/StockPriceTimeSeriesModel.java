@@ -2,6 +2,7 @@ package kmg.im.stock.tssts.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 株価時系列モデル<br>
@@ -10,61 +11,8 @@ import java.time.LocalDate;
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class StockPriceTimeSeriesModel {
-
-    /** 識別番号 */
-    private Long id;
-
-    /** 開始日 */
-    private LocalDate startDate;
-
-    /** 終了日 */
-    private LocalDate endDate;
-
-    /** ロケールID */
-    private String localeId;
-
-    /** 作成者 */
-    private String creator;
-
-    /** 作成日 */
-    private LocalDate createdDate;
-
-    /** 更新者 */
-    private String updater;
-
-    /** 更新日 */
-    private LocalDate updateDate;
-
-    /** 備考 */
-    private String note;
-
-    /** 名称 */
-    private String name;
-
-    /** 株銘柄ID */
-    private Long stockBrandId;
-
-    /** 番号 */
-    private Long no;
-
-    /** 日付 */
-    private LocalDate date;
-
-    /** 始値 */
-    private BigDecimal op;
-
-    /** 高値 */
-    private BigDecimal hp;
-
-    /** 安値 */
-    private BigDecimal lp;
-
-    /** 終値 */
-    private BigDecimal cp;
-
-    /** 出来高 */
-    private Long volume;
+//TODO KenichiroArai 2021/05/28 ベースとなるクラスを作成する
+public interface StockPriceTimeSeriesModel {
 
     /**
      * 識別番号を設定する<br>
@@ -75,9 +23,7 @@ public class StockPriceTimeSeriesModel {
      * @param id
      *           識別番号
      */
-    public void setId(final Long id) {
-        this.id = id;
-    }
+    void setId(Long id);
 
     /**
      * 識別番号を返す<br>
@@ -87,10 +33,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 識別番号
      */
-    public Long getId() {
-        final Long result = this.id;
-        return result;
-    }
+    Long getId();
 
     /**
      * 開始日を設定する<br>
@@ -101,9 +44,7 @@ public class StockPriceTimeSeriesModel {
      * @param startDate
      *                  開始日
      */
-    public void setStartDate(final LocalDate startDate) {
-        this.startDate = startDate;
-    }
+    void setStartDate(LocalDate startDate);
 
     /**
      * 開始日を返す<br>
@@ -113,10 +54,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 開始日
      */
-    public LocalDate getStartDate() {
-        final LocalDate result = this.startDate;
-        return result;
-    }
+    LocalDate getStartDate();
 
     /**
      * 終了日を設定する<br>
@@ -127,9 +65,7 @@ public class StockPriceTimeSeriesModel {
      * @param endDate
      *                終了日
      */
-    public void setEndDate(final LocalDate endDate) {
-        this.endDate = endDate;
-    }
+    void setEndDate(LocalDate endDate);
 
     /**
      * 終了日を返す<br>
@@ -139,10 +75,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 終了日
      */
-    public LocalDate getEndDate() {
-        final LocalDate result = this.endDate;
-        return result;
-    }
+    LocalDate getEndDate();
 
     /**
      * ロケールIDを設定する<br>
@@ -153,9 +86,7 @@ public class StockPriceTimeSeriesModel {
      * @param localeId
      *                 ロケールID
      */
-    public void setLocaleId(final String localeId) {
-        this.localeId = localeId;
-    }
+    void setLocaleId(String localeId);
 
     /**
      * ロケールIDを返す<br>
@@ -165,10 +96,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return ロケールID
      */
-    public String getLocaleId() {
-        final String result = this.localeId;
-        return result;
-    }
+    String getLocaleId();
 
     /**
      * 作成者を設定する<br>
@@ -179,9 +107,7 @@ public class StockPriceTimeSeriesModel {
      * @param creator
      *                作成者
      */
-    public void setCreator(final String creator) {
-        this.creator = creator;
-    }
+    void setCreator(String creator);
 
     /**
      * 作成者を返す<br>
@@ -191,10 +117,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 作成者
      */
-    public String getCreator() {
-        final String result = this.creator;
-        return result;
-    }
+    String getCreator();
 
     /**
      * 作成日を設定する<br>
@@ -205,9 +128,7 @@ public class StockPriceTimeSeriesModel {
      * @param createdDate
      *                    作成日
      */
-    public void setCreatedDate(final LocalDate createdDate) {
-        this.createdDate = createdDate;
-    }
+    void setCreatedDate(LocalDateTime createdDate);
 
     /**
      * 作成日を返す<br>
@@ -217,10 +138,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 作成日
      */
-    public LocalDate getCreatedDate() {
-        final LocalDate result = this.createdDate;
-        return result;
-    }
+    LocalDateTime getCreatedDate();
 
     /**
      * 更新者を設定する<br>
@@ -231,9 +149,7 @@ public class StockPriceTimeSeriesModel {
      * @param updater
      *                更新者
      */
-    public void setUpdater(final String updater) {
-        this.updater = updater;
-    }
+    void setUpdater(String updater);
 
     /**
      * 更新者を返す<br>
@@ -243,10 +159,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 更新者
      */
-    public String getUpdater() {
-        final String result = this.updater;
-        return result;
-    }
+    String getUpdater();
 
     /**
      * 更新日を設定する<br>
@@ -257,9 +170,7 @@ public class StockPriceTimeSeriesModel {
      * @param updateDate
      *                   更新日
      */
-    public void setUpdateDate(final LocalDate updateDate) {
-        this.updateDate = updateDate;
-    }
+    void setUpdateDate(LocalDateTime updateDate);
 
     /**
      * 更新日を返す<br>
@@ -269,10 +180,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 更新日
      */
-    public LocalDate getUpdateDate() {
-        final LocalDate result = this.updateDate;
-        return result;
-    }
+    LocalDateTime getUpdateDate();
 
     /**
      * 備考を設定する<br>
@@ -283,9 +191,7 @@ public class StockPriceTimeSeriesModel {
      * @param note
      *             備考
      */
-    public void setNote(final String note) {
-        this.note = note;
-    }
+    void setNote(String note);
 
     /**
      * 備考を返す<br>
@@ -295,10 +201,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 備考
      */
-    public String getNote() {
-        final String result = this.note;
-        return result;
-    }
+    String getNote();
 
     /**
      * 名称を設定する<br>
@@ -309,9 +212,7 @@ public class StockPriceTimeSeriesModel {
      * @param name
      *             名称
      */
-    public void setName(final String name) {
-        this.name = name;
-    }
+    void setName(String name);
 
     /**
      * 名称を返す<br>
@@ -321,36 +222,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 名称
      */
-    public String getName() {
-        final String result = this.name;
-        return result;
-    }
-
-    /**
-     * 株銘柄IDを設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param stockBrandId
-     *                     株銘柄ID
-     */
-    public void setStockBrandId(final Long stockBrandId) {
-        this.stockBrandId = stockBrandId;
-    }
-
-    /**
-     * 株銘柄IDを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株銘柄ID
-     */
-    public Long getStockBrandId() {
-        final Long result = this.stockBrandId;
-        return result;
-    }
+    String getName();
 
     /**
      * 番号を設定する<br>
@@ -361,9 +233,7 @@ public class StockPriceTimeSeriesModel {
      * @param no
      *           番号
      */
-    public void setNo(final Long no) {
-        this.no = no;
-    }
+    void setNo(Long no);
 
     /**
      * 番号を返す<br>
@@ -373,36 +243,70 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 番号
      */
-    public Long getNo() {
-        final Long result = this.no;
-        return result;
-    }
+    Long getNo();
 
     /**
-     * 日付を設定する<br>
+     * 期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param date
-     *             日付
+     * @param typeOfPeriodId
+     *                       期間の種類ID
      */
-    public void setDate(final LocalDate date) {
-        this.date = date;
-    }
+    void setTypeOfPeriodId(Long typeOfPeriodId);
 
     /**
-     * 日付を返す<br>
+     * 期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 日付
+     * @return 期間の種類ID
      */
-    public LocalDate getDate() {
-        final LocalDate result = this.date;
-        return result;
-    }
+    Long getTypeOfPeriodId();
+
+    /**
+     * 期間開始日を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param periodStartDate
+     *                        期間開始日
+     */
+    void setPeriodStartDate(LocalDate periodStartDate);
+
+    /**
+     * 期間開始日を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 期間開始日
+     */
+    LocalDate getPeriodStartDate();
+
+    /**
+     * 期間終了日を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param periodEndDate
+     *                      期間終了日
+     */
+    void setPeriodEndDate(LocalDate periodEndDate);
+
+    /**
+     * 期間終了日を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 期間終了日
+     */
+    LocalDate getPeriodEndDate();
 
     /**
      * 始値を設定する<br>
@@ -413,9 +317,7 @@ public class StockPriceTimeSeriesModel {
      * @param op
      *           始値
      */
-    public void setOp(final BigDecimal op) {
-        this.op = op;
-    }
+    void setOp(BigDecimal op);
 
     /**
      * 始値を返す<br>
@@ -425,10 +327,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 始値
      */
-    public BigDecimal getOp() {
-        final BigDecimal result = this.op;
-        return result;
-    }
+    BigDecimal getOp();
 
     /**
      * 高値を設定する<br>
@@ -439,9 +338,7 @@ public class StockPriceTimeSeriesModel {
      * @param hp
      *           高値
      */
-    public void setHp(final BigDecimal hp) {
-        this.hp = hp;
-    }
+    void setHp(BigDecimal hp);
 
     /**
      * 高値を返す<br>
@@ -451,10 +348,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 高値
      */
-    public BigDecimal getHp() {
-        final BigDecimal result = this.hp;
-        return result;
-    }
+    BigDecimal getHp();
 
     /**
      * 安値を設定する<br>
@@ -465,9 +359,7 @@ public class StockPriceTimeSeriesModel {
      * @param lp
      *           安値
      */
-    public void setLp(final BigDecimal lp) {
-        this.lp = lp;
-    }
+    void setLp(BigDecimal lp);
 
     /**
      * 安値を返す<br>
@@ -477,10 +369,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 安値
      */
-    public BigDecimal getLp() {
-        final BigDecimal result = this.lp;
-        return result;
-    }
+    BigDecimal getLp();
 
     /**
      * 終値を設定する<br>
@@ -491,9 +380,7 @@ public class StockPriceTimeSeriesModel {
      * @param cp
      *           終値
      */
-    public void setCp(final BigDecimal cp) {
-        this.cp = cp;
-    }
+    void setCp(BigDecimal cp);
 
     /**
      * 終値を返す<br>
@@ -503,10 +390,7 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 終値
      */
-    public BigDecimal getCp() {
-        final BigDecimal result = this.cp;
-        return result;
-    }
+    BigDecimal getCp();
 
     /**
      * 出来高を設定する<br>
@@ -517,9 +401,7 @@ public class StockPriceTimeSeriesModel {
      * @param volume
      *               出来高
      */
-    public void setVolume(final Long volume) {
-        this.volume = volume;
-    }
+    void setVolume(Long volume);
 
     /**
      * 出来高を返す<br>
@@ -529,9 +411,6 @@ public class StockPriceTimeSeriesModel {
      * @version 1.0.0
      * @return 出来高
      */
-    public Long getVolume() {
-        final Long result = this.volume;
-        return result;
-    }
+    Long getVolume();
 
 }

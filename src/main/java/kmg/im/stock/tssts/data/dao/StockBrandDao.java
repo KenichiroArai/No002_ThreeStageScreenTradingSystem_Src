@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import kmg.im.stock.tssts.data.dto.StockBrandDto;
+import kmg.im.stock.tssts.data.dto.impl.StockBrandDtoImpl;
 
 /**
  * 株銘柄ＤＡＯ<br>
@@ -56,7 +57,7 @@ public class StockBrandDao {
         long result = 0L;
 
         /* パラメータを設定する */
-        final StockBrandDto stockBrandDto = new StockBrandDto();
+        final StockBrandDto stockBrandDto = new StockBrandDtoImpl();
         stockBrandDto.setCode(stockBrandCode);
         stockBrandDto.setStartDate(baseDate);
 
