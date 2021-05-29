@@ -48,6 +48,18 @@ public class StockPriceTimeSeriesDailyServiceImpl implements StockPriceTimeSerie
     }
 
     /**
+     * 削除する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     */
+    @Override
+    public void delete() {
+        this.stockPriceTimeSeriesLogic.delete(TypeOfPeriodTypes.DAILY);
+    }
+
+    /**
      * 登録する<br>
      *
      * @author KenichiroArai

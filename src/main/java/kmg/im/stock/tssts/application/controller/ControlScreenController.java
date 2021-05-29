@@ -247,6 +247,11 @@ public class ControlScreenController {
 
             final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
             ControlScreenController.LOGGER.error(logMsg, e);
+        } catch (final Exception e) {
+            // 三段階スクリーン・トレーディング・システムドメイン例外
+
+            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            ControlScreenController.LOGGER.error(logMsg, e);
         } finally {
             pfaMeas.end();
             this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
@@ -322,6 +327,11 @@ public class ControlScreenController {
             /* 株価データを登録する */
             this.registerService.registerStockPriceDataOfFile(importPath);
         } catch (final TsstsDomainException e) {
+            // 三段階スクリーン・トレーディング・システムドメイン例外
+
+            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            ControlScreenController.LOGGER.error(logMsg, e);
+        } catch (final Exception e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
             final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);

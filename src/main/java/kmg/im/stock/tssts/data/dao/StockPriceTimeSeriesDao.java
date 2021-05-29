@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import kmg.core.infrastructure.type.KmgString;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
+import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
+import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
 
 /**
  * 株価時系列ＤＡＯ<br>
@@ -21,6 +23,10 @@ import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 @Repository
 @SuppressWarnings("nls")
 public class StockPriceTimeSeriesDao {
+
+    /** 株価時系列を削除するSQL */
+    private static final String DELETE_SQL = "DELETE FROM stock_price_time_series" + " WHERE "
+        + "type_of_period_id = :typeOfPeriodId";
 
     /** 株価時系列を挿入するSQL */
     private static final String INSERT_SQL = "INSERT INTO stock_price_time_series("
@@ -43,6 +49,32 @@ public class StockPriceTimeSeriesDao {
      */
     public StockPriceTimeSeriesDao(final NamedParameterJdbcTemplate jdbc) {
         this.jdbc = jdbc;
+    }
+
+    /**
+     * 削除する<br>
+     * <p>
+     * 期間の種類に該当するデータを削除する。
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param typeOfPeriodTypes
+     *                          期間の種類の種類
+     * @return 削除数
+     */
+    public long delete(final TypeOfPeriodTypes typeOfPeriodTypes) {
+
+        long result = 0L;
+
+        final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
+        stockPriceTimeSeriesDto.setTypeOfPeriodId(typeOfPeriodTypes.getValue());
+
+        final SqlParameterSource param = new BeanPropertySqlParameterSource(stockPriceTimeSeriesDto);
+        result = this.jdbc.update(StockPriceTimeSeriesDao.DELETE_SQL, param);
+
+        return result;
     }
 
     /**

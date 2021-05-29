@@ -11,6 +11,7 @@ import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesMgtDtoImpl;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
+import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
 
 /**
  * 株価時系列ロジック<br>
@@ -39,6 +40,23 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
     }
 
     /**
+     * 削除する<br>
+     * <p>
+     * 期間の種類に該当するデータを削除する。
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param typeOfPeriodTypes
+     *                          期間の種類の種類
+     */
+    @Override
+    public void delete(final TypeOfPeriodTypes typeOfPeriodTypes) {
+        this.stockPriceTimeSeriesDao.delete(typeOfPeriodTypes);
+    }
+
+    /**
      * 登録する<br>
      *
      * @author KenichiroArai
@@ -54,13 +72,13 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
         for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.getDataList()) {
 
             // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
-            final StockPriceTimeSeriesDto stockPriceTimeSeriesOfDialy = new StockPriceTimeSeriesDtoImpl();
-            BeanUtils.copyProperties(stockPriceTimeSeriesModel, stockPriceTimeSeriesOfDialy);
+            final StockPriceTimeSeriesDto stockPriceTimeSeries = new StockPriceTimeSeriesDtoImpl();
+            BeanUtils.copyProperties(stockPriceTimeSeriesModel, stockPriceTimeSeries);
 
             // 株価銘柄IDを設定する
-            stockPriceTimeSeriesOfDialy.setStockBrandId(stockPriceTimeSeriesMgtModel.getStockBrandId());
+            stockPriceTimeSeries.setStockBrandId(stockPriceTimeSeriesMgtModel.getStockBrandId());
 
-            stockPriceTimeSeriesMgtDto.addData(stockPriceTimeSeriesOfDialy);
+            stockPriceTimeSeriesMgtDto.addData(stockPriceTimeSeries);
         }
         // TODO KenichiroArai 2021/05/16 実装中
         for (final StockPriceTimeSeriesDto stockPriceTimeSeriesDto : stockPriceTimeSeriesMgtDto.getDataList()) {

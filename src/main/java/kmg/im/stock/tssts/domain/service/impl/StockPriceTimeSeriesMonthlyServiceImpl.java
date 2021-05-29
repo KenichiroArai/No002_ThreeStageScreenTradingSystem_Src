@@ -49,6 +49,18 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
     }
 
     /**
+     * 削除する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     */
+    @Override
+    public void delete() {
+        this.stockPriceTimeSeriesLogic.delete(TypeOfPeriodTypes.MONTHLY);
+    }
+
+    /**
      * 登録する<br>
      *
      * @author KenichiroArai
@@ -106,6 +118,8 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
                 // 現在の情報を追加する株価時系列管理モデルに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
                 addStockPriceTimeSeriesModel.setNo(Integer.valueOf(i).longValue());
+                // 期間の種類IDを設定する
+                addStockPriceTimeSeriesModel.setTypeOfPeriodId(TypeOfPeriodTypes.MONTHLY.getValue());
                 addStockPriceTimeSeriesModel.setPeriodStartDate(stockPriceDataModel.getDate());
                 addStockPriceTimeSeriesModel.setOp(stockPriceDataModel.getOp());
                 lp = stockPriceDataModel.getLp();

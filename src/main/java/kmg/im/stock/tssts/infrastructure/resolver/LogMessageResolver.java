@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
 
+import kmg.core.infrastructure.type.KmgString;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
 
 /**
@@ -54,6 +55,16 @@ public class LogMessageResolver {
         Object[] argsArrays = args;
         if (argsArrays == null) {
             argsArrays = new Object[0];
+        }
+
+        if (code == null) {
+            result = KmgString.EMPTY;
+            return result;
+        }
+
+        if (code == LogMessageTypes.NONE) {
+            result = KmgString.EMPTY;
+            return result;
         }
 
         try {

@@ -49,6 +49,18 @@ public class StockPriceTimeSeriesWeeklyServiceImpl implements StockPriceTimeSeri
     }
 
     /**
+     * 削除する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     */
+    @Override
+    public void delete() {
+        this.stockPriceTimeSeriesLogic.delete(TypeOfPeriodTypes.WEEKLY);
+    }
+
+    /**
      * 登録する<br>
      *
      * @author KenichiroArai
@@ -106,6 +118,8 @@ public class StockPriceTimeSeriesWeeklyServiceImpl implements StockPriceTimeSeri
                 // 現在の情報を追加する株価週足ＤＴＯに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
                 addStockPriceTimeSeriesModel.setNo(Integer.valueOf(i).longValue());
+                // 期間の種類IDを設定する
+                addStockPriceTimeSeriesModel.setTypeOfPeriodId(TypeOfPeriodTypes.WEEKLY.getValue());
                 addStockPriceTimeSeriesModel.setPeriodStartDate(stockPriceDataDto.getDate());
                 addStockPriceTimeSeriesModel.setOp(stockPriceDataDto.getOp());
                 lp = stockPriceDataDto.getLp();
@@ -135,6 +149,8 @@ public class StockPriceTimeSeriesWeeklyServiceImpl implements StockPriceTimeSeri
                 // 現在の情報を追加する株価週足ＤＴＯに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
                 addStockPriceTimeSeriesModel.setNo(Integer.valueOf(i).longValue());
+                // 期間の種類IDを設定する
+                addStockPriceTimeSeriesModel.setTypeOfPeriodId(TypeOfPeriodTypes.WEEKLY.getValue());
                 addStockPriceTimeSeriesModel.setPeriodStartDate(stockPriceDataDto.getDate());
                 addStockPriceTimeSeriesModel.setOp(stockPriceDataDto.getOp());
                 lp = stockPriceDataDto.getLp();

@@ -12,6 +12,15 @@ import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 public interface StockPriceTimeSeriesService {
 
     /**
+     * 削除する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     */
+    void delete();
+
+    /**
      * 登録する<br>
      *
      * @author KenichiroArai

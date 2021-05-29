@@ -163,13 +163,22 @@ public class RegisterServiceImpl implements RegisterService {
      */
     private void registerStockPriceDataMgtModel(final StockPriceDataMgtModel stockPriceDataMgtModel) {
 
-        /* 株価時系列日足を登録する */
+        /* 株価時系列日足 */
+        // 削除する
+        this.stockPriceTimeSeriesDailyService.delete();
+        // 登録する
         this.stockPriceTimeSeriesDailyService.register(stockPriceDataMgtModel);
 
-        /* 株価時系列週足を登録する */
+        /* 株価時系列週足 */
+        // 削除する
+        this.stockPriceTimeSeriesWeeklyService.delete();
+        // 登録する
         this.stockPriceTimeSeriesWeeklyService.register(stockPriceDataMgtModel);
 
-        /* 株価時系列月足を登録する */
+        /* 株価時系列月足 */
+        // 削除する
+        this.stockPriceTimeSeriesMonthlyService.delete();
+        // 登録する
         this.stockPriceTimeSeriesMonthlyService.register(stockPriceDataMgtModel);
     }
 }
