@@ -13,6 +13,7 @@ import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
 import kmg.im.stock.tssts.data.dto.StockPriceDataMgtDto;
 import kmg.im.stock.tssts.domain.logic.StockPriceDataLogic;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
+import kmg.im.stock.tssts.domain.model.impl.StockPriceDataModelImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;

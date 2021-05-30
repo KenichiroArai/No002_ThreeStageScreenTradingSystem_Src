@@ -1,4 +1,4 @@
-package kmg.im.stock.tssts.domain.logic.impl;
+package kmg.im.stock.tssts.domain.model.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -51,9 +51,6 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
 
     /** 番号 */
     private Long no;
-
-    /** 期間の種類ID */
-    private Long typeOfPeriodId;
 
     /** 期間開始日 */
     private LocalDate periodStartDate;
@@ -381,34 +378,6 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
     @Override
     public Long getNo() {
         final Long result = this.no;
-        return result;
-    }
-
-    /**
-     * 期間の種類IDを設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param typeOfPeriodId
-     *                       期間の種類ID
-     */
-    @Override
-    public void setTypeOfPeriodId(final Long typeOfPeriodId) {
-        this.typeOfPeriodId = typeOfPeriodId;
-    }
-
-    /**
-     * 期間の種類IDを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 期間の種類ID
-     */
-    @Override
-    public Long getTypeOfPeriodId() {
-        final Long result = this.typeOfPeriodId;
         return result;
     }
 

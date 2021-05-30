@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
-import kmg.im.stock.tssts.domain.logic.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
+import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesMonthlyService;
 import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
@@ -83,12 +83,13 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
         final long stockBrandId = this.stockBrandService.getStockBrandId(stockPriceDataMgtModel.getStockBrandCode());
         // 株価銘柄IDを設定する
         stockPriceTimeSeriesMgtModel.setStockBrandId(stockBrandId);
+        // 期間の種類の種類を設定する
+        stockPriceTimeSeriesMgtModel.setTypeOfPeriodTypes(TypeOfPeriodTypes.MONTHLY);
 
         // TODO KenichiroArai 2021/05/16 SQLとの作成とどちらが早いか試す
         StockPriceTimeSeriesModel addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl(); // 追加する株価時系列モデル
         addStockPriceTimeSeriesModel.setNo(0L);
         // 期間の種類IDを設定する
-        addStockPriceTimeSeriesModel.setTypeOfPeriodId(TypeOfPeriodTypes.MONTHLY.getValue());
         addStockPriceTimeSeriesModel.setPeriodStartDate(stockPriceDataMgtModel.getDataList().get(0).getDate());
         addStockPriceTimeSeriesModel.setOp(stockPriceDataMgtModel.getDataList().get(0).getOp()); // 始値は最初のデータを設定する
         BigDecimal lp = stockPriceDataMgtModel.getDataList().get(0).getLp();
@@ -119,7 +120,6 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
                 addStockPriceTimeSeriesModel.setNo(Integer.valueOf(i).longValue());
                 // 期間の種類IDを設定する
-                addStockPriceTimeSeriesModel.setTypeOfPeriodId(TypeOfPeriodTypes.MONTHLY.getValue());
                 addStockPriceTimeSeriesModel.setPeriodStartDate(stockPriceDataModel.getDate());
                 addStockPriceTimeSeriesModel.setOp(stockPriceDataModel.getOp());
                 lp = stockPriceDataModel.getLp();

@@ -6,6 +6,7 @@ import java.util.List;
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
+import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
 
 /**
  * 株価時系列管理モデル<br>
@@ -21,6 +22,9 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
 
     /** 株価銘柄コード */
     private long stockBrandCode;
+
+    /** 期間の種類の種類 */
+    private TypeOfPeriodTypes typeOfPeriodTypes;
 
     /** 株価時系列リスト */
     private final List<StockPriceTimeSeriesModel> dataList;
@@ -93,6 +97,34 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
     }
 
     /**
+     * 期間の種類の種類を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param typeOfPeriodTypes
+     *                          期間の種類の種類
+     */
+    @Override
+    public void setTypeOfPeriodTypes(final TypeOfPeriodTypes typeOfPeriodTypes) {
+        this.typeOfPeriodTypes = typeOfPeriodTypes;
+    }
+
+    /**
+     * 期間の種類の種類を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 期間の種類の種類
+     */
+    @Override
+    public TypeOfPeriodTypes getTypeOfPeriodTypes() {
+        final TypeOfPeriodTypes result = this.typeOfPeriodTypes;
+        return result;
+    }
+
+    /**
      * 株価時系列リストをクリアする<br>
      *
      * @author KenichiroArai
@@ -159,7 +191,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @sine 1.0.0
      * @version 1.0.0
      * @param addData
-     *                    追加株価時系列リスト
+     *                追加株価時系列リスト
      */
     @Override
     public void addAllData(final List<StockPriceTimeSeriesModel> addData) {

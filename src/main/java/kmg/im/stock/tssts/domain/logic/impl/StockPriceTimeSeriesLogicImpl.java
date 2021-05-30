@@ -72,13 +72,15 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
         for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.getDataList()) {
 
             // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
-            final StockPriceTimeSeriesDto stockPriceTimeSeries = new StockPriceTimeSeriesDtoImpl();
-            BeanUtils.copyProperties(stockPriceTimeSeriesModel, stockPriceTimeSeries);
+            final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
+            BeanUtils.copyProperties(stockPriceTimeSeriesModel, stockPriceTimeSeriesDto);
 
             // 株価銘柄IDを設定する
-            stockPriceTimeSeries.setStockBrandId(stockPriceTimeSeriesMgtModel.getStockBrandId());
+            stockPriceTimeSeriesDto.setStockBrandId(stockPriceTimeSeriesMgtModel.getStockBrandId());
+            // 期間の種類の種類を設定する
+            stockPriceTimeSeriesDto.setTypeOfPeriodId(stockPriceTimeSeriesMgtModel.getTypeOfPeriodTypes().getValue());
 
-            stockPriceTimeSeriesMgtDto.addData(stockPriceTimeSeries);
+            stockPriceTimeSeriesMgtDto.addData(stockPriceTimeSeriesDto);
         }
         // TODO KenichiroArai 2021/05/16 実装中
         for (final StockPriceTimeSeriesDto stockPriceTimeSeriesDto : stockPriceTimeSeriesMgtDto.getDataList()) {

@@ -19,13 +19,13 @@ public enum TypeOfPeriodTypes {
     NONE("指定無し", -1L),
 
     /** 日足 */
-    DAILY("日足", 0L),
+    DAILY("日足", 1L),
 
     /** 週足 */
-    WEEKLY("週足", 1L),
+    WEEKLY("週足", 2L),
 
     /** 月足 */
-    MONTHLY("月足", 2L),
+    MONTHLY("月足", 3L),
 
     /* 定義：終了 */
     ;

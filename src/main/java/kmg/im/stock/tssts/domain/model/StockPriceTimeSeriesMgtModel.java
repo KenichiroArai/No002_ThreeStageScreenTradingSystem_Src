@@ -2,6 +2,8 @@ package kmg.im.stock.tssts.domain.model;
 
 import java.util.List;
 
+import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
+
 /**
  * 株価時系列管理モデルインタフェース<br>
  *
@@ -54,6 +56,27 @@ public interface StockPriceTimeSeriesMgtModel {
     long getStockBrandCode();
 
     /**
+     * 期間の種類の種類を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param typeOfPeriodTypes
+     *                          期間の種類の種類
+     */
+    void setTypeOfPeriodTypes(TypeOfPeriodTypes typeOfPeriodTypes);
+
+    /**
+     * 期間の種類の種類を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 期間の種類の種類
+     */
+    TypeOfPeriodTypes getTypeOfPeriodTypes();
+
+    /**
      * 株価時系列リストをクリアする<br>
      *
      * @author KenichiroArai
@@ -100,7 +123,7 @@ public interface StockPriceTimeSeriesMgtModel {
      * @sine 1.0.0
      * @version 1.0.0
      * @param addData
-     *                    追加株価時系列リスト
+     *                追加株価時系列リスト
      */
     void addAllData(List<StockPriceTimeSeriesModel> addData);
 

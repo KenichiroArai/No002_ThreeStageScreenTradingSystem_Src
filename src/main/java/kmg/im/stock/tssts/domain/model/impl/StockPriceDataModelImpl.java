@@ -1,4 +1,4 @@
-package kmg.im.stock.tssts.domain.logic.impl;
+package kmg.im.stock.tssts.domain.model.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

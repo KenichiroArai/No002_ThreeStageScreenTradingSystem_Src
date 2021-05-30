@@ -246,27 +246,6 @@ public interface StockPriceTimeSeriesModel {
     Long getNo();
 
     /**
-     * 期間の種類IDを設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param typeOfPeriodId
-     *                       期間の種類ID
-     */
-    void setTypeOfPeriodId(Long typeOfPeriodId);
-
-    /**
-     * 期間の種類IDを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 期間の種類ID
-     */
-    Long getTypeOfPeriodId();
-
-    /**
      * 期間開始日を設定する<br>
      *
      * @author KenichiroArai

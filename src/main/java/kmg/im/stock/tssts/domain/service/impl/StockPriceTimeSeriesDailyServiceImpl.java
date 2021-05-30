@@ -4,12 +4,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
-import kmg.im.stock.tssts.domain.logic.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
+import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
 import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
@@ -78,6 +78,8 @@ public class StockPriceTimeSeriesDailyServiceImpl implements StockPriceTimeSerie
         final long stockBrandId = this.stockBrandService.getStockBrandId(stockPriceDataMgtModel.getStockBrandCode());
         // 株価銘柄IDを設定する
         stockPriceTimeSeriesMgtModel.setStockBrandId(stockBrandId);
+        // 期間の種類の種類を設定する
+        stockPriceTimeSeriesMgtModel.setTypeOfPeriodTypes(TypeOfPeriodTypes.DAILY);
 
         for (final StockPriceDataModel stockPriceDataModel : stockPriceDataMgtModel.getDataList()) {
 
@@ -85,8 +87,6 @@ public class StockPriceTimeSeriesDailyServiceImpl implements StockPriceTimeSerie
             final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
             BeanUtils.copyProperties(stockPriceDataModel, stockPriceTimeSeriesModel);
 
-            // 期間の種類IDを設定する
-            stockPriceTimeSeriesModel.setTypeOfPeriodId(TypeOfPeriodTypes.DAILY.getValue());
             // 期間開始日を設定する
             stockPriceTimeSeriesModel.setPeriodStartDate(stockPriceDataModel.getDate());
             // 期間終了日を設定する
