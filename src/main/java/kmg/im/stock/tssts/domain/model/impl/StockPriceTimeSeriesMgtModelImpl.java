@@ -6,7 +6,7 @@ import java.util.List;
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
-import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
+import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列管理モデル<br>
@@ -18,13 +18,16 @@ import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
 public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgtModel {
 
     /** 株銘柄ID */
-    private Long stockBrandId;
+    private long stockBrandId;
+
+    /** 株価時系列期間の種類ID */
+    private long sptsptId;
 
     /** 株価銘柄コード */
     private long stockBrandCode;
 
     /** 期間の種類の種類 */
-    private TypeOfPeriodTypes typeOfPeriodTypes;
+    private PeriodTypeTypes PeriodTypeTypes;
 
     /** 株価時系列リスト */
     private final List<StockPriceTimeSeriesModel> dataList;
@@ -50,7 +53,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      *                     株銘柄ID
      */
     @Override
-    public void setStockBrandId(final Long stockBrandId) {
+    public void setStockBrandId(final long stockBrandId) {
         this.stockBrandId = stockBrandId;
     }
 
@@ -63,8 +66,36 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @return 株銘柄ID
      */
     @Override
-    public Long getStockBrandId() {
-        final Long result = this.stockBrandId;
+    public long getStockBrandId() {
+        final long result = this.stockBrandId;
+        return result;
+    }
+
+    /**
+     * 株価時系列期間の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
+     */
+    @Override
+    public void setSptsptId(final long sptsptId) {
+        this.sptsptId = sptsptId;
+    }
+
+    /**
+     * 株価時系列期間の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列期間の種類ID
+     */
+    @Override
+    public long getSptsptId() {
+        final long result = this.sptsptId;
         return result;
     }
 
@@ -102,12 +133,12 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param typeOfPeriodTypes
-     *                          期間の種類の種類
+     * @param periodTypeTypes
+     *                        期間の種類の種類
      */
     @Override
-    public void setTypeOfPeriodTypes(final TypeOfPeriodTypes typeOfPeriodTypes) {
-        this.typeOfPeriodTypes = typeOfPeriodTypes;
+    public void setPeriodTypeTypes(final PeriodTypeTypes periodTypeTypes) {
+        this.PeriodTypeTypes = periodTypeTypes;
     }
 
     /**
@@ -119,8 +150,8 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @return 期間の種類の種類
      */
     @Override
-    public TypeOfPeriodTypes getTypeOfPeriodTypes() {
-        final TypeOfPeriodTypes result = this.typeOfPeriodTypes;
+    public PeriodTypeTypes getPeriodTypeTypes() {
+        final PeriodTypeTypes result = this.PeriodTypeTypes;
         return result;
     }
 

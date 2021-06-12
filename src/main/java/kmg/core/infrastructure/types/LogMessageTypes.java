@@ -1,31 +1,26 @@
-package kmg.im.stock.tssts.infrastructure.types;
+package kmg.core.infrastructure.types;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 期間の種類の種類<br>
+ * ログメッセージの種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum TypeOfPeriodTypes {
+public enum LogMessageTypes {
 
     /* 定義：開始 */
 
     /** 指定無し */
-    NONE("指定無し", -1L),
+    NONE("指定無し", null),
 
-    /** 日足 */
-    DAILY("日足", 1L),
-
-    /** 週足 */
-    WEEKLY("週足", 2L),
-
-    /** 月足 */
-    MONTHLY("月足", 3L),
+    // TODO 2021/06/08 不要なので削除する
+    /** サンプル */
+    I00001("サンプル", "I00001"),
 
     /* 定義：終了 */
     ;
@@ -34,16 +29,16 @@ public enum TypeOfPeriodTypes {
     private String name;
 
     /** 値 */
-    private Long value;
+    private String value;
 
     /** 種類のマップ */
-    private static final Map<Long, TypeOfPeriodTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<String, LogMessageTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final TypeOfPeriodTypes type : TypeOfPeriodTypes.values()) {
-            TypeOfPeriodTypes.VALUES_MAP.put(type.getValue(), type);
+        for (final LogMessageTypes type : LogMessageTypes.values()) {
+            LogMessageTypes.VALUES_MAP.put(type.getValue(), type);
         }
     }
 
@@ -58,7 +53,7 @@ public enum TypeOfPeriodTypes {
      * @param value
      *              値
      */
-    TypeOfPeriodTypes(final String name, final Long value) {
+    LogMessageTypes(final String name, final String value) {
 
         this.name = name;
         this.value = value;
@@ -78,9 +73,9 @@ public enum TypeOfPeriodTypes {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static TypeOfPeriodTypes getEnum(final Long value) {
+    public static LogMessageTypes getEnum(final String value) {
 
-        TypeOfPeriodTypes result = TypeOfPeriodTypes.VALUES_MAP.get(value);
+        LogMessageTypes result = LogMessageTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -96,9 +91,9 @@ public enum TypeOfPeriodTypes {
      * @version 1.0.0
      * @return 初期値
      */
-    public static TypeOfPeriodTypes getInitValue() {
+    public static LogMessageTypes getInitValue() {
 
-        final TypeOfPeriodTypes result = NONE;
+        final LogMessageTypes result = NONE;
         return result;
 
     }
@@ -111,9 +106,9 @@ public enum TypeOfPeriodTypes {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static TypeOfPeriodTypes getDefault() {
+    public static LogMessageTypes getDefault() {
 
-        final TypeOfPeriodTypes result = NONE;
+        final LogMessageTypes result = NONE;
         return result;
     }
 
@@ -127,7 +122,7 @@ public enum TypeOfPeriodTypes {
      */
     @Override
     public String toString() {
-        final String result = this.value.toString();
+        final String result = this.value;
         return result;
     }
 
@@ -152,8 +147,9 @@ public enum TypeOfPeriodTypes {
      * @version 1.0.0
      * @return 値
      */
-    public Long getValue() {
-        final Long result = this.value;
+    public String getValue() {
+        final String result = this.value;
         return result;
     }
+
 }

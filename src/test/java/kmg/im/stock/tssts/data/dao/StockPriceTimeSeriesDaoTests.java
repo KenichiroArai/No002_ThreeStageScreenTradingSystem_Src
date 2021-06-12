@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 
@@ -38,12 +39,12 @@ public class StockPriceTimeSeriesDaoTests {
     public void testInsert() {
 
         /* 期待値 */
-        final long expectedInsertNum = 1L;
+        final long expected = 1L;
 
         /* 準備 */
         // 株価時系列ＤＴＯの作成
         final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
-        stockPriceTimeSeriesDto.setStockBrandId(897L);
+        stockPriceTimeSeriesDto.setSptsptId(1);
         stockPriceTimeSeriesDto.setNo(1L);
         stockPriceTimeSeriesDto.setPeriodStartDate(LocalDate.now());
         stockPriceTimeSeriesDto.setPeriodEndDate(LocalDate.now());
@@ -54,10 +55,18 @@ public class StockPriceTimeSeriesDaoTests {
         stockPriceTimeSeriesDto.setVolume(999L);
 
         /* テスト対象を呼び出す */
-        final long insertNum = this.testTarget.insert(stockPriceTimeSeriesDto);
+        final long actual = 0;
+        try {
+            this.testTarget.insert(stockPriceTimeSeriesDto);
+        } catch (final KmgDomainException e) {
+            e.printStackTrace();
+            /* 期待値と比較 */
+            Assertions.assertTrue(false);
+
+        }
 
         /* 期待値と比較 */
-        Assertions.assertEquals(expectedInsertNum, insertNum);
+        Assertions.assertEquals(expected, actual);
 
     }
 

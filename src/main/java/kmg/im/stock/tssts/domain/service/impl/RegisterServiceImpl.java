@@ -10,7 +10,9 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
+import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.service.RegisterService;
+import kmg.im.stock.tssts.domain.service.StockPriceCalcValueService;
 import kmg.im.stock.tssts.domain.service.StockPriceDataService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesMonthlyService;
@@ -44,6 +46,9 @@ public class RegisterServiceImpl implements RegisterService {
     /** 株価時系列月足サービス */
     private final StockPriceTimeSeriesMonthlyService stockPriceTimeSeriesMonthlyService;
 
+    /** 株価計算値サービス */
+    private final StockPriceCalcValueService stockPriceCalcValueService;
+
     /**
      * コンストラクタ<br>
      *
@@ -60,17 +65,21 @@ public class RegisterServiceImpl implements RegisterService {
      *                                           株価時系列週足サービス
      * @param stockPriceTimeSeriesMonthlyService
      *                                           株価時系列月足サービス
+     * @param stockPriceCalcValueService
+     *                                           株価計算値サービス
      */
     public RegisterServiceImpl(final LogMessageResolver logMessageResolver,
         final StockPriceDataService stockPriceDataService,
         final StockPriceTimeSeriesDailyService stockPriceTimeSeriesDailyService,
         final StockPriceTimeSeriesWeeklyService stockPriceTimeSeriesWeeklyService,
-        final StockPriceTimeSeriesMonthlyService stockPriceTimeSeriesMonthlyService) {
+        final StockPriceTimeSeriesMonthlyService stockPriceTimeSeriesMonthlyService,
+        final StockPriceCalcValueService stockPriceCalcValueService) {
         this.logMessageResolver = logMessageResolver;
         this.stockPriceDataService = stockPriceDataService;
         this.stockPriceTimeSeriesDailyService = stockPriceTimeSeriesDailyService;
         this.stockPriceTimeSeriesWeeklyService = stockPriceTimeSeriesWeeklyService;
         this.stockPriceTimeSeriesMonthlyService = stockPriceTimeSeriesMonthlyService;
+        this.stockPriceCalcValueService = stockPriceCalcValueService;
     }
 
     /**
@@ -160,25 +169,41 @@ public class RegisterServiceImpl implements RegisterService {
      * @version 1.0.0
      * @param stockPriceDataMgtModel
      *                               株価データ管理モデル
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    private void registerStockPriceDataMgtModel(final StockPriceDataMgtModel stockPriceDataMgtModel) {
+    private void registerStockPriceDataMgtModel(final StockPriceDataMgtModel stockPriceDataMgtModel)
+        throws TsstsDomainException {
 
         /* 株価時系列日足 */
         // 削除する
         this.stockPriceTimeSeriesDailyService.delete();
+        // 株価時系列管理モデルを取得
+        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtDailyModel = this.stockPriceTimeSeriesDailyService
+            .toStockPriceTimeSeriesMgtModel(stockPriceDataMgtModel);
         // 登録する
-        this.stockPriceTimeSeriesDailyService.register(stockPriceDataMgtModel);
+        this.stockPriceTimeSeriesDailyService.register(stockPriceTimeSeriesMgtDailyModel);
 
         /* 株価時系列週足 */
         // 削除する
         this.stockPriceTimeSeriesWeeklyService.delete();
+        // 株価時系列管理モデルを取得
+        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtWeeklyModel = this.stockPriceTimeSeriesWeeklyService
+            .toStockPriceTimeSeriesMgtModel(stockPriceDataMgtModel);
         // 登録する
-        this.stockPriceTimeSeriesWeeklyService.register(stockPriceDataMgtModel);
+        this.stockPriceTimeSeriesWeeklyService.register(stockPriceTimeSeriesMgtWeeklyModel);
 
         /* 株価時系列月足 */
         // 削除する
         this.stockPriceTimeSeriesMonthlyService.delete();
+        // 株価時系列管理モデルを取得
+        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtMonthlyModel = this.stockPriceTimeSeriesMonthlyService
+            .toStockPriceTimeSeriesMgtModel(stockPriceDataMgtModel);
         // 登録する
-        this.stockPriceTimeSeriesMonthlyService.register(stockPriceDataMgtModel);
+        this.stockPriceTimeSeriesMonthlyService.register(stockPriceTimeSeriesMgtMonthlyModel);
+
+        /* 株価計算値 */
+        // 削除する
+
     }
 }

@@ -1,0 +1,1 @@
+SELECT id, name FROM sample WHERE id = /*:id*/123

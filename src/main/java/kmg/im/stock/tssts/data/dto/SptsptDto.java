@@ -1,18 +1,16 @@
 package kmg.im.stock.tssts.data.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 株価時系列ＤＴＯインタフェース<br>
+ * 株価時系列期間の種類ＤＴＯインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-//TODO KenichiroArai 2021/04/30 ベースとなるクラスを作成する
-public interface StockPriceTimeSeriesDto {
+public interface SptsptDto {
 
     /**
      * 識別番号を設定する<br>
@@ -225,192 +223,45 @@ public interface StockPriceTimeSeriesDto {
     String getName();
 
     /**
-     * 株価時系列期間の種類IDを設定する<br>
+     * 株銘柄IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sptsptId
-     *                 株価時系列期間の種類ID
+     * @param stockBrandId
+     *                     株銘柄ID
      */
-    void setSptsptId(long sptsptId);
+    void setStockBrandId(Long stockBrandId);
 
     /**
-     * 株価時系列期間の種類IDを返す<br>
+     * 株銘柄IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列期間の種類ID
+     * @return 株銘柄ID
      */
-    long getSptsptId();
+    Long getStockBrandId();
 
     /**
-     * 番号を設定する<br>
+     * 期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param no
-     *           番号
+     * @param periodTypeId
+     *                     期間の種類ID
      */
-    void setNo(Long no);
+    void setPeriodTypeId(Long periodTypeId);
 
     /**
-     * 番号を返す<br>
+     * 期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 番号
+     * @return 期間の種類ID
      */
-    Long getNo();
-
-    /**
-     * 期間開始日を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param periodStartDate
-     *                        期間開始日
-     */
-    void setPeriodStartDate(LocalDate periodStartDate);
-
-    /**
-     * 期間開始日を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 期間開始日
-     */
-    LocalDate getPeriodStartDate();
-
-    /**
-     * 期間終了日を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param periodEndDate
-     *                      期間終了日
-     */
-    void setPeriodEndDate(LocalDate periodEndDate);
-
-    /**
-     * 期間終了日を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 期間終了日
-     */
-    LocalDate getPeriodEndDate();
-
-    /**
-     * 始値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param op
-     *           始値
-     */
-    void setOp(BigDecimal op);
-
-    /**
-     * 始値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 始値
-     */
-    BigDecimal getOp();
-
-    /**
-     * 高値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param hp
-     *           高値
-     */
-    void setHp(BigDecimal hp);
-
-    /**
-     * 高値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 高値
-     */
-    BigDecimal getHp();
-
-    /**
-     * 安値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param lp
-     *           安値
-     */
-    void setLp(BigDecimal lp);
-
-    /**
-     * 安値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 安値
-     */
-    BigDecimal getLp();
-
-    /**
-     * 終値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param cp
-     *           終値
-     */
-    void setCp(BigDecimal cp);
-
-    /**
-     * 終値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 終値
-     */
-    BigDecimal getCp();
-
-    /**
-     * 出来高を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param volume
-     *               出来高
-     */
-    void setVolume(Long volume);
-
-    /**
-     * 出来高を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 出来高
-     */
-    Long getVolume();
+    Long getPeriodTypeId();
 
 }

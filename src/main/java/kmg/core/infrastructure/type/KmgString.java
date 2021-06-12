@@ -1,6 +1,7 @@
 package kmg.core.infrastructure.type;
 
 import kmg.core.infrastructure.types.DelimiterTypes;
+import kmg.core.infrastructure.utils.ArrayUtils;
 
 /**
  * ＫＭＧ文字列
@@ -87,6 +88,37 @@ public class KmgString {
     }
 
     /**
+     * 文字列を結合して返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param target
+     *               対象文字列
+     * @return 結合した文字列
+     */
+    public static String concat(final String... target) {
+
+        String result = null;
+
+        if (ArrayUtils.isEmpty(target)) {
+            result = KmgString.EMPTY;
+            return result;
+        }
+
+        final StringBuilder concatSb = new StringBuilder();
+
+        for (final String str : target) {
+            concatSb.append(str);
+        }
+
+        result = concatSb.toString();
+
+        return result;
+
+    }
+
+    /**
      * キャピタライズを返す<br>
      *
      * @author KenichiroArai
@@ -115,6 +147,132 @@ public class KmgString {
 
         /* 文字列にして返す */
         result = new String(chars);
+        return result;
+    }
+
+    /**
+     * スネークケースで返す。<br>
+     * <p>
+     * 例：aaaBbbCcc→aaa_bbb_ccc
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param target
+     *               対象文字列
+     * @return スネークケースの文字列
+     */
+    public static String snakeCase(final String target) {
+
+        String result = null;
+
+        /* 事前チェック */
+        // 値が空か
+        if (KmgString.isEmpty(target)) {
+            // 空の場合
+
+            return result;
+        }
+
+        /* 一文字の処理 */
+        // 一文字か
+        if (target.length() == 1) {
+            // 一文字の場合
+
+            return result;
+        }
+
+        /* スネークケースの文字列を作成 */
+        final StringBuilder snakeCaseSb = new StringBuilder();
+        int pos = 0;
+        for (int i = 1; i < target.length(); ++i) {
+
+            // ローケースか
+            final boolean isLowerCase = Character.isLowerCase(target.charAt(i));
+            if (isLowerCase) {
+                // ローケースの場合
+
+                continue;
+            }
+
+            // スネークケースの文字列があるか
+            if (snakeCaseSb.length() != 0) {
+                // ある場合
+
+                // 区切りを入れる
+                snakeCaseSb.append('_');
+            }
+
+            snakeCaseSb.append(target.substring(pos, i));
+            pos = i;
+        }
+        if (snakeCaseSb.length() != 0) {
+            snakeCaseSb.append('_');
+        }
+        snakeCaseSb.append(target.substring(pos, target.length()));
+
+        result = snakeCaseSb.toString().toLowerCase();
+
+        return result;
+    }
+
+    /**
+     * キャメルケースで返す。<br>
+     * <p>
+     * 例：aaa_bbb_ccc→aaaBbbCcc
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param target
+     *               対象文字列
+     * @return キャメルケースの文字列
+     */
+    public static String camelCase(final String target) {
+
+        String result = null;
+
+        /* 事前チェック */
+        // 値が空か
+        if (KmgString.isEmpty(target)) {
+            // 空の場合
+
+            return result;
+        }
+
+        /* 事前処理 */
+        // ローケースに変換
+        final String lowerCase = target.toLowerCase();
+
+        // 単語の配列を取得
+        final String[] words = DelimiterTypes.UNDERSCORE.split(lowerCase);
+
+        // 一つ目の単語
+        final String firstWord = KmgString.capitalize(words[0]);
+
+        /* 一つの単語の処理 */
+        // 単語が一つだけか
+        if (words.length == 1) {
+            // 一つだけの場合
+
+            result = firstWord.substring(0, 1).toLowerCase().concat(firstWord.substring(1));
+            return result;
+        }
+
+        /* キャメルケースの文字列を作成 */
+        final StringBuffer camelCaseSb = new StringBuffer();
+
+        // 一つ目の単語
+        camelCaseSb.append(firstWord);
+
+        // 単語の数分、キャメライズする
+        for (int i = 1; i < words.length; i++) {
+            camelCaseSb.append(KmgString.capitalize(words[i]));
+        }
+        result = camelCaseSb.substring(0, 1).toLowerCase().concat(camelCaseSb.substring(1));
+
         return result;
     }
 
@@ -202,56 +360,7 @@ public class KmgString {
      * @return スネークケースの文字列
      */
     public String toSnakeCase() {
-
-        String result = null;
-
-        /* 事前チェック */
-        // 値が空か
-        if (KmgString.isEmpty(this.value)) {
-            // 空の場合
-
-            return result;
-        }
-
-        /* 一文字の処理 */
-        // 一文字か
-        if (this.value.length() == 1) {
-            // 一文字の場合
-
-            return result;
-        }
-
-        /* スネークケースの文字列を作成 */
-        final StringBuilder snakeCaseSb = new StringBuilder();
-        int                 pos         = 0;
-        for (int i = 1; i < this.value.length(); ++i) {
-
-            // ローケースか
-            final boolean isLowerCase = Character.isLowerCase(this.value.charAt(i));
-            if (isLowerCase) {
-                // ローケースの場合
-
-                continue;
-            }
-
-            // スネークケースの文字列があるか
-            if (snakeCaseSb.length() != 0) {
-                // ある場合
-
-                // 区切りを入れる
-                snakeCaseSb.append('_');
-            }
-
-            snakeCaseSb.append(this.value.substring(pos, i));
-            pos = i;
-        }
-        if (snakeCaseSb.length() != 0) {
-            snakeCaseSb.append('_');
-        }
-        snakeCaseSb.append(this.value.substring(pos, this.value.length()));
-
-        result = snakeCaseSb.toString();
-
+        final String result = KmgString.snakeCase(this.value);
         return result;
     }
 
@@ -282,48 +391,7 @@ public class KmgString {
      * @return キャメルケースの文字列
      */
     public String toCamelCase() {
-
-        String result = null;
-
-        /* 事前チェック */
-        // 値が空か
-        if (KmgString.isEmpty(this.value)) {
-            // 空の場合
-
-            return result;
-        }
-
-        /* 事前処理 */
-        // ローケースに変換
-        final String lowerCase = this.value.toLowerCase();
-
-        // 単語の配列を取得
-        final String[] words = DelimiterTypes.UNDERSCORE.split(lowerCase);
-
-        // 一つ目の単語
-        final String firstWord = KmgString.capitalize(words[0]);
-
-        /* 一つの単語の処理 */
-        // 単語が一つだけか
-        if (words.length == 1) {
-            // 一つだけの場合
-
-            result = firstWord.substring(0, 1).toLowerCase().concat(firstWord.substring(1));
-            return result;
-        }
-
-        /* キャメルケースの文字列を作成 */
-        final StringBuffer camelCaseSb = new StringBuffer();
-
-        // 一つ目の単語
-        camelCaseSb.append(firstWord);
-
-        // 単語の数分、キャメライズする
-        for (int i = 1; i < words.length; i++) {
-            camelCaseSb.append(KmgString.capitalize(words[i]));
-        }
-        result = camelCaseSb.substring(0, 1).toLowerCase().concat(camelCaseSb.substring(1));
-
+        final String result = KmgString.camelCase(this.value);
         return result;
     }
 

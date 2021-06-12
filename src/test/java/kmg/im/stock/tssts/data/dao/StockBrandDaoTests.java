@@ -34,20 +34,20 @@ public class StockBrandDaoTests {
      * @version 1.0.0
      */
     @Test
-    public void test001_GetId001_正常001_１件() {
+    public void テスト００１_識別番号を取得する０１_正常００１_１件() {
 
         /* 期待値 */
-        final long expectedInsertNum = 2;
+        final long expected = 2;
 
         /* 準備 */
         final long stockBrandCode = 1001;
         final LocalDate baseDate = LocalDate.now();
 
         /* テスト対象を呼び出す */
-        final long actualInsertNum = this.testTarget.getId(stockBrandCode, baseDate);
+        final long actual = this.testTarget.getId(stockBrandCode, baseDate);
 
         /* 期待値と比較 */
-        Assertions.assertEquals(expectedInsertNum, actualInsertNum);
+        Assertions.assertEquals(expected, actual);
 
     }
 
@@ -59,10 +59,10 @@ public class StockBrandDaoTests {
      * @version 1.0.0
      */
     @Test
-    public void test002_GetId002_正常002_３件() {
+    public void テスト００２_識別番号を取得する０２_正常００２_３件() {
 
         /* 期待値 */
-        final long[] expectedInsertNums = {
+        final long[] expected = {
             1, 2, 3
         };
 
@@ -72,12 +72,12 @@ public class StockBrandDaoTests {
         };
         final LocalDate baseDate = LocalDate.now();
 
-        for (int i = 0; i < expectedInsertNums.length; i++) {
+        for (int i = 0; i < expected.length; i++) {
             /* テスト対象を呼び出す */
-            final long actualInsertNum = this.testTarget.getId(stockBrandCodes[i], baseDate);
+            final long actual = this.testTarget.getId(stockBrandCodes[i], baseDate);
 
             /* 期待値と比較 */
-            Assertions.assertEquals(expectedInsertNums[i], actualInsertNum);
+            Assertions.assertEquals(expected[i], actual);
         }
     }
 }

@@ -1,20 +1,18 @@
 package kmg.im.stock.tssts.data.dto.impl;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
+import kmg.im.stock.tssts.data.dto.SptsptDto;
 
 /**
- * 株価時系列ＤＴＯ<br>
+ * 株価時系列期間の種類ＤＴＯ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-//TODO KenichiroArai 2021/04/30 ベースとなるクラスを作成する
-public class StockPriceTimeSeriesDtoImpl implements StockPriceTimeSeriesDto {
+public class SptsptDtoImpl implements SptsptDto {
 
     /** 識別番号 */
     private Long id;
@@ -46,32 +44,11 @@ public class StockPriceTimeSeriesDtoImpl implements StockPriceTimeSeriesDto {
     /** 名称 */
     private String name;
 
-    /** 株価時系列期間の種類ID */
-    private long sptsptId;
+    /** 株銘柄ID */
+    private Long stockBrandId;
 
-    /** 番号 */
-    private Long no;
-
-    /** 期間開始日 */
-    private LocalDate periodStartDate;
-
-    /** 期間終了日 */
-    private LocalDate periodEndDate;
-
-    /** 始値 */
-    private BigDecimal op;
-
-    /** 高値 */
-    private BigDecimal hp;
-
-    /** 安値 */
-    private BigDecimal lp;
-
-    /** 終値 */
-    private BigDecimal cp;
-
-    /** 出来高 */
-    private Long volume;
+    /** 期間の種類ID */
+    private Long periodTypeId;
 
     /**
      * 識別番号を設定する<br>
@@ -354,254 +331,58 @@ public class StockPriceTimeSeriesDtoImpl implements StockPriceTimeSeriesDto {
     }
 
     /**
-     * 株価時系列期間の種類IDを設定する<br>
+     * 株銘柄IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sptsptId
-     *                 株価時系列期間の種類ID
+     * @param stockBrandId
+     *                     株銘柄ID
      */
     @Override
-    public void setSptsptId(final long sptsptId) {
-        this.sptsptId = sptsptId;
+    public void setStockBrandId(final Long stockBrandId) {
+        this.stockBrandId = stockBrandId;
     }
 
     /**
-     * 株価時系列期間の種類IDを返す<br>
+     * 株銘柄IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列期間の種類ID
+     * @return 株銘柄ID
      */
     @Override
-    public long getSptsptId() {
-        final long result = this.sptsptId;
+    public Long getStockBrandId() {
+        final Long result = this.stockBrandId;
         return result;
     }
 
     /**
-     * 番号を設定する<br>
+     * 期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param no
-     *           番号
+     * @param periodTypeId
+     *                     期間の種類ID
      */
     @Override
-    public void setNo(final Long no) {
-        this.no = no;
+    public void setPeriodTypeId(final Long periodTypeId) {
+        this.periodTypeId = periodTypeId;
     }
 
     /**
-     * 番号を返す<br>
+     * 期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 番号
+     * @return 期間の種類ID
      */
     @Override
-    public Long getNo() {
-        final Long result = this.no;
-        return result;
-    }
-
-    /**
-     * 期間開始日を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param periodStartDate
-     *                        期間開始日
-     */
-    @Override
-    public void setPeriodStartDate(final LocalDate periodStartDate) {
-        this.periodStartDate = periodStartDate;
-    }
-
-    /**
-     * 期間開始日を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 期間開始日
-     */
-    @Override
-    public LocalDate getPeriodStartDate() {
-        final LocalDate result = this.periodStartDate;
-        return result;
-    }
-
-    /**
-     * 期間終了日を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param periodEndDate
-     *                      期間終了日
-     */
-    @Override
-    public void setPeriodEndDate(final LocalDate periodEndDate) {
-        this.periodEndDate = periodEndDate;
-    }
-
-    /**
-     * 期間終了日を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 期間終了日
-     */
-    @Override
-    public LocalDate getPeriodEndDate() {
-        final LocalDate result = this.periodEndDate;
-        return result;
-    }
-
-    /**
-     * 始値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param op
-     *           始値
-     */
-    @Override
-    public void setOp(final BigDecimal op) {
-        this.op = op;
-    }
-
-    /**
-     * 始値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 始値
-     */
-    @Override
-    public BigDecimal getOp() {
-        final BigDecimal result = this.op;
-        return result;
-    }
-
-    /**
-     * 高値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param hp
-     *           高値
-     */
-    @Override
-    public void setHp(final BigDecimal hp) {
-        this.hp = hp;
-    }
-
-    /**
-     * 高値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 高値
-     */
-    @Override
-    public BigDecimal getHp() {
-        final BigDecimal result = this.hp;
-        return result;
-    }
-
-    /**
-     * 安値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param lp
-     *           安値
-     */
-    @Override
-    public void setLp(final BigDecimal lp) {
-        this.lp = lp;
-    }
-
-    /**
-     * 安値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 安値
-     */
-    @Override
-    public BigDecimal getLp() {
-        final BigDecimal result = this.lp;
-        return result;
-    }
-
-    /**
-     * 終値を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param cp
-     *           終値
-     */
-    @Override
-    public void setCp(final BigDecimal cp) {
-        this.cp = cp;
-    }
-
-    /**
-     * 終値を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 終値
-     */
-    @Override
-    public BigDecimal getCp() {
-        final BigDecimal result = this.cp;
-        return result;
-    }
-
-    /**
-     * 出来高を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param volume
-     *               出来高
-     */
-    @Override
-    public void setVolume(final Long volume) {
-        this.volume = volume;
-    }
-
-    /**
-     * 出来高を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 出来高
-     */
-    @Override
-    public Long getVolume() {
-        final Long result = this.volume;
+    public Long getPeriodTypeId() {
+        final Long result = this.periodTypeId;
         return result;
     }
 

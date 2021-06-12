@@ -11,9 +11,12 @@ import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
+import kmg.im.stock.tssts.domain.service.AbstractStockPriceTimeSeriesService;
+import kmg.im.stock.tssts.domain.service.SptsptService;
 import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesMonthlyService;
-import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
+import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
+import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列月足サービス<br>
@@ -23,13 +26,17 @@ import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
  * @version 1.0.0
  */
 @Service
-public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSeriesMonthlyService {
+public class StockPriceTimeSeriesMonthlyServiceImpl extends AbstractStockPriceTimeSeriesService
+    implements StockPriceTimeSeriesMonthlyService {
 
     /** 株価時系列ロジック */
     private final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic;
 
     /** 株銘柄サービス */
     private final StockBrandService stockBrandService;
+
+    /** 株価時系列期間の種類サービス */
+    private final SptsptService sptsptService;
 
     /**
      * コンストラクタ<br>
@@ -41,11 +48,15 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
      *                                  株価時系列ロジック
      * @param stockBrandService
      *                                  株銘柄サービス
+     * @param sptsptService
+     *                                  株価時系列期間の種類サービス
      */
     public StockPriceTimeSeriesMonthlyServiceImpl(final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
-        final StockBrandService stockBrandService) {
+        final StockBrandService stockBrandService, final SptsptService sptsptService) {
+        super(stockPriceTimeSeriesLogic);
         this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
         this.stockBrandService = stockBrandService;
+        this.sptsptService = sptsptService;
     }
 
     /**
@@ -54,37 +65,47 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @return 削除数
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public void delete() {
-        this.stockPriceTimeSeriesLogic.delete(TypeOfPeriodTypes.MONTHLY);
+    public long delete() throws TsstsDomainException {
+        final long result = this.stockPriceTimeSeriesLogic.delete(PeriodTypeTypes.MONTHLY);
+        return result;
     }
 
     /**
-     * 登録する<br>
+     * 株価時系列管理モデルにして返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockPriceDataMgtModel
      *                               株価データ管理モデル
+     * @return 株価時系列管理モデル throws TsstsDomainException
      */
     @Override
-    public void register(final StockPriceDataMgtModel stockPriceDataMgtModel) {
+    public StockPriceTimeSeriesMgtModel toStockPriceTimeSeriesMgtModel(
+        final StockPriceDataMgtModel stockPriceDataMgtModel) throws TsstsDomainException {
+
+        final StockPriceTimeSeriesMgtModel result = new StockPriceTimeSeriesMgtModelImpl();
 
         if (stockPriceDataMgtModel.isDataListEmpty()) {
-            return;
+            return result;
         }
 
-        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel = new StockPriceTimeSeriesMgtModelImpl();
         stockPriceDataMgtModel.setStockBrandCode(stockPriceDataMgtModel.getStockBrandCode());
 
         /* 株価銘柄IDを取得する */
         final long stockBrandId = this.stockBrandService.getStockBrandId(stockPriceDataMgtModel.getStockBrandCode());
         // 株価銘柄IDを設定する
-        stockPriceTimeSeriesMgtModel.setStockBrandId(stockBrandId);
+        result.setStockBrandId(stockBrandId);
         // 期間の種類の種類を設定する
-        stockPriceTimeSeriesMgtModel.setTypeOfPeriodTypes(TypeOfPeriodTypes.MONTHLY);
+        result.setPeriodTypeTypes(PeriodTypeTypes.MONTHLY);
+        // 株価銘柄IDを設定する
+        final long sptsptId = this.sptsptService.getSptsptId(result.getStockBrandId(), result.getPeriodTypeTypes());
+        result.setSptsptId(sptsptId);
 
         // TODO KenichiroArai 2021/05/16 SQLとの作成とどちらが早いか試す
         StockPriceTimeSeriesModel addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl(); // 追加する株価時系列モデル
@@ -114,7 +135,7 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
                 addStockPriceTimeSeriesModel.setVolume(volume);
 
                 // 株価月足のリストに追加
-                stockPriceTimeSeriesMgtModel.addData(addStockPriceTimeSeriesModel);
+                result.addData(addStockPriceTimeSeriesModel);
 
                 // 現在の情報を追加する株価時系列管理モデルに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
@@ -146,17 +167,16 @@ public class StockPriceTimeSeriesMonthlyServiceImpl implements StockPriceTimeSer
         addStockPriceTimeSeriesModel.setVolume(volume);
 
         // 株価月足のリストに追加
-        stockPriceTimeSeriesMgtModel.addData(addStockPriceTimeSeriesModel);
+        result.addData(addStockPriceTimeSeriesModel);
 
         // TODO KenichiroArai 2021/05/16 デバッグ出力
         System.out.println("株価月足：開始");
-        stockPriceTimeSeriesMgtModel.getDataList()
+        result.getDataList()
             .forEach(dto -> System.out.println(
                 String.format("期間開始日：%s, 期間終了日：%s, 始値：%f, 安値：%f, 高値：%f, 終値：%f, 出来高：%d", dto.getPeriodStartDate(),
                     dto.getPeriodEndDate(), dto.getOp(), dto.getLp(), dto.getHp(), dto.getCp(), dto.getVolume())));
         System.out.println("株価週足：終了");
 
-        this.stockPriceTimeSeriesLogic.register(stockPriceTimeSeriesMgtModel);
-
+        return result;
     }
 }

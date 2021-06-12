@@ -2,7 +2,7 @@ package kmg.im.stock.tssts.domain.model;
 
 import java.util.List;
 
-import kmg.im.stock.tssts.infrastructure.types.TypeOfPeriodTypes;
+import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列管理モデルインタフェース<br>
@@ -22,7 +22,7 @@ public interface StockPriceTimeSeriesMgtModel {
      * @param stockBrandId
      *                     株銘柄ID
      */
-    void setStockBrandId(Long stockBrandId);
+    void setStockBrandId(long stockBrandId);
 
     /**
      * 株銘柄IDを返す<br>
@@ -32,7 +32,28 @@ public interface StockPriceTimeSeriesMgtModel {
      * @version 1.0.0
      * @return 株銘柄ID
      */
-    Long getStockBrandId();
+    long getStockBrandId();
+
+    /**
+     * 株価時系列期間の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
+     */
+    void setSptsptId(long sptsptId);
+
+    /**
+     * 株価時系列期間の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列期間の種類ID
+     */
+    long getSptsptId();
 
     /**
      * 株価銘柄コードを設定する<br>
@@ -61,10 +82,10 @@ public interface StockPriceTimeSeriesMgtModel {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param typeOfPeriodTypes
-     *                          期間の種類の種類
+     * @param periodTypeTypes
+     *                        期間の種類の種類
      */
-    void setTypeOfPeriodTypes(TypeOfPeriodTypes typeOfPeriodTypes);
+    void setPeriodTypeTypes(PeriodTypeTypes periodTypeTypes);
 
     /**
      * 期間の種類の種類を返す<br>
@@ -74,7 +95,7 @@ public interface StockPriceTimeSeriesMgtModel {
      * @version 1.0.0
      * @return 期間の種類の種類
      */
-    TypeOfPeriodTypes getTypeOfPeriodTypes();
+    PeriodTypeTypes getPeriodTypeTypes();
 
     /**
      * 株価時系列リストをクリアする<br>
