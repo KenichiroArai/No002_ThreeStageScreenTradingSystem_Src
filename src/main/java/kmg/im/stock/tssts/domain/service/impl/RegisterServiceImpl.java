@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.service.RegisterService;
@@ -202,8 +203,31 @@ public class RegisterServiceImpl implements RegisterService {
         // 登録する
         this.stockPriceTimeSeriesMonthlyService.register(stockPriceTimeSeriesMgtMonthlyModel);
 
-        /* 株価計算値 */
+        /* 株価計算値日足 */
         // 削除する
+        this.stockPriceCalcValueService.delete(stockPriceTimeSeriesMgtDailyModel.getSptsptId());
+        // 計算する
+        final StockPriceCalcValueMgtModel stockPriceCalcValueMgtDailyModel = this.stockPriceCalcValueService
+            .calc(stockPriceTimeSeriesMgtDailyModel);
+        // 登録する
+        this.stockPriceCalcValueService.register(stockPriceCalcValueMgtDailyModel);
 
+        /* 株価計算値週足 */
+        // 削除する
+        this.stockPriceCalcValueService.delete(stockPriceTimeSeriesMgtWeeklyModel.getSptsptId());
+        // 計算する
+        final StockPriceCalcValueMgtModel stockPriceCalcValueMgtWeeklyModel = this.stockPriceCalcValueService
+            .calc(stockPriceTimeSeriesMgtWeeklyModel);
+        // 登録する
+        this.stockPriceCalcValueService.register(stockPriceCalcValueMgtWeeklyModel);
+
+        /* 株価計算値月足 */
+        // 削除する
+        this.stockPriceCalcValueService.delete(stockPriceTimeSeriesMgtMonthlyModel.getSptsptId());
+        // 計算する
+        final StockPriceCalcValueMgtModel stockPriceCalcValueMgtMonthlyModel = this.stockPriceCalcValueService
+            .calc(stockPriceTimeSeriesMgtMonthlyModel);
+        // 登録する
+        this.stockPriceCalcValueService.register(stockPriceCalcValueMgtMonthlyModel);
     }
 }

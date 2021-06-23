@@ -200,15 +200,6 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
 
         // 株価週足のリストに追加
         result.addData(addStockPriceTimeSeriesModel);
-
-        // TODO KenichiroArai 2021/05/16 デバッグ出力
-        System.out.println("株価週足：開始");
-        result.getDataList()
-            .forEach(dto -> System.out.println(
-                String.format("期間開始日：%s, 期間終了日：%s, 始値：%f, 安値：%f, 高値：%f, 終値：%f, 出来高：%d", dto.getPeriodStartDate(),
-                    dto.getPeriodEndDate(), dto.getOp(), dto.getLp(), dto.getHp(), dto.getCp(), dto.getVolume())));
-        System.out.println("株価週足：終了");
-
         return result;
     }
 }
