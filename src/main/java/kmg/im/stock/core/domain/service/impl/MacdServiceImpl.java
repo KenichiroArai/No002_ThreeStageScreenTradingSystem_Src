@@ -1,6 +1,7 @@
 package kmg.im.stock.core.domain.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,7 +23,7 @@ import kmg.im.stock.core.domain.service.MacdService;
 public class MacdServiceImpl implements MacdService {
 
     /** データリスト */
-    private List<Supplier<BigDecimal>> dataList;
+    private final List<Supplier<BigDecimal>> dataList;
 
     /** 短期 */
     private int st;
@@ -34,19 +35,19 @@ public class MacdServiceImpl implements MacdService {
     private int calcPeriod;
 
     /** 短期リスト */
-    private List<Supplier<BigDecimal>> stList;
+    private final List<Supplier<BigDecimal>> stList;
 
     /** 長期リスト */
-    private List<Supplier<BigDecimal>> ltList;
+    private final List<Supplier<BigDecimal>> ltList;
 
     /** ＭＣＡＤラインのリスト */
-    private List<Supplier<BigDecimal>> lineList;
+    private final List<Supplier<BigDecimal>> lineList;
 
     /** ＭＡＣＤシグナルのリスト */
-    private List<Supplier<BigDecimal>> signalList;
+    private final List<Supplier<BigDecimal>> signalList;
 
     /** ＭＡＣＤヒストグラムのリスト */
-    private List<Supplier<BigDecimal>> histogramList;
+    private final List<Supplier<BigDecimal>> histogramList;
 
     /** 指数移動平均ロジック */
     private final EmaLogic emaLogic;
@@ -68,6 +69,12 @@ public class MacdServiceImpl implements MacdService {
     public MacdServiceImpl(final EmaLogic emaLogic, final MacdLogic macdLogic) {
         this.emaLogic = emaLogic;
         this.macdLogic = macdLogic;
+        this.dataList = new ArrayList<>();
+        this.stList = new ArrayList<>();
+        this.ltList = new ArrayList<>();
+        this.lineList = new ArrayList<>();
+        this.signalList = new ArrayList<>();
+        this.histogramList = new ArrayList<>();
     }
 
     /**
@@ -89,7 +96,15 @@ public class MacdServiceImpl implements MacdService {
     @SuppressWarnings("hiding")
     public void initialize(final List<Supplier<BigDecimal>> dataList, final int st, final int lt,
         final int calcPeriod) {
-        this.dataList = dataList;
+
+        this.dataList.clear();
+        this.stList.clear();
+        this.ltList.clear();
+        this.lineList.clear();
+        this.signalList.clear();
+        this.histogramList.clear();
+
+        this.dataList.addAll(dataList);
         this.st = st;
         this.lt = lt;
         this.calcPeriod = calcPeriod;
@@ -231,14 +246,23 @@ public class MacdServiceImpl implements MacdService {
     @Override
     public void clacLine() {
 
+        this.stList.clear();
+        this.ltList.clear();
+        this.lineList.clear();
+        this.signalList.clear();
+        this.histogramList.clear();
+
         /* 短期ＥＭＡを求める */
-        this.stList = this.emaLogic.calc(this.dataList, this.st);
+        final List<Supplier<BigDecimal>> tmpStList = this.emaLogic.calc(this.dataList, this.st);
+        this.stList.addAll(tmpStList);
 
         /* 長期ＥＭＡを求める */
-        this.ltList = this.emaLogic.calc(this.dataList, this.lt);
+        final List<Supplier<BigDecimal>> tmpLtList = this.emaLogic.calc(this.dataList, this.lt);
+        this.ltList.addAll(tmpLtList);
 
         /* ラインを求める */
-        this.lineList = this.macdLogic.getLineList(this.dataList, this.st, this.lt);
+        final List<Supplier<BigDecimal>> tmpLineList = this.macdLogic.getLineList(this.dataList, this.st, this.lt);
+        this.lineList.addAll(tmpLineList);
     }
 
     /**
@@ -256,9 +280,12 @@ public class MacdServiceImpl implements MacdService {
 
         if (ListUtils.isEmpty(this.lineList)) {
             this.clacLine();
+        } else {
+            this.signalList.clear();
         }
 
-        this.signalList = this.macdLogic.getSignalList(this.lineList, this.calcPeriod);
+        final List<Supplier<BigDecimal>> tmpList = this.macdLogic.getSignalList(this.lineList, this.calcPeriod);
+        this.signalList.addAll(tmpList);
     }
 
     /**
@@ -276,8 +303,11 @@ public class MacdServiceImpl implements MacdService {
 
         if (ListUtils.isEmpty(this.signalList)) {
             this.clacSignal();
+        } else {
+            this.signalList.clear();
         }
 
-        this.histogramList = this.macdLogic.getHistogramList(this.lineList, this.signalList);
+        final List<Supplier<BigDecimal>> tmpList = this.macdLogic.getHistogramList(this.lineList, this.signalList);
+        this.histogramList.addAll(tmpList);
     }
 }

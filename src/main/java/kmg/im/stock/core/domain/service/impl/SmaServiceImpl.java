@@ -1,6 +1,7 @@
 package kmg.im.stock.core.domain.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -23,13 +24,13 @@ public class SmaServiceImpl implements SmaService {
     private final SmaLogic smaLogic;
 
     /** データリスト */
-    private List<Supplier<BigDecimal>> dataList;
+    private final List<Supplier<BigDecimal>> dataList;
 
     /** 計算日数 */
     private int calcDays;
 
     /** 計算結果のリスト */
-    private List<Supplier<BigDecimal>> clacResultList;
+    private final List<Supplier<BigDecimal>> clacResultList;
 
     /**
      * コンストラクタ<br>
@@ -42,6 +43,8 @@ public class SmaServiceImpl implements SmaService {
      */
     public SmaServiceImpl(final SmaLogic smaLogic) {
         this.smaLogic = smaLogic;
+        this.dataList = new ArrayList<>();
+        this.clacResultList = new ArrayList<>();
     }
 
     /**
@@ -58,7 +61,10 @@ public class SmaServiceImpl implements SmaService {
     @Override
     @SuppressWarnings("hiding")
     public void initialize(final List<Supplier<BigDecimal>> dataList, final int calcDays) {
-        this.dataList = dataList;
+
+        this.dataList.clear();
+
+        this.dataList.addAll(dataList);
         this.calcDays = calcDays;
     }
 
@@ -116,7 +122,9 @@ public class SmaServiceImpl implements SmaService {
      */
     @Override
     public void calc() {
-        this.clacResultList = this.smaLogic.calc(this.dataList, this.calcDays);
+        this.clacResultList.clear();
+        final List<Supplier<BigDecimal>> tmpList = this.smaLogic.calc(this.dataList, this.calcDays);
+        this.clacResultList.addAll(tmpList);
     }
 
 }
