@@ -12,27 +12,6 @@ import java.util.List;
 public interface StockPriceCalcValueMgtModel {
 
     /**
-     * 株価時系列IDを設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param sptsId
-     *               株価時系列ID
-     */
-    void setSptsId(Long sptsId);
-
-    /**
-     * 株価時系列IDを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株価時系列ID
-     */
-    Long getSptsId();
-
-    /**
      * 株価計算値リストをクリアする<br>
      *
      * @author KenichiroArai

@@ -119,4 +119,20 @@ public class StockPriceTimeSeriesDailyServiceImpl extends AbstractStockPriceTime
 
         return result;
     }
+
+    /**
+     * 株価時系列管理モデルを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列管理モデル
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
+     */
+    @Override
+    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException {
+        final StockPriceTimeSeriesMgtModel result = null;
+        return result;
+    }
 }

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import kmg.core.infrastructure.type.KmgString;
 
@@ -17,7 +18,7 @@ import kmg.core.infrastructure.type.KmgString;
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum FieldCreationTypeTypes {
+public enum FieldCreationTypeTypes implements Supplier<String> {
 
     /* 定義：開始 */
 
@@ -73,7 +74,7 @@ public enum FieldCreationTypeTypes {
 
         /* 種類のマップにプット */
         for (final FieldCreationTypeTypes type : FieldCreationTypeTypes.values()) {
-            FieldCreationTypeTypes.valuesMap.put(type.getValue(), type);
+            FieldCreationTypeTypes.valuesMap.put(type.get(), type);
         }
     }
 
@@ -168,4 +169,17 @@ public enum FieldCreationTypeTypes {
         return result;
     }
 
+    /**
+     * 種類の値<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 種類の値
+     */
+    @Override
+    public String get() {
+        final String result = this.value;
+        return result;
+    }
 }

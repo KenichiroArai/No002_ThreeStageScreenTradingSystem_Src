@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.StockPriceCalcValueLogic;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.service.StockPriceCalcValueService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
@@ -53,25 +52,6 @@ public class StockPriceCalcValueServiceImpl implements StockPriceCalcValueServic
     }
 
     /**
-     * 計算する<br>
-     * <p>
-     * 計算し、計算結果として株価時系列管理モデルにして返す。
-     * </p>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param stockPriceTimeSeriesMgtModel
-     *                                     株価時系列管理モデル
-     * @return 株価時系列管理モデル
-     */
-    @Override
-    public StockPriceCalcValueMgtModel calc(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) {
-        // TODO KenichiroArai 2021/06/04 未実装
-        return null;
-    }
-
-    /**
      * 登録する<br>
      *
      * @author KenichiroArai
@@ -79,10 +59,12 @@ public class StockPriceCalcValueServiceImpl implements StockPriceCalcValueServic
      * @version 1.0.0
      * @param stockPriceCalcValueMgtModel
      *                                    株価計算値管理モデル
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public void register(final StockPriceCalcValueMgtModel stockPriceCalcValueMgtModel) {
-        // TODO KenichiroArai 2021/06/04 未実装
+    public void register(final StockPriceCalcValueMgtModel stockPriceCalcValueMgtModel) throws TsstsDomainException {
+        this.stockPriceCalcValueLogic.register(stockPriceCalcValueMgtModel);
     }
 
 }

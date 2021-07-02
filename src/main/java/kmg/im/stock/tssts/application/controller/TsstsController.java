@@ -20,7 +20,7 @@ import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
 public class TsstsController {
 
     /** ロガー */
-    private static Logger LOGGER = LoggerFactory.getLogger(TsstsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TsstsController.class);
 
     /** ログメッセージリゾルバ */
     private final LogMessageResolver logMessageResolver;

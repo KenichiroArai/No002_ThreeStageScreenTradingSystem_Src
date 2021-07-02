@@ -244,6 +244,27 @@ public interface StockPriceCalcValueDto {
     Long getSptsId();
 
     /**
+     * 株価計算値の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param spcvtId
+     *                株価計算値の種類ID
+     */
+    void setSpcvtId(Long spcvtId);
+
+    /**
+     * 株価計算値の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値の種類ID
+     */
+    Long getSpcvtId();
+
+    /**
      * 計算値を設定する<br>
      *
      * @author KenichiroArai

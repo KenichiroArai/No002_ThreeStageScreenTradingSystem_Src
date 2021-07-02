@@ -3,6 +3,7 @@ package kmg.core.infrastructure.types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import kmg.core.infrastructure.type.KmgString;
 
@@ -14,7 +15,7 @@ import kmg.core.infrastructure.type.KmgString;
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum DelimiterTypes {
+public enum DelimiterTypes implements Supplier<String> {
 
     /* 定義：開始 */
 
@@ -76,7 +77,7 @@ public enum DelimiterTypes {
 
         /* 種類のマップにプット */
         for (final DelimiterTypes type : DelimiterTypes.values()) {
-            DelimiterTypes.valuesMap.put(type.getValue(), type);
+            DelimiterTypes.valuesMap.put(type.get(), type);
 
         }
     }
@@ -269,4 +270,17 @@ public enum DelimiterTypes {
         return result;
     }
 
+    /**
+     * 種類の値<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 種類の値
+     */
+    @Override
+    public String get() {
+        final String result = this.value;
+        return result;
+    }
 }

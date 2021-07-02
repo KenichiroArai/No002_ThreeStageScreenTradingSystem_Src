@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.type.KmgDecimal;
+import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.domain.logic.EmaLogic;
 import kmg.im.stock.core.domain.logic.SmaLogic;
 
@@ -56,6 +57,10 @@ public class EmaLogicImpl implements EmaLogic {
     public List<Supplier<BigDecimal>> calc(final List<Supplier<BigDecimal>> dataList, final int n) {
 
         final List<Supplier<BigDecimal>> result = new ArrayList<>();
+
+        if (ListUtils.isEmpty(dataList)) {
+            return result;
+        }
 
         /* ＳＭＡを計算する */
         final List<Supplier<BigDecimal>> smaDataList = new ArrayList<>();

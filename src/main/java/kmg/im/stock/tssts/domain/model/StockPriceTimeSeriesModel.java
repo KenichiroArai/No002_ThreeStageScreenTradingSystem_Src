@@ -3,6 +3,7 @@ package kmg.im.stock.tssts.domain.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.function.Supplier;
 
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 
@@ -14,7 +15,7 @@ import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
  * @version 1.0.0
  */
 //TODO KenichiroArai 2021/05/28 ベースとなるクラスを作成する
-public interface StockPriceTimeSeriesModel extends PowerIndexCalcModel {
+public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIndexCalcModel {
 
     /**
      * 識別番号を設定する<br>
@@ -395,5 +396,16 @@ public interface StockPriceTimeSeriesModel extends PowerIndexCalcModel {
      */
     @Override
     Long getVolume();
+
+    /**
+     * 終値を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 終値
+     */
+    @Override
+    BigDecimal get();
 
 }

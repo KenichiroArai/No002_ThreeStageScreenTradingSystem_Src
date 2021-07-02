@@ -2,6 +2,7 @@ package kmg.im.stock.tssts.infrastructure.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * 期間の種類の種類<br>
@@ -11,7 +12,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum PeriodTypeTypes {
+public enum PeriodTypeTypes implements Supplier<Long> {
 
     /* 定義：開始 */
 
@@ -43,7 +44,7 @@ public enum PeriodTypeTypes {
 
         /* 種類のマップにプット */
         for (final PeriodTypeTypes type : PeriodTypeTypes.values()) {
-            PeriodTypeTypes.VALUES_MAP.put(type.getValue(), type);
+            PeriodTypeTypes.VALUES_MAP.put(type.get(), type);
         }
     }
 
@@ -154,6 +155,20 @@ public enum PeriodTypeTypes {
      */
     public Long getValue() {
         final Long result = this.value;
+        return result;
+    }
+
+    /**
+     * 種類の値<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 種類の値
+     */
+    @Override
+    public Long get() {
+        final long result = this.value;
         return result;
     }
 }

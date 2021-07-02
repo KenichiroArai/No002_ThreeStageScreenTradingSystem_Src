@@ -58,7 +58,7 @@ public class AccessorInterfaceCreationlTool {
         try {
 
             template = Files.readAllLines(AccessorInterfaceCreationlTool.TEMPLATE_PATH).stream()
-                .collect(Collectors.joining(DelimiterTypes.LINE_SEPARATOR.getValue()));
+                .collect(Collectors.joining(DelimiterTypes.LINE_SEPARATOR.get()));
 
         } catch (final FileNotFoundException e) {
             throw e;

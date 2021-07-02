@@ -1,7 +1,10 @@
 package kmg.im.stock.tssts.domain.model;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.Supplier;
 
+import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
@@ -157,4 +160,24 @@ public interface StockPriceTimeSeriesMgtModel {
      * @return 株価時系列リスト
      */
     List<StockPriceTimeSeriesModel> getDataList();
+
+    /**
+     * サプライヤデータリストとして返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return サプライヤデータリスト
+     */
+    List<Supplier<BigDecimal>> toSupplierDataList();
+
+    /**
+     * 勢力指数計算モデルリストとして返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 勢力指数計算モデルリスト
+     */
+    List<PowerIndexCalcModel> toPowerIndexCalcModelList();
 }

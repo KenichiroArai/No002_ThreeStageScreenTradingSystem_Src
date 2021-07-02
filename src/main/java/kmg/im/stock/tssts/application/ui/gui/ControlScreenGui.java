@@ -12,7 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import kmg.im.stock.tssts.No002ThreeStageScreenTradingSystemApplication;
+import kmg.KmgApplication;
 
 /**
  * 制御画面ＧＵＩ<br>
@@ -38,7 +38,7 @@ public class ControlScreenGui extends Application {
      */
     public static void main(final String[] args) {
 
-        ControlScreenGui.context = SpringApplication.run(No002ThreeStageScreenTradingSystemApplication.class);
+        ControlScreenGui.context = SpringApplication.run(KmgApplication.class);
         Application.launch(args);
     }
 
@@ -56,11 +56,11 @@ public class ControlScreenGui extends Application {
 
         stage.setTitle("制御画面");
         try {
-            final URL        url  = this.getClass().getResource("ControlScreenGui.fxml");
+            final URL url = this.getClass().getResource("ControlScreenGui.fxml");
             final FXMLLoader fxml = new FXMLLoader(url);
             fxml.setControllerFactory(ControlScreenGui.context::getBean);
-            final AnchorPane root  = fxml.load();
-            final Scene      scene = new Scene(root);
+            final AnchorPane root = fxml.load();
+            final Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } catch (final IOException e) {

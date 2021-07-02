@@ -31,6 +31,17 @@ public interface MacdService {
     void initialize(final List<Supplier<BigDecimal>> dataList, final int st, final int lt, final int calcPeriod);
 
     /**
+     * 初期化する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param dataList
+     *                 データリスト
+     */
+    void initialize(final List<Supplier<BigDecimal>> dataList);
+
+    /**
      * データリストを返す<br>
      *
      * @author KenichiroArai

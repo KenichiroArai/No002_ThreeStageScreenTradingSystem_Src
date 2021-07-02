@@ -577,4 +577,18 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
         return result;
     }
 
+    /**
+     * 終値を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 終値
+     */
+    @Override
+    public BigDecimal get() {
+        final BigDecimal result = this.cp;
+        return result;
+    }
+
 }

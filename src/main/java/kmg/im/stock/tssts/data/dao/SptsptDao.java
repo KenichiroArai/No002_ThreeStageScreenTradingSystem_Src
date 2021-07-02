@@ -74,7 +74,7 @@ public class SptsptDao {
         /* パラメータを設定する */
         final SptsptDto sptsptDto = new SptsptDtoImpl();
         sptsptDto.setStockBrandId(stockBrandId);
-        sptsptDto.setPeriodTypeId(periodTypeTypes.getValue());
+        sptsptDto.setPeriodTypeId(periodTypeTypes.get());
         sptsptDto.setStartDate(baseDate);
 
         /* DBを実行する */
@@ -114,7 +114,7 @@ public class SptsptDao {
         sptsptDto.setUpdateDate(LocalDateTime.now());
         sptsptDto.setNote(KmgString.EMPTY);
         sptsptDto.setStockBrandId(stockBrandId);
-        sptsptDto.setPeriodTypeId(periodTypeTypes.getValue());
+        sptsptDto.setPeriodTypeId(periodTypeTypes.get());
 
         /* DBを実行する */
         final SqlParameterSource params = new BeanPropertySqlParameterSource(sptsptDto);

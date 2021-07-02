@@ -1,32 +1,41 @@
-package kmg.im.stock.tssts.infrastructure.types;
+package kmg.im.stock.core.infrastructure.types;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * メッセージの種類<br>
+ * コード値の種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum MessageTypes implements Supplier<String> {
+public enum CodeValueTypes implements Supplier<Long> {
 
     /* 定義：開始 */
 
     /** 指定無し */
-    NONE("指定無し", null),
+    NONE("指定無し", -1, CodeKindTypes.NONE),
 
-    /** 存在するディレクトリではありません。存在するディレクトリを指定してください。 */
-    KMG_IM_STOCK_TSSTS_MSG_NO10001("存在するディレクトリではありません。存在するディレクトリを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10001"),
+    /** 日足 */
+    DAILY("日足", 1, CodeKindTypes.TYPE_OF_PERIOD),
 
-    /** 存在するファイルではありません。存在するファイルを指定してください。 */
-    KMG_IM_STOCK_TSSTS_MSG_NO10002("存在するファイルではありません。存在するファイルを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10002"),
+    /** 週足 */
+    WEEKLY("週足", 2, CodeKindTypes.TYPE_OF_PERIOD),
 
-    /** ディレクトリは指定できません。ファイルを指定してください。 */
-    KMG_IM_STOCK_TSSTS_MSG_NO10003("ディレクトリは指定できません。ファイルを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10003"),
+    /** 月足 */
+    MONTHLY("月足", 3, CodeKindTypes.TYPE_OF_PERIOD),
+
+    /** トレンドフォロー型 */
+    TREND_FOLLOW_TYPE("トレンドフォロー型", 4, CodeKindTypes.INDICATOR_TYPE),
+
+    /** オシレーター */
+    OSCILLATOR("オシレーター", 5, CodeKindTypes.INDICATOR_TYPE),
+
+    /** その他 */
+    OTHER("その他", 6, CodeKindTypes.INDICATOR_TYPE),
 
     /* 定義：終了 */
     ;
@@ -35,16 +44,19 @@ public enum MessageTypes implements Supplier<String> {
     private String name;
 
     /** 値 */
-    private String value;
+    private Long value;
+
+    /** コード種類の種類 */
+    private CodeKindTypes codeKindTypes;
 
     /** 種類のマップ */
-    private static final Map<String, MessageTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<Long, CodeValueTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final MessageTypes type : MessageTypes.values()) {
-            MessageTypes.VALUES_MAP.put(type.get(), type);
+        for (final CodeValueTypes type : CodeValueTypes.values()) {
+            CodeValueTypes.VALUES_MAP.put(type.get(), type);
         }
     }
 
@@ -55,14 +67,17 @@ public enum MessageTypes implements Supplier<String> {
      * @sine 1.0.0
      * @version 1.0.0
      * @param name
-     *              名称
+     *                      名称
      * @param value
-     *              値
+     *                      値
+     * @param codeKindTypes
+     *                      コード種類の種類
      */
-    MessageTypes(final String name, final String value) {
+    CodeValueTypes(final String name, final long value, final CodeKindTypes codeKindTypes) {
 
         this.name = name;
         this.value = value;
+        this.codeKindTypes = codeKindTypes;
 
     }
 
@@ -79,9 +94,9 @@ public enum MessageTypes implements Supplier<String> {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static MessageTypes getEnum(final String value) {
+    public static CodeValueTypes getEnum(final Long value) {
 
-        MessageTypes result = MessageTypes.VALUES_MAP.get(value);
+        CodeValueTypes result = CodeValueTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -97,9 +112,9 @@ public enum MessageTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 初期値
      */
-    public static MessageTypes getInitValue() {
+    public static CodeValueTypes getInitValue() {
 
-        final MessageTypes result = NONE;
+        final CodeValueTypes result = NONE;
         return result;
 
     }
@@ -112,9 +127,9 @@ public enum MessageTypes implements Supplier<String> {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static MessageTypes getDefault() {
+    public static CodeValueTypes getDefault() {
 
-        final MessageTypes result = NONE;
+        final CodeValueTypes result = NONE;
         return result;
     }
 
@@ -128,7 +143,7 @@ public enum MessageTypes implements Supplier<String> {
      */
     @Override
     public String toString() {
-        final String result = this.value;
+        final String result = this.value.toString();
         return result;
     }
 
@@ -153,8 +168,21 @@ public enum MessageTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 値
      */
-    public String getValue() {
-        final String result = this.value;
+    public Long getValue() {
+        final long result = this.value;
+        return result;
+    }
+
+    /**
+     * コード種類の種類を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return コード種類の種類
+     */
+    public CodeKindTypes getCodeKindTypes() {
+        final CodeKindTypes result = this.codeKindTypes;
         return result;
     }
 
@@ -167,8 +195,9 @@ public enum MessageTypes implements Supplier<String> {
      * @return 種類の値
      */
     @Override
-    public String get() {
-        final String result = this.value;
+    public Long get() {
+        final long result = this.value;
         return result;
     }
+
 }

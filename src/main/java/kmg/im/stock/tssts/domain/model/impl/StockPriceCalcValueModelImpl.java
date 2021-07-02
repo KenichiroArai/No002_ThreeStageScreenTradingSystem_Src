@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
 
 /**
@@ -44,6 +45,12 @@ public class StockPriceCalcValueModelImpl implements StockPriceCalcValueModel {
 
     /** 名称 */
     private String name;
+
+    /** 株価計算値ID */
+    private Long sptsId;
+
+    /** 株価計算値の種類ID */
+    private StockPriceCalcValueTypeTypes spcvtId;
 
     /** 計算値 */
     private BigDecimal calcValue;
@@ -329,6 +336,62 @@ public class StockPriceCalcValueModelImpl implements StockPriceCalcValueModel {
     }
 
     /**
+     * 株価計算値IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsId
+     *               株価計算値ID
+     */
+    @Override
+    public void setSptsId(final Long sptsId) {
+        this.sptsId = sptsId;
+    }
+
+    /**
+     * 株価計算値IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値ID
+     */
+    @Override
+    public Long getSptsId() {
+        final Long result = this.sptsId;
+        return result;
+    }
+
+    /**
+     * 株価計算値の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param spcvtId
+     *                株価計算値の種類ID
+     */
+    @Override
+    public void setSpcvtId(final StockPriceCalcValueTypeTypes spcvtId) {
+        this.spcvtId = spcvtId;
+    }
+
+    /**
+     * 株価計算値の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値の種類ID
+     */
+    @Override
+    public StockPriceCalcValueTypeTypes getSpcvtId() {
+        final StockPriceCalcValueTypeTypes result = this.spcvtId;
+        return result;
+    }
+
+    /**
      * 計算値を設定する<br>
      *
      * @author KenichiroArai
@@ -352,6 +415,20 @@ public class StockPriceCalcValueModelImpl implements StockPriceCalcValueModel {
      */
     @Override
     public BigDecimal getCalcValue() {
+        final BigDecimal result = this.calcValue;
+        return result;
+    }
+
+    /**
+     * 計算値を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 計算値
+     */
+    @Override
+    public BigDecimal get() {
         final BigDecimal result = this.calcValue;
         return result;
     }

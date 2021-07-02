@@ -1,27 +1,41 @@
-package kmg.im.stock.tssts.infrastructure.types;
+package kmg.im.stock.core.infrastructure.types;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * 文字セットの種類<br>
+ * 株価計算値の種類の種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum CharsetTypes implements Supplier<String> {
+public enum StockPriceCalcValueTypeTypes implements Supplier<Long> {
 
     /* 定義：開始 */
 
     /** 指定無し */
-    NONE("指定無し", null),
+    NONE("指定無し", -1, TechIndicatorTypes.NONE),
 
-    /** MS932 */
-    MS932("MS932", "MS932"),
+    /** ＭＣＡＤライン */
+    MCADL("ＭＣＡＤライン）", 1, TechIndicatorTypes.MACD),
+
+    /** ＭＣＡＤシグナル */
+    MCADS("ＭＣＡＤシグナル）", 2, TechIndicatorTypes.MACD),
+
+    /** ＭＣＡＤヒストグラム */
+    MCADH("ＭＣＡＤヒストグラム）", 3, TechIndicatorTypes.MCADH),
+
+    /** 勢力指数 */
+    PI("勢力指数）", 4, TechIndicatorTypes.PI),
+
+    /** 勢力指数２ＥＭＡ */
+    PI2EMA("勢力指数２ＥＭＡ）", 5, TechIndicatorTypes.PI),
+
+    /** 勢力指数１３ＥＭＡ */
+    PI13EMA("勢力指数１３ＥＭＡ）", 6, TechIndicatorTypes.PI),
 
     /* 定義：終了 */
     ;
@@ -30,16 +44,19 @@ public enum CharsetTypes implements Supplier<String> {
     private String name;
 
     /** 値 */
-    private String value;
+    private Long value;
+
+    /** テクニカル指標の種類 */
+    private TechIndicatorTypes techIndicatorTypes;
 
     /** 種類のマップ */
-    private static final Map<String, CharsetTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<Long, StockPriceCalcValueTypeTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final CharsetTypes type : CharsetTypes.values()) {
-            CharsetTypes.VALUES_MAP.put(type.get(), type);
+        for (final StockPriceCalcValueTypeTypes type : StockPriceCalcValueTypeTypes.values()) {
+            StockPriceCalcValueTypeTypes.VALUES_MAP.put(type.get(), type);
         }
     }
 
@@ -50,14 +67,17 @@ public enum CharsetTypes implements Supplier<String> {
      * @sine 1.0.0
      * @version 1.0.0
      * @param name
-     *              名称
+     *                           名称
      * @param value
-     *              値
+     *                           値
+     * @param techIndicatorTypes
+     *                           テクニカル指標の種類
      */
-    CharsetTypes(final String name, final String value) {
+    StockPriceCalcValueTypeTypes(final String name, final long value, final TechIndicatorTypes techIndicatorTypes) {
 
         this.name = name;
         this.value = value;
+        this.techIndicatorTypes = techIndicatorTypes;
 
     }
 
@@ -74,9 +94,9 @@ public enum CharsetTypes implements Supplier<String> {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static CharsetTypes getEnum(final String value) {
+    public static StockPriceCalcValueTypeTypes getEnum(final Long value) {
 
-        CharsetTypes result = CharsetTypes.VALUES_MAP.get(value);
+        StockPriceCalcValueTypeTypes result = StockPriceCalcValueTypeTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -92,9 +112,9 @@ public enum CharsetTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 初期値
      */
-    public static CharsetTypes getInitValue() {
+    public static StockPriceCalcValueTypeTypes getInitValue() {
 
-        final CharsetTypes result = NONE;
+        final StockPriceCalcValueTypeTypes result = NONE;
         return result;
 
     }
@@ -107,9 +127,9 @@ public enum CharsetTypes implements Supplier<String> {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static CharsetTypes getDefault() {
+    public static StockPriceCalcValueTypeTypes getDefault() {
 
-        final CharsetTypes result = NONE;
+        final StockPriceCalcValueTypeTypes result = NONE;
         return result;
     }
 
@@ -123,7 +143,7 @@ public enum CharsetTypes implements Supplier<String> {
      */
     @Override
     public String toString() {
-        final String result = this.value;
+        final String result = this.value.toString();
         return result;
     }
 
@@ -148,28 +168,21 @@ public enum CharsetTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 値
      */
-    public String getValue() {
-        final String result = this.value;
+    public Long getValue() {
+        final long result = this.value;
         return result;
     }
 
     /**
-     * 文字セットを返す<br>
-     * <p>
-     * NONEの場合は、nullを返す。
-     * </p>
+     * テクニカル指標の種類を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 文字セット
+     * @return テクニカル指標の種類
      */
-    public Charset toCharset() {
-        Charset result = null;
-        if (this.value == null) {
-            return result;
-        }
-        result = Charset.forName(this.value);
+    public TechIndicatorTypes getTechIndicatorTypes() {
+        final TechIndicatorTypes result = this.techIndicatorTypes;
         return result;
     }
 
@@ -182,8 +195,9 @@ public enum CharsetTypes implements Supplier<String> {
      * @return 種類の値
      */
     @Override
-    public String get() {
-        final String result = this.value;
+    public Long get() {
+        final long result = this.value;
         return result;
     }
+
 }

@@ -12,8 +12,8 @@ INSERT INTO sptspt (
 ,   period_type_id
 )
 SELECT
-    /*:startDate*/'2021/06/05'
-,   /*:endDate*/'2021/06/05'
+    /*:startDate*/'-infinity'
+,   /*:endDate*/'infinity'
 ,   /*:localeId*/'ja'
 ,   /*:creator*/'user'
 ,   /*:createdDate*/'2021/06/05'

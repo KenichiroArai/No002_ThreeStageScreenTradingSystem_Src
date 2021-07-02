@@ -1,9 +1,12 @@
 package kmg.im.stock.tssts.domain.model.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import kmg.core.infrastructure.utils.ListUtils;
+import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
@@ -244,6 +247,39 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
     @Override
     public List<StockPriceTimeSeriesModel> getDataList() {
         final List<StockPriceTimeSeriesModel> result = this.dataList;
+        return result;
+    }
+
+    /**
+     * サプライヤデータリストとして返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return サプライヤデータリスト
+     */
+    @Override
+    public List<Supplier<BigDecimal>> toSupplierDataList() {
+
+        final List<Supplier<BigDecimal>> result = new ArrayList<>();
+        result.addAll(this.dataList);
+
+        return result;
+    }
+
+    /**
+     * 勢力指数計算モデルリストとして返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 勢力指数計算モデルリスト
+     */
+    @Override
+    public List<PowerIndexCalcModel> toPowerIndexCalcModelList() {
+        final List<PowerIndexCalcModel> result = new ArrayList<>();
+        result.addAll(this.dataList);
+
         return result;
     }
 

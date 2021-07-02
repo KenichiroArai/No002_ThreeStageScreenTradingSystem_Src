@@ -2,6 +2,7 @@ package kmg.core.infrastructure.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * テンプレートの種類<br>
@@ -11,7 +12,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum TemplateTypes {
+public enum TemplateTypes implements Supplier<String> {
 
     /* 定義：開始 */
 
@@ -34,7 +35,7 @@ public enum TemplateTypes {
 
         /* 種類のマップにプット */
         for (final TemplateTypes type : TemplateTypes.values()) {
-            TemplateTypes.VALUES_MAP.put(type.getValue(), type);
+            TemplateTypes.VALUES_MAP.put(type.get(), type);
         }
     }
 
@@ -144,6 +145,20 @@ public enum TemplateTypes {
      * @return 値
      */
     public String getValue() {
+        final String result = this.value;
+        return result;
+    }
+
+    /**
+     * 種類の値<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 種類の値
+     */
+    @Override
+    public String get() {
         final String result = this.value;
         return result;
     }

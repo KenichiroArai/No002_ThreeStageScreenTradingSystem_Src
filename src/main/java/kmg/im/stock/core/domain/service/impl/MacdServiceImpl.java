@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.utils.ListUtils;
@@ -20,7 +21,17 @@ import kmg.im.stock.core.domain.service.MacdService;
  * @version 1.0.0
  */
 @Service
+@Scope("prototype")
 public class MacdServiceImpl implements MacdService {
+
+    /** デフォルトの短期 */
+    private static final int DEFAULT_ST = 12;
+
+    /** デフォルトの長期 */
+    private static final int DEFAULT_LT = 26;
+
+    /** デフォルトのデータリストの計算期間 */
+    private static final int DEFAULT_CALC_PERIOD = 9;
 
     /** データリスト */
     private final List<Supplier<BigDecimal>> dataList;
@@ -108,6 +119,22 @@ public class MacdServiceImpl implements MacdService {
         this.st = st;
         this.lt = lt;
         this.calcPeriod = calcPeriod;
+    }
+
+    /**
+     * 初期化する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param dataList
+     *                 データリスト
+     */
+    @Override
+    @SuppressWarnings("hiding")
+    public void initialize(final List<Supplier<BigDecimal>> dataList) {
+        this.initialize(dataList, MacdServiceImpl.DEFAULT_ST, MacdServiceImpl.DEFAULT_LT,
+            MacdServiceImpl.DEFAULT_CALC_PERIOD);
     }
 
     /**

@@ -44,7 +44,7 @@ import kmg.im.stock.tssts.infrastructure.types.NameTypes;
 public class ControlScreenController {
 
     /** ロガー */
-    private static Logger LOGGER = LoggerFactory.getLogger(ControlScreenController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ControlScreenController.class);
 
     /** 株価銘柄格納パス */
     @Value("${import.path.stockpricestockstoragepath}")

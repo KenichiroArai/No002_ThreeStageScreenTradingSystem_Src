@@ -1,11 +1,16 @@
 package kmg.im.stock.tssts.domain.model.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import kmg.core.infrastructure.utils.ListUtils;
+import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
+import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 
 /**
  * 株価計算値管理モデル<br>
@@ -15,9 +20,6 @@ import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
  * @version 1.0.0
  */
 public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtModel {
-
-    /** 株価計算値ID */
-    private Long sptsId;
 
     /** 株価計算値リスト */
     private final List<StockPriceCalcValueModel> dataList;
@@ -34,31 +36,32 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
     }
 
     /**
-     * 株価計算値IDを設定する<br>
+     * コンストラクタ<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sptsId
-     *               株価計算値ID
+     * @param stockPriceTimeSeriesMgtModel
+     *                                     株価時系列管理モデル
+     * @param spcvt
+     *                                     株価計算値の種類
+     * @param supplierList
+     *                                     サプライヤリスト
      */
-    @Override
-    public void setSptsId(final Long sptsId) {
-        this.sptsId = sptsId;
-    }
+    public StockPriceCalcValueMgtModelImpl(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel,
+        final StockPriceCalcValueTypeTypes spcvt, final List<Supplier<BigDecimal>> supplierList) {
+        this();
 
-    /**
-     * 株価計算値IDを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株価計算値ID
-     */
-    @Override
-    public Long getSptsId() {
-        final Long result = this.sptsId;
-        return result;
+        for (int i = 0; i < stockPriceTimeSeriesMgtModel.getDataList().size(); i++) {
+            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockPriceTimeSeriesMgtModel.getDataList()
+                .get(i);
+            final Supplier<BigDecimal> supplier = supplierList.get(i);
+            final StockPriceCalcValueModel data = new StockPriceCalcValueModelImpl();
+            data.setSptsId(stockPriceTimeSeriesModel.getId());
+            data.setSpcvtId(spcvt);
+            data.setCalcValue(supplier.get());
+            this.dataList.add(data);
+        }
     }
 
     /**

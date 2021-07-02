@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.core.domain.logic.SmaLogic;
@@ -18,6 +19,7 @@ import kmg.im.stock.core.domain.service.SmaService;
  * @version 1.0.0
  */
 @Service
+@Scope("prototype")
 public class SmaServiceImpl implements SmaService {
 
     /** 単純移動平均ロジック */

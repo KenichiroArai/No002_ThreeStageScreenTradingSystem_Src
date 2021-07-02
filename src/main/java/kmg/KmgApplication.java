@@ -1,23 +1,20 @@
-package kmg.im.stock.core;
+package kmg;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import kmg.im.stock.core.ImStockApplication;
+
 /**
- * 投資株式<br>
+ * ＫＭＧアプリケーション<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SpringBootApplication
-public class ImStockApplication {
-
-    /** ロガー */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ImStockApplication.class);
+public class KmgApplication {
 
     /** 構成可能なアプリケーションコンテキスト */
     private final ConfigurableApplicationContext context;
@@ -31,7 +28,7 @@ public class ImStockApplication {
      * @param context
      *                構成可能なアプリケーションコンテキスト
      */
-    public ImStockApplication(final ConfigurableApplicationContext context) {
+    public KmgApplication(final ConfigurableApplicationContext context) {
         this.context = context;
     }
 

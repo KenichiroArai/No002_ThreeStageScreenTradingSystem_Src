@@ -17,7 +17,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class KmgCoreApplication {
 
     /** ロガー */
-    private static Logger LOGGER = LoggerFactory.getLogger(KmgCoreApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KmgCoreApplication.class);
 
     /** 構成可能なアプリケーションコンテキスト */
     private final ConfigurableApplicationContext context;

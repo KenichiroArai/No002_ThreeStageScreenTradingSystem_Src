@@ -68,11 +68,11 @@ public class LogMessageResolver {
         }
 
         try {
-            result = String.format("[%s]%s", code.getValue(),
-                this.logMessageSource.getMessage(code.getValue(), argsArrays, Locale.getDefault()));
+            result = String.format("[%s]%s", code.get(),
+                this.logMessageSource.getMessage(code.get(), argsArrays, Locale.getDefault()));
         } catch (final NoSuchMessageException e) {
             // TODO KenichiroArai 2021/05/13 例外処理
-            System.err.println(code.getValue());
+            System.err.println(code.get());
             e.printStackTrace();
             return result;
         }

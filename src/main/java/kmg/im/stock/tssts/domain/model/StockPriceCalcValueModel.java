@@ -3,6 +3,9 @@ package kmg.im.stock.tssts.domain.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.function.Supplier;
+
+import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 
 /**
  * 株価計算値モデルインタフェース<br>
@@ -11,7 +14,7 @@ import java.time.LocalDateTime;
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface StockPriceCalcValueModel {
+public interface StockPriceCalcValueModel extends Supplier<BigDecimal> {
 
     /**
      * 識別番号を設定する<br>
@@ -222,6 +225,49 @@ public interface StockPriceCalcValueModel {
      * @return 名称
      */
     String getName();
+
+    /**
+     * 株価時系列IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsId
+     *               株価時系列ID
+     */
+    void setSptsId(Long sptsId);
+
+    /**
+     * 株価時系列IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列ID
+     */
+    Long getSptsId();
+
+    /**
+     * 株価計算値の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param spcvtId
+     *                株価計算値の種類ID
+     */
+    // TODO KenichiroArai 2021/07/01 列挙型の名前に変更する
+    void setSpcvtId(StockPriceCalcValueTypeTypes spcvtId);
+
+    /**
+     * 株価計算値の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値の種類ID
+     */
+    StockPriceCalcValueTypeTypes getSpcvtId();
 
     /**
      * 計算値を設定する<br>

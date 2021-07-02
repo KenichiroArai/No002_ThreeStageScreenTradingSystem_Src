@@ -1,7 +1,6 @@
 package kmg.im.stock.tssts.domain.service;
 
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
@@ -28,21 +27,6 @@ public interface StockPriceCalcValueService {
     long delete(long sptsptId) throws TsstsDomainException;
 
     /**
-     * 計算する<br>
-     * <p>
-     * 計算し、計算結果として株価時系列管理モデルにして返す。
-     * </p>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param stockPriceTimeSeriesMgtModel
-     *                                     株価時系列管理モデル
-     * @return 株価時系列管理モデル
-     */
-    StockPriceCalcValueMgtModel calc(StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel);
-
-    /**
      * 登録する<br>
      *
      * @author KenichiroArai
@@ -50,6 +34,8 @@ public interface StockPriceCalcValueService {
      * @version 1.0.0
      * @param stockPriceCalcValueMgtModel
      *                                    株価計算値管理モデル
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    void register(StockPriceCalcValueMgtModel stockPriceCalcValueMgtModel);
+    void register(StockPriceCalcValueMgtModel stockPriceCalcValueMgtModel) throws TsstsDomainException;
 }

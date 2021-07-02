@@ -48,6 +48,9 @@ public class StockPriceCalcValueDtoImpl implements StockPriceCalcValueDto {
     /** 株価時系列ID */
     private Long sptsId;
 
+    /** 株価計算値の種類ID */
+    private Long spcvtId;
+
     /** 計算値 */
     private BigDecimal calcValue;
 
@@ -356,6 +359,34 @@ public class StockPriceCalcValueDtoImpl implements StockPriceCalcValueDto {
     @Override
     public Long getSptsId() {
         final Long result = this.sptsId;
+        return result;
+    }
+
+    /**
+     * 株価計算値の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param spcvtId
+     *                株価計算値の種類ID
+     */
+    @Override
+    public void setSpcvtId(final Long spcvtId) {
+        this.spcvtId = spcvtId;
+    }
+
+    /**
+     * 株価計算値の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値の種類ID
+     */
+    @Override
+    public Long getSpcvtId() {
+        final Long result = this.spcvtId;
         return result;
     }
 
