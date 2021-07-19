@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import kmg.core.infrastructure.type.KmgString;
 import kmg.core.infrastructure.types.DelimiterTypes;
-import kmg.core.infrastructure.types.FieldCreationTypeTypes;
+import kmg.core.infrastructure.types.DbDataTypeTypes;
 
 /**
  * フィールド作成ツール
@@ -95,7 +95,7 @@ public class FieldCreationlTool {
 
                 final String changeFieldData = new KmgString(fieldData).toCamelCase();
                 String changeTypeData = null;
-                final FieldCreationTypeTypes type = FieldCreationTypeTypes.getEnum(typeData);
+                final DbDataTypeTypes type = DbDataTypeTypes.getEnum(typeData);
                 if (type == null) {
                     changeTypeData = typeData;
                 } else {

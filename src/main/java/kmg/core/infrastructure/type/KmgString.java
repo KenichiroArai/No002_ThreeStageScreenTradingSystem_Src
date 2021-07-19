@@ -309,6 +309,35 @@ public class KmgString {
     }
 
     /**
+     * 大文字小文字区別しないで一致するか<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param str1
+     *             文字列１
+     * @param str2
+     *             文字列２
+     * @return true：一致、false：一致しない
+     */
+    public static boolean equalsIgnoreCase(final String str1, final String str2) {
+
+        boolean result = false;
+
+        if (str1 == null) {
+            return result;
+        }
+        if (str2 == null) {
+            return result;
+        }
+
+        result = str1.equalsIgnoreCase(str2);
+
+        return result;
+
+    }
+
+    /**
      * 空文字かどうかを返す<br>
      *
      * @author KenichiroArai

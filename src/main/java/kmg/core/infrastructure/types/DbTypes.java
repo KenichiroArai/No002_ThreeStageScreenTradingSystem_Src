@@ -6,60 +6,38 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import kmg.core.infrastructure.type.KmgString;
+import kmg.core.infrastructure.utils.ArrayUtils;
 
 /**
- * 区切り文字の種類<br>
+ * ＤＢの種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum DelimiterTypes implements Supplier<String> {
+public enum DbTypes implements Supplier<String> {
 
     /* 定義：開始 */
 
     /** 指定無し */
-    NONE("指定無し", null),
+    NONE("指定無し", null, null),
 
-    /** ピリオド */
-    PERIOD("ピリオド", "."),
+    /** PostgreSQL */
+    POSTGRE_SQL("PostgreSQL", "PostgreSQL", new String[] {
+        "Postgres"
+    }),
 
-    /** カンマ */
-    COMMA("カンマ", ","),
+    /** MySQL */
+    MYSQL("MySQL", "MySQL", null),
 
-    /** コロン */
-    COLON("コロン", "."),
+    /** Oracle */
+    ORACLE("Oracle", "Oracle", null),
 
-    /** バーティカルバー */
-    VERTICAL_BAR("バーティカルバー", "|"),
-
-    /** アンダースコア */
-    UNDERSCORE("アンダースコア", "_"),
-
-    /** スラッシュ */
-    SLASH("スラッシュ", "/"),
-
-    /** ハイフン */
-    HYPHEN("ハイフン", "-"),
-
-    /** 半角スペース */
-    HALF_SPACE("半角スペース", KmgString.HALF_SPACE),
-
-    /** プラス */
-    PLUS("プラス", "+"),
-
-    /** 全角コロン */
-    ALL_COLON("全角コロン", "："),
-
-    /** 全角読点 */
-    ALL_IDEOGRAPHIC("全角読点", "、"),
-
-    /** 連続半角スペース */
-    SERIES_HALF_SPACE("連続半角スペース", "\\s+"),
-
-    /** 改行 */
-    LINE_SEPARATOR("改行", KmgString.LINE_SEPARATOR),
+    /** SQL Server */
+    SQL_SERVER("SQL Server", "SQL Server", new String[] {
+        "MS SQL"
+    }),
 
     /* 定義：終了 */
     ;
@@ -70,14 +48,17 @@ public enum DelimiterTypes implements Supplier<String> {
     /** 値 */
     private String value;
 
+    /** 別名の配列 */
+    private String[] aliasArray;
+
     /** 種類のマップ */
-    private static final Map<String, DelimiterTypes> valuesMap = new HashMap<>();
+    private static final Map<String, DbTypes> valuesMap = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final DelimiterTypes type : DelimiterTypes.values()) {
-            DelimiterTypes.valuesMap.put(type.get(), type);
+        for (final DbTypes type : DbTypes.values()) {
+            DbTypes.valuesMap.put(type.get(), type);
 
         }
     }
@@ -89,13 +70,16 @@ public enum DelimiterTypes implements Supplier<String> {
      * @since 1.0.0
      * @version 1.0.0
      * @param name
-     *              名称
+     *                   名称
      * @param value
-     *              値
+     *                   値
+     * @param aliasArray
+     *                   別名の配列
      */
-    DelimiterTypes(final String name, final String value) {
+    DbTypes(final String name, final String value, final String[] aliasArray) {
         this.name = name;
         this.value = value;
+        this.aliasArray = aliasArray;
     }
 
     /**
@@ -111,14 +95,58 @@ public enum DelimiterTypes implements Supplier<String> {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合
      */
-    public static DelimiterTypes getEnum(final String value) {
+    public static DbTypes getEnum(final String value) {
 
-        DelimiterTypes result = DelimiterTypes.valuesMap.get(value);
+        DbTypes result = DbTypes.valuesMap.get(value);
         if (result == null) {
+
             result = NONE;
             return result;
         }
 
+        return result;
+    }
+
+    /**
+     * 対象に該当する種類を返す<br>
+     * <p>
+     * 対象は値または別名で大文字小文字を区別しないで検索する。<br>
+     * 但し、対象が存在しない場合は、指定無し（NONE）を返す。<br>
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param target
+     *               対象
+     * @return 種類。指定無し（NONE）：対象が存在しない場合
+     */
+    public static DbTypes getEnumByTarget(final String target) {
+
+        DbTypes result = DbTypes.valuesMap.get(target);
+        if (result != null) {
+            return result;
+        }
+
+        for (final DbTypes type : DbTypes.values()) {
+            if (KmgString.equalsIgnoreCase(type.value, target)) {
+                result = type;
+                return result;
+            }
+            if (ArrayUtils.isEmpty(type.aliasArray)) {
+                result = NONE;
+                return result;
+            }
+            for (final String alias : type.aliasArray) {
+                if (!KmgString.equalsIgnoreCase(alias, target)) {
+                    continue;
+                }
+                result = type;
+                return result;
+            }
+        }
+
+        result = NONE;
         return result;
     }
 
@@ -130,9 +158,9 @@ public enum DelimiterTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 初期値
      */
-    public static DelimiterTypes getInitValue() {
+    public static DbTypes getInitValue() {
 
-        final DelimiterTypes result = NONE;
+        final DbTypes result = NONE;
         return result;
 
     }
@@ -145,9 +173,9 @@ public enum DelimiterTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 初期値
      */
-    public static DelimiterTypes getDefault() {
+    public static DbTypes getDefault() {
 
-        final DelimiterTypes result = NONE;
+        final DbTypes result = NONE;
         return result;
 
     }
@@ -194,9 +222,6 @@ public enum DelimiterTypes implements Supplier<String> {
 
     /**
      * 結合する文字列リストにデリミタを付加して文字列を返す<br>
-     * <p>
-     * 但し、結合する文字列がnullまたは空文字の場合は結合しない
-     * </p>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -252,62 +277,6 @@ public enum DelimiterTypes implements Supplier<String> {
     }
 
     /**
-     * 結合する文字列リストにデリミタを付加して文字列を返す<br>
-     * <p>
-     * 結合する文字列がnullまたは空文字の場合はそのまま結合する
-     * </p>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param <T>
-     *                   結合する文字列の型
-     * @param targetList
-     *                   結合する文字列リスト
-     * @return 結合する文字列リストにデリミタを付加した文字列
-     */
-    public <T> String joinAll(final List<T> targetList) {
-        final String result = this.joinAll(targetList.toArray(new Object[0]));
-        return result;
-    }
-
-    /**
-     * 結合する文字列にデリミタを付加して文字列を返す<br>
-     * <p>
-     * 結合する文字列がnullまたは空文字の場合はそのまま結合する
-     * </p>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param targets
-     *                結合する文字列
-     * @return 結合する文字列にデリミタを付加した文字列
-     */
-    public String joinAll(final Object... targets) {
-
-        // TODO KenichiroArai 2021/05/01 ストリーム形式を検討する。
-
-        String result = null;
-
-        final StringBuilder sb = new StringBuilder();
-        for (final Object target : targets) {
-            if (target == null) {
-                sb.append(target);
-            } else {
-                sb.append(target.toString());
-            }
-            sb.append(this.value);
-        }
-
-        if (sb.length() > 0) {
-            result = sb.substring(0, sb.length() - 1).toString();
-        }
-
-        return result;
-    }
-
-    /**
      * 分割する文字列を分割し、文字列の配列にして返す。<br>
      *
      * @author KenichiroArai
@@ -342,4 +311,18 @@ public enum DelimiterTypes implements Supplier<String> {
         final String result = this.value;
         return result;
     }
+
+    /**
+     * 別名の配列を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 別名の配列
+     */
+    public String[] getAliasArray() {
+        final String[] result = this.aliasArray;
+        return result;
+    }
+
 }
