@@ -4,12 +4,15 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -40,6 +43,9 @@ public class InsertSqlCreationServiceImpl implements InsertSqlCreationService {
     /** 設定シート名 */
     private static final String SETTING_SHEET_NAME = "設定情報";
 
+    /** 一覧シート名 */
+    private static final String LIST_NAME = "一覧";
+
     /** 削除ＳＱＬテンプレート */
     private static final String DELETE_SQL_TEMPLATE = "DELETE FROM %s;";
 
@@ -64,14 +70,21 @@ public class InsertSqlCreationServiceImpl implements InsertSqlCreationService {
         try (final FileInputStream is = new FileInputStream(inputPath.toFile());
             final Workbook inputWb = WorkbookFactory.create(is);) {
 
+            /* ＤＢの種類を取得 */
             final String dbTypesStr = InsertSqlCreationServiceImpl.getDbSetting(inputWb);
             final DbTypes dbTypes = DbTypes.getEnumByTarget(dbTypesStr);
             System.out.println(String.format("ＤＢの種類 = %s", dbTypes.getValue()));
+
+            /* ＳＱＬＩＤマップ */
+            final Map<String, String> sqlIdMap = InsertSqlCreationServiceImpl.getSqlIdMap(inputWb);
 
             for (int i = 0; i < inputWb.getNumberOfSheets(); i++) {
                 final Sheet wkSheet = inputWb.getSheetAt(i);
 
                 if (KmgString.equals(wkSheet.getSheetName(), InsertSqlCreationServiceImpl.SETTING_SHEET_NAME)) {
+                    continue;
+                }
+                if (KmgString.equals(wkSheet.getSheetName(), InsertSqlCreationServiceImpl.LIST_NAME)) {
                     continue;
                 }
 
@@ -82,11 +95,14 @@ public class InsertSqlCreationServiceImpl implements InsertSqlCreationService {
                 final Cell tableNamePhysicsCell = PoiUtils.getCell(wkSheet, 0, 0);
                 final String tablePhysicsName = PoiUtils.getStringValue(tableNamePhysicsCell);
 
+                /* ＳＱＬＩＤの取得 */
+                final String sqlId = sqlIdMap.get(tablePhysicsName);
+
                 /* 出力ファイルパスの作成 */
                 final Path outputFilePath = Paths.get(outputPath.toAbsolutePath().toString(),
-                    String.format("%s.sql", tablePhysicsName));
+                    String.format("%s_insert_%s.sql", sqlId, tablePhysicsName));
 
-                try (BufferedWriter bw = Files.newBufferedWriter(outputFilePath)) {
+                try (BufferedWriter bw = Files.newBufferedWriter(outputFilePath, Charset.forName("MS932"))) {
 
                     /* 削除ＳＱＬの出力 */
                     final String deleteComment = String.format("-- %sのレコード削除", tableLogicName);
@@ -243,10 +259,41 @@ public class InsertSqlCreationServiceImpl implements InsertSqlCreationService {
     private static String getDbSetting(final Workbook wk) {
         String result = null;
 
-        final Sheet settingSheet = wk.getSheet(InsertSqlCreationServiceImpl.SETTING_SHEET_NAME);
-        final Cell cell = PoiUtils.getCell(settingSheet, 0, 1);
+        final Sheet wkSheet = wk.getSheet(InsertSqlCreationServiceImpl.SETTING_SHEET_NAME);
+        final Cell wkCell = PoiUtils.getCell(wkSheet, 0, 1);
 
-        result = PoiUtils.getStringValue(cell);
+        result = PoiUtils.getStringValue(wkCell);
+
+        return result;
+    }
+
+    /**
+     * SQLIDマップ返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param wk
+     *           ワークブック
+     * @return SQLIdマップ
+     */
+    private static Map<String, String> getSqlIdMap(final Workbook wk) {
+        final Map<String, String> result = new HashMap<>();
+
+        final Sheet wkSheet = wk.getSheet(InsertSqlCreationServiceImpl.LIST_NAME);
+        for (int rowIdx = 1; rowIdx <= wkSheet.getLastRowNum(); rowIdx++) {
+
+            // テーブル物理名を取得
+            final Cell tablePhysicsCell = PoiUtils.getCell(wkSheet, rowIdx, 2);
+            final String tablePhysicsStr = PoiUtils.getStringValue(tablePhysicsCell);
+
+            // SQLIDを取得
+            final Cell sqlIdCell = PoiUtils.getCell(wkSheet, rowIdx, 3);
+            final String sqlIdStr = PoiUtils.getStringValue(sqlIdCell);
+
+            // マップに追加
+            result.put(tablePhysicsStr, sqlIdStr);
+        }
 
         return result;
     }
