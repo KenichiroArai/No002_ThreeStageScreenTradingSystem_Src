@@ -13,8 +13,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.tool.domain.service.InsertSqlCreationService;
-import kmg.tool.domain.service.InsertSqlCreationServiceImpl;
+import kmg.tool.domain.service.InsertionSqlCreationService;
+import kmg.tool.domain.service.InsertionSqlCreationServiceImpl;
 
 /**
  * 挿入ＳＱＬ作成画面画面コントローラ<br>
@@ -23,7 +23,7 @@ import kmg.tool.domain.service.InsertSqlCreationServiceImpl;
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class InsertSqlCreationController {
+public class InsertionSqlCreationController {
 
     /** 入力ファイルテキストボックス */
     @FXML
@@ -52,20 +52,6 @@ public class InsertSqlCreationController {
     /** 処理時間単位ラベル */
     @FXML
     private Label lblProcTimeUnit;
-
-    /** 挿入ＳＱＬ作成サービス */
-    private final InsertSqlCreationService insertSqlCreationService;
-
-    /**
-     * コンストラクタ<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     */
-    public InsertSqlCreationController() {
-        this.insertSqlCreationService = new InsertSqlCreationServiceImpl();
-    }
 
     /**
      * 入力ファイル読み込みボタンクリックイベント
@@ -168,9 +154,13 @@ public class InsertSqlCreationController {
      * @param outputPath
      *                   出力パス
      */
+    @SuppressWarnings("static-method")
     protected void mainProc(final Path inputPath, final Path outputPath) {
 
-        this.insertSqlCreationService.outputInsertSql(inputPath, outputPath);
+        /* 挿入ＳＱＬ作成サービス */
+        final InsertionSqlCreationService insertSqlCreationService = new InsertionSqlCreationServiceImpl();
+        insertSqlCreationService.initialize(inputPath, outputPath);
+        insertSqlCreationService.outputInsertionSql();
 
     }
 }

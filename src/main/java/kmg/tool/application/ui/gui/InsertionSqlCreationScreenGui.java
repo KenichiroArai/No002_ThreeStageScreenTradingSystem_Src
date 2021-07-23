@@ -16,7 +16,7 @@ import javafx.stage.Stage;
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class InsertSqlCreationScreenGui extends Application {
+public class InsertionSqlCreationScreenGui extends Application {
 
     /**
      * エントリポイント<br>
@@ -46,7 +46,7 @@ public class InsertSqlCreationScreenGui extends Application {
 
         stage.setTitle("挿入ＳＱＬ作成画面");
         try {
-            final URL url = this.getClass().getResource("InsertSqlCreationScreenGui.fxml");
+            final URL url = this.getClass().getResource("InsertionSqlCreationScreenGui.fxml");
             final FXMLLoader fxml = new FXMLLoader(url);
             final AnchorPane root = fxml.load();
             final Scene scene = new Scene(root);

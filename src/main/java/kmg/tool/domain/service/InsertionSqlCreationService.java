@@ -9,15 +9,23 @@ import java.nio.file.Path;
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface InsertSqlCreationService {
+public interface InsertionSqlCreationService {
 
     /**
-     * 挿入ＳＱＬを出力する<br>
+     * 初期化する<br>
      *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
      * @param inputPath
      *                   入力パス
      * @param outputPath
      *                   出力パス
      */
-    void outputInsertSql(final Path inputPath, final Path outputPath);
+    void initialize(final Path inputPath, final Path outputPath);
+
+    /**
+     * 挿入ＳＱＬを出力する<br>
+     */
+    void outputInsertionSql();
 }
