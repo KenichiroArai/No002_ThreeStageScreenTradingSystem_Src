@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import kmg.core.infrastructure.type.KmgString;
+import kmg.core.infrastructure.types.CharsetTypes;
 import kmg.core.infrastructure.types.DelimiterTypes;
 import kmg.core.infrastructure.utils.LocalDateUtils;
 import kmg.im.stock.tssts.data.dto.StockPriceDataDto;
@@ -20,7 +21,6 @@ import kmg.im.stock.tssts.data.dto.impl.StockPriceDataDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceDataMgtDtoImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.CharsetTypes;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
 
 /**

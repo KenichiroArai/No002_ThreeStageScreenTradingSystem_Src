@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import kmg.core.infrastructure.types.DbDataTypeTypes;
+import kmg.core.infrastructure.types.DbTypes;
 import kmg.tool.domain.logic.InsertionSqlDataSheetCreationLogic;
 import kmg.tool.domain.logic.impl.InsertionSqlDataSheetCreationLogicImpl;
 import kmg.tool.domain.service.InsertionSqlDataSheetCreationService;
@@ -24,6 +25,9 @@ import kmg.tool.domain.service.InsertionSqlDataSheetCreationService;
  * @version 1.0.0
  */
 public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDataSheetCreationService {
+
+    /** ＤＢの種類 */
+    private DbTypes dbTypes;
 
     /** 入力シート */
     private Sheet inputSheet;
@@ -54,6 +58,8 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param dbTypes
+     *                   ＤＢの種類
      * @param inputSheet
      *                   入力シート
      * @param sqlIdMap
@@ -63,7 +69,9 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
      */
     @SuppressWarnings("hiding")
     @Override
-    public void initialize(final Sheet inputSheet, final Map<String, String> sqlIdMap, final Path outputPath) {
+    public void initialize(final DbTypes dbTypes, final Sheet inputSheet, final Map<String, String> sqlIdMap,
+        final Path outputPath) {
+        this.dbTypes = dbTypes;
         this.inputSheet = inputSheet;
         this.sqlIdMap = sqlIdMap;
         this.outputPath = outputPath;
@@ -79,13 +87,13 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
     @Override
     public void outputInsertionSql() {
 
-        /* テーブル論理名の取得 */
+        /* テーブル論理名を取得する */
         final String tableLogicName = this.insertionSqlDataSheetCreationLogic.getTableLogicNamee(this.inputSheet);
 
-        /* テーブル物理名の取得 */
+        /* テーブル物理名を取得する */
         final String tablePhysicsName = this.insertionSqlDataSheetCreationLogic.getTablePhysicsName(this.inputSheet);
 
-        /* ＳＱＬＩＤの取得 */
+        /* ＳＱＬＩＤを取得する */
         final String sqlId = this.insertionSqlDataSheetCreationLogic.getSqlId(this.sqlIdMap, tablePhysicsName);
 
         /* 出力ファイルのディレクトリの作成 */
@@ -100,7 +108,10 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
         final Path outputFilePath = this.insertionSqlDataSheetCreationLogic.getOutputFilePath(this.outputPath, sqlId,
             tablePhysicsName);
 
-        try (BufferedWriter bw = Files.newBufferedWriter(outputFilePath, Charset.forName("MS932"))) {
+        /* 文字セットを取得 */
+        final Charset charset = this.insertionSqlDataSheetCreationLogic.getCharset(this.dbTypes);
+
+        try (BufferedWriter bw = Files.newBufferedWriter(outputFilePath, charset)) {
 
             /* 削除ＳＱＬの出力 */
             final String deleteComment = this.insertionSqlDataSheetCreationLogic.getDeleteComment(tableLogicName);

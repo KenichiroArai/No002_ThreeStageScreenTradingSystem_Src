@@ -1,6 +1,7 @@
 package kmg.tool.domain.logic.impl;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,7 +15,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import kmg.core.infrastructure.type.KmgString;
+import kmg.core.infrastructure.types.CharsetTypes;
 import kmg.core.infrastructure.types.DbDataTypeTypes;
+import kmg.core.infrastructure.types.DbTypes;
 import kmg.core.infrastructure.types.DelimiterTypes;
 import kmg.core.infrastructure.utils.LocalDateTimeUtils;
 import kmg.core.infrastructure.utils.LocalDateUtils;
@@ -156,6 +159,39 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
     public String getDeleteSql(final String tablePhysicsName) {
         final String result = String.format(InsertionSqlDataSheetCreationLogicImpl.DELETE_SQL_TEMPLATE,
             tablePhysicsName);
+        return result;
+    }
+
+    /**
+     * 文字セットを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param dbTypes
+     *                ＤＢの種類
+     * @return 文字セット
+     */
+    @Override
+    public Charset getCharset(final DbTypes dbTypes) {
+        Charset result = null;
+
+        switch (dbTypes) {
+        case NONE:
+            break;
+        case MYSQL:
+        case ORACLE:
+        case SQL_SERVER:
+            result = CharsetTypes.UTF8.toCharset();
+            break;
+        case POSTGRE_SQL:
+            result = CharsetTypes.MS932.toCharset();
+            break;
+        default:
+            break;
+
+        }
+
         return result;
     }
 

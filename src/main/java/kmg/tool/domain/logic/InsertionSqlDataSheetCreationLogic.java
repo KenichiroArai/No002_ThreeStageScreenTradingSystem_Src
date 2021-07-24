@@ -1,6 +1,7 @@
 package kmg.tool.domain.logic;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import kmg.core.infrastructure.types.DbDataTypeTypes;
+import kmg.core.infrastructure.types.DbTypes;
 
 /**
  * 挿入ＳＱＬデータシート作成ロジックインタフェース<br>
@@ -85,6 +87,18 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @return 出力ファイルパス
      */
     Path getOutputFilePath(Path path, String sqlId, String tablePhysicsName);
+
+    /**
+     * 文字セットを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param dbTypes
+     *                ＤＢの種類
+     * @return 文字セット
+     */
+    Charset getCharset(DbTypes dbTypes);
 
     /**
      * 削除コメントを返す<br>

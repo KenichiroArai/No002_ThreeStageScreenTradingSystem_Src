@@ -75,7 +75,6 @@ public class InsertionSqlFileCreationServiceImpl implements InsertionSqlFileCrea
             /* ＤＢの種類を取得 */
             final String dbTypesStr = InsertionSqlFileCreationServiceImpl.getDbSetting(inputWb);
             final DbTypes dbTypes = DbTypes.getEnumByTarget(dbTypesStr);
-            System.out.println(String.format("ＤＢの種類 = %s", dbTypes.getValue()));
 
             /* ＳＱＬＩＤマップ */
             final Map<String, String> sqlIdMap = InsertionSqlFileCreationServiceImpl.getSqlIdMap(inputWb);
@@ -91,7 +90,7 @@ public class InsertionSqlFileCreationServiceImpl implements InsertionSqlFileCrea
                 }
 
                 final InsertionSqlDataSheetCreationService insertionSqlDataSheetCreationService = new InsertionSqlDataSheetCreationServiceImpl();
-                insertionSqlDataSheetCreationService.initialize(wkSheet, sqlIdMap, this.outputPath);
+                insertionSqlDataSheetCreationService.initialize(dbTypes, wkSheet, sqlIdMap, this.outputPath);
                 insertionSqlDataSheetCreationService.outputInsertionSql();
 
             }

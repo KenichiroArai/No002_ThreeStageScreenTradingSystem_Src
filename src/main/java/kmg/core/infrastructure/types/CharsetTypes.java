@@ -1,9 +1,11 @@
-package kmg.im.stock.tssts.infrastructure.types;
+package kmg.core.infrastructure.types;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import kmg.core.infrastructure.type.KmgString;
 
 /**
  * 文字セットの種類<br>
@@ -23,6 +25,9 @@ public enum CharsetTypes implements Supplier<String> {
     /** MS932 */
     MS932("MS932", "MS932"),
 
+    /** UTF-8 */
+    UTF8("UTF-8", "UTF-8"),
+
     /* 定義：終了 */
     ;
 
@@ -31,6 +36,9 @@ public enum CharsetTypes implements Supplier<String> {
 
     /** 値 */
     private String value;
+
+    /** 文字セット */
+    private Charset charset;
 
     /** 種類のマップ */
     private static final Map<String, CharsetTypes> VALUES_MAP = new HashMap<>();
@@ -59,6 +67,11 @@ public enum CharsetTypes implements Supplier<String> {
         this.name = name;
         this.value = value;
 
+        if (KmgString.isEmpty(this.value)) {
+            this.charset = null;
+        } else {
+            this.charset = Charset.forName(this.value);
+        }
     }
 
     /**
@@ -165,11 +178,7 @@ public enum CharsetTypes implements Supplier<String> {
      * @return 文字セット
      */
     public Charset toCharset() {
-        Charset result = null;
-        if (this.value == null) {
-            return result;
-        }
-        result = Charset.forName(this.value);
+        final Charset result = this.charset;
         return result;
     }
 
@@ -186,4 +195,5 @@ public enum CharsetTypes implements Supplier<String> {
         final String result = this.value;
         return result;
     }
+
 }
