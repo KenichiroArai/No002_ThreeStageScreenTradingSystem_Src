@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import kmg.core.infrastructure.types.DbDataTypeTypes;
 import kmg.core.infrastructure.types.DbTypes;
 import kmg.tool.domain.logic.InsertionSqlDataSheetCreationLogic;
 import kmg.tool.domain.logic.impl.InsertionSqlDataSheetCreationLogicImpl;
@@ -37,20 +35,6 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
 
     /** 出力パス */
     private Path outputPath;
-
-    /** 挿入ＳＱＬデータシート作成ロジック */
-    private final InsertionSqlDataSheetCreationLogic insertionSqlDataSheetCreationLogic;
-
-    /**
-     * デフォルトコンストラクタ<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     */
-    public InsertionSqlDataSheetCreationServiceImpl() {
-        this.insertionSqlDataSheetCreationLogic = new InsertionSqlDataSheetCreationLogicImpl();
-    }
 
     /**
      * 初期化する<br>
@@ -87,51 +71,36 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
     @Override
     public void outputInsertionSql() {
 
-        /* テーブル論理名を取得する */
-        final String tableLogicName = this.insertionSqlDataSheetCreationLogic.getTableLogicNamee(this.inputSheet);
-
-        /* テーブル物理名を取得する */
-        final String tablePhysicsName = this.insertionSqlDataSheetCreationLogic.getTablePhysicsName(this.inputSheet);
-
-        /* ＳＱＬＩＤを取得する */
-        final String sqlId = this.insertionSqlDataSheetCreationLogic.getSqlId(this.sqlIdMap, tablePhysicsName);
+        final InsertionSqlDataSheetCreationLogic insertionSqlDataSheetCreationLogic = new InsertionSqlDataSheetCreationLogicImpl();
+        insertionSqlDataSheetCreationLogic.initialize(this.inputSheet, this.sqlIdMap, this.outputPath);
 
         /* 出力ファイルのディレクトリの作成 */
         try {
-            this.insertionSqlDataSheetCreationLogic.createOutputFileDirectories(this.outputPath);
+            insertionSqlDataSheetCreationLogic.createOutputFileDirectories();
         } catch (final IOException e) {
             e.printStackTrace();
             return;
         }
 
         /* 出力ファイルパスの取得 */
-        final Path outputFilePath = this.insertionSqlDataSheetCreationLogic.getOutputFilePath(this.outputPath, sqlId,
-            tablePhysicsName);
+        final Path outputFilePath = insertionSqlDataSheetCreationLogic.getOutputFilePath();
 
         /* 文字セットを取得 */
-        final Charset charset = this.insertionSqlDataSheetCreationLogic.getCharset(this.dbTypes);
+        final Charset charset = insertionSqlDataSheetCreationLogic.getCharset(this.dbTypes);
 
         try (BufferedWriter bw = Files.newBufferedWriter(outputFilePath, charset)) {
 
             /* 削除ＳＱＬの出力 */
-            final String deleteComment = this.insertionSqlDataSheetCreationLogic.getDeleteComment(tableLogicName);
+            final String deleteComment = insertionSqlDataSheetCreationLogic.getDeleteComment();
             bw.write(deleteComment);
             bw.newLine();
-            final String deleteSql = this.insertionSqlDataSheetCreationLogic.getDeleteSql(tablePhysicsName);
+            final String deleteSql = insertionSqlDataSheetCreationLogic.getDeleteSql();
             bw.write(deleteSql);
             bw.newLine();
             bw.newLine();
 
-            /* カラム物理名リストの取得 */
-            final List<String> columnPhysicsNameList = this.insertionSqlDataSheetCreationLogic
-                .getPhysicsNameList(this.inputSheet);
-
-            /* 型リストの取得 */
-            final List<DbDataTypeTypes> typeList = this.insertionSqlDataSheetCreationLogic.getTypeList(this.inputSheet,
-                (short) columnPhysicsNameList.size());
-
             /* 挿入ＳＱＬの出力 */
-            final String insertComment = this.insertionSqlDataSheetCreationLogic.getInsertComment(tableLogicName);
+            final String insertComment = insertionSqlDataSheetCreationLogic.getInsertComment();
             bw.write(insertComment);
             bw.newLine();
             for (int rowIdx = 4; rowIdx <= this.inputSheet.getLastRowNum(); rowIdx++) {
@@ -140,8 +109,7 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
                     break;
                 }
 
-                final String datas = this.insertionSqlDataSheetCreationLogic.getInsertSql(tablePhysicsName,
-                    columnPhysicsNameList, datasRow, typeList);
+                final String datas = insertionSqlDataSheetCreationLogic.getInsertSql(datasRow);
                 bw.write(datas);
                 bw.write(System.lineSeparator());
             }

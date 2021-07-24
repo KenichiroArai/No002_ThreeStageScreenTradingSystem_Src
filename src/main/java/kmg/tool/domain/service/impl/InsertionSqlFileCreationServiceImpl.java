@@ -13,8 +13,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import kmg.core.infrastructure.type.KmgString;
 import kmg.core.infrastructure.types.DbTypes;
-import kmg.tool.domain.logic.InsertionSqlFileCreationLogic;
-import kmg.tool.domain.logic.impl.InsertionSqlFileCreationLogicImpl;
+import kmg.tool.domain.logic.InsertionSqlBasicInformationLogic;
+import kmg.tool.domain.logic.impl.InsertionSqlBasicInformationLogicImpl;
 import kmg.tool.domain.service.InsertionSqlDataSheetCreationService;
 import kmg.tool.domain.service.InsertionSqlFileCreationService;
 
@@ -65,22 +65,23 @@ public class InsertionSqlFileCreationServiceImpl implements InsertionSqlFileCrea
         try (final FileInputStream is = new FileInputStream(this.inputPath.toFile());
             final Workbook inputWb = WorkbookFactory.create(is);) {
 
-            final InsertionSqlFileCreationLogic insertionSqlFileCreationLogic = new InsertionSqlFileCreationLogicImpl();
+            final InsertionSqlBasicInformationLogic insertionSqlFileCreationLogic = new InsertionSqlBasicInformationLogicImpl();
+            insertionSqlFileCreationLogic.initialize(inputWb);
 
             /* ＤＢの種類を取得 */
-            final String dbTypesStr = insertionSqlFileCreationLogic.getDbSetting(inputWb);
+            final String dbTypesStr = insertionSqlFileCreationLogic.getDbSetting();
             final DbTypes dbTypes = DbTypes.getEnumByTarget(dbTypesStr);
 
             /* ＳＱＬＩＤマップ */
-            final Map<String, String> sqlIdMap = insertionSqlFileCreationLogic.getSqlIdMap(inputWb);
+            final Map<String, String> sqlIdMap = insertionSqlFileCreationLogic.getSqlIdMap();
 
             for (int i = 0; i < inputWb.getNumberOfSheets(); i++) {
                 final Sheet wkSheet = inputWb.getSheetAt(i);
 
-                if (KmgString.equals(wkSheet.getSheetName(), InsertionSqlFileCreationLogic.SETTING_SHEET_NAME)) {
+                if (KmgString.equals(wkSheet.getSheetName(), InsertionSqlBasicInformationLogic.SETTING_SHEET_NAME)) {
                     continue;
                 }
-                if (KmgString.equals(wkSheet.getSheetName(), InsertionSqlFileCreationLogic.LIST_NAME)) {
+                if (KmgString.equals(wkSheet.getSheetName(), InsertionSqlBasicInformationLogic.LIST_NAME)) {
                     continue;
                 }
 

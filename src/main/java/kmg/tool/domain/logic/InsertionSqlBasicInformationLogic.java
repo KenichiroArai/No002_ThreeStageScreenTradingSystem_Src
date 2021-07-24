@@ -5,13 +5,13 @@ import java.util.Map;
 import org.apache.poi.ss.usermodel.Workbook;
 
 /**
- * 挿入ＳＱＬファイル作成ロジックインタフェース<br>
+ * 挿入ＳＱＬ基本情報ロジックインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface InsertionSqlFileCreationLogic {
+public interface InsertionSqlBasicInformationLogic {
 
     /** 設定シート名 */
     String SETTING_SHEET_NAME = "設定情報";
@@ -20,16 +20,25 @@ public interface InsertionSqlFileCreationLogic {
     String LIST_NAME = "一覧";
 
     /**
+     * 初期化する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param inputWk
+     *                入力ワークブック
+     */
+    void initialize(final Workbook inputWk);
+
+    /**
      * ＤＢ設定を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param wk
-     *           ワークブック
      * @return ＤＢ設定
      */
-    String getDbSetting(final Workbook wk);
+    String getDbSetting();
 
     /**
      * SQLIDマップ返す<br>
@@ -37,9 +46,7 @@ public interface InsertionSqlFileCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param wk
-     *           ワークブック
      * @return SQLIdマップ
      */
-    Map<String, String> getSqlIdMap(final Workbook wk);
+    Map<String, String> getSqlIdMap();
 }

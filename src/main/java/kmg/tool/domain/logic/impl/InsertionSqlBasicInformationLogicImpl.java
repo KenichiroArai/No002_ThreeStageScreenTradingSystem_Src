@@ -7,17 +7,35 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import kmg.tool.domain.logic.InsertionSqlFileCreationLogic;
+import kmg.tool.domain.logic.InsertionSqlBasicInformationLogic;
 import kmg.tool.infrastructure.utils.PoiUtils;
 
 /**
- * 挿入ＳＱＬファイル作成ロジック<br>
+ * 挿入ＳＱＬ基本情報ロジック<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class InsertionSqlFileCreationLogicImpl implements InsertionSqlFileCreationLogic {
+public class InsertionSqlBasicInformationLogicImpl implements InsertionSqlBasicInformationLogic {
+
+    /** 入力ワークブック */
+    private Workbook inputWk;
+
+    /**
+     * 初期化する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param inputWk
+     *                入力ワークブック
+     */
+    @SuppressWarnings("hiding")
+    @Override
+    public void initialize(final Workbook inputWk) {
+        this.inputWk = inputWk;
+    }
 
     /**
      * ＤＢ設定を返す<br>
@@ -25,15 +43,13 @@ public class InsertionSqlFileCreationLogicImpl implements InsertionSqlFileCreati
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param wk
-     *           ワークブック
      * @return ＤＢ設定
      */
     @Override
-    public String getDbSetting(final Workbook wk) {
+    public String getDbSetting() {
         String result = null;
 
-        final Sheet wkSheet = wk.getSheet(InsertionSqlFileCreationLogic.SETTING_SHEET_NAME);
+        final Sheet wkSheet = this.inputWk.getSheet(InsertionSqlBasicInformationLogic.SETTING_SHEET_NAME);
         final Cell wkCell = PoiUtils.getCell(wkSheet, 0, 1);
 
         result = PoiUtils.getStringValue(wkCell);
@@ -47,15 +63,13 @@ public class InsertionSqlFileCreationLogicImpl implements InsertionSqlFileCreati
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param wk
-     *           ワークブック
      * @return SQLIdマップ
      */
     @Override
-    public Map<String, String> getSqlIdMap(final Workbook wk) {
+    public Map<String, String> getSqlIdMap() {
         final Map<String, String> result = new HashMap<>();
 
-        final Sheet wkSheet = wk.getSheet(InsertionSqlFileCreationLogic.LIST_NAME);
+        final Sheet wkSheet = this.inputWk.getSheet(InsertionSqlBasicInformationLogic.LIST_NAME);
         for (int rowIdx = 1; rowIdx <= wkSheet.getLastRowNum(); rowIdx++) {
 
             // テーブル物理名を取得

@@ -22,16 +22,29 @@ import kmg.core.infrastructure.types.DbTypes;
 public interface InsertionSqlDataSheetCreationLogic {
 
     /**
-     * テーブル論理名を返す<br>
+     * 初期化する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param inputSheet
      *                   入力シート
+     * @param sqlIdMap
+     *                   ＳＱＬＩＤマップ
+     * @param outputPath
+     *                   出力パス
+     */
+    void initialize(Sheet inputSheet, Map<String, String> sqlIdMap, final Path outputPath);
+
+    /**
+     * テーブル論理名を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
      * @return テーブル論理名
      */
-    String getTableLogicNamee(Sheet inputSheet);
+    String getTableLogicName();
 
     /**
      * テーブル物理名を返す<br>
@@ -39,11 +52,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param inputSheet
-     *                   入力シート
      * @return テーブル物理名
      */
-    String getTablePhysicsName(Sheet inputSheet);
+    String getTablePhysicsName();
 
     /**
      * ＳＱＬＩＤを返す<br>
@@ -51,13 +62,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sqlIdMap
-     *                         ＳＱＬＩＤマップ
-     * @param tablePhysicsName
-     *                         テーブル物理名
      * @return ＳＱＬＩＤ
      */
-    String getSqlId(final Map<String, String> sqlIdMap, final String tablePhysicsName);
+    String getSqlId();
 
     /**
      * 出力ファイルのディレクトリを作成する<br>
@@ -65,12 +72,10 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param path
-     *             パス
      * @throws IOException
      *                     入出力例外
      */
-    void createOutputFileDirectories(Path path) throws IOException;
+    void createOutputFileDirectories() throws IOException;
 
     /**
      * 出力ファイルパスを返す<br>
@@ -78,15 +83,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param path
-     *                         パス
-     * @param sqlId
-     *                         ＳＱＬＩＤ
-     * @param tablePhysicsName
-     *                         テーブル物理名
      * @return 出力ファイルパス
      */
-    Path getOutputFilePath(Path path, String sqlId, String tablePhysicsName);
+    Path getOutputFilePath();
 
     /**
      * 文字セットを返す<br>
@@ -106,11 +105,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tableLogicName
-     *                       テーブル論理名
      * @return 削除コメント
      */
-    String getDeleteComment(String tableLogicName);
+    String getDeleteComment();
 
     /**
      * 削除ＳＱＬを返す<br>
@@ -118,23 +115,29 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tablePhysicsName
-     *                         テーブル物理名
      * @return 削除ＳＱＬ
      */
-    String getDeleteSql(String tablePhysicsName);
+    String getDeleteSql();
 
     /**
-     * 物理名リストを返す<br>
+     * カラム物理名リストを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param inputSheet
-     *                   入力シート
-     * @return 物理名リスト
+     * @return カラム物理名リスト
      */
-    List<String> getPhysicsNameList(Sheet inputSheet);
+    List<String> getColumnPhysicsNameList();
+
+    /**
+     * カラム数を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return カラム数
+     */
+    short getColumnNum();
 
     /**
      * 型リストを返す<br>
@@ -142,13 +145,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param inputSheet
-     *                   入力シート
-     * @param columnNum
-     *                   カラム数
      * @return 型リスト
      */
-    List<DbDataTypeTypes> getTypeList(final Sheet inputSheet, final short columnNum);
+    List<DbDataTypeTypes> getTypeList();
 
     /**
      * 挿入コメントを返す<br>
@@ -156,11 +155,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tableLogicName
-     *                       テーブル論理名
      * @return 挿入コメント
      */
-    String getInsertComment(String tableLogicName);
+    String getInsertComment();
 
     /**
      * 挿入ＳＱＬを返す<br>
@@ -168,16 +165,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tablePhysicsName
-     *                              テーブル物理名
-     * @param columnPhysicsNameList
-     *                              カラム物理名リスト
      * @param datasRow
-     *                              データ行
-     * @param typeList
-     *                              型リスト
+     *                 データ行
      * @return 挿入ＳＱＬ
      */
-    String getInsertSql(final String tablePhysicsName, final List<String> columnPhysicsNameList, final Row datasRow,
-        final List<DbDataTypeTypes> typeList);
+    String getInsertSql(final Row datasRow);
 }

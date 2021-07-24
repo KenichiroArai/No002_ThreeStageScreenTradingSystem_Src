@@ -19,6 +19,7 @@ import kmg.core.infrastructure.types.CharsetTypes;
 import kmg.core.infrastructure.types.DbDataTypeTypes;
 import kmg.core.infrastructure.types.DbTypes;
 import kmg.core.infrastructure.types.DelimiterTypes;
+import kmg.core.infrastructure.utils.ListUtils;
 import kmg.core.infrastructure.utils.LocalDateTimeUtils;
 import kmg.core.infrastructure.utils.LocalDateUtils;
 import kmg.tool.domain.logic.InsertionSqlDataSheetCreationLogic;
@@ -39,19 +40,87 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
     /** 挿入ＳＱＬテンプレート */
     private static final String INSERT_SQL_TEMPLATE = "INSERT INTO %s (%s) VALUES (%s);";
 
+    /** 入力シート */
+    private Sheet inputSheet;
+
+    /** ＳＱＬＩＤマップ */
+    private Map<String, String> sqlIdMap;
+
+    /** 出力パス */
+    private Path outputPath;
+
+    /** テーブル論理名 */
+    private String tableLogicName;
+
+    /** テーブル物理名 */
+    private String tablePhysicsName;
+
+    /** ＳＱＬＩＤ */
+    private String sqlId;
+
+    /** 出力ファイルパス */
+    private Path outputFilePath;
+
+    /** 文字セット */
+    private Charset charset;
+
+    /** 削除コメント */
+    private String deleteComment;
+
+    /** 削除ＳＱＬ */
+    private String deleteSql;
+
+    /** カラム数 */
+    private short columnNum;
+
+    /** カラム物理名リスト */
+    private List<String> columnPhysicsNameList;
+
+    /** 型リスト */
+    private List<DbDataTypeTypes> typeList;
+
+    /** 挿入コメント */
+    private String insertComment;
+
     /**
-     * テーブル論理名を返す<br>
+     * 初期化する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param inputSheet
      *                   入力シート
+     * @param sqlIdMap
+     *                   ＳＱＬＩＤマップ
+     * @param outputPath
+     *                   出力パス
+     */
+    @SuppressWarnings("hiding")
+    @Override
+    public void initialize(final Sheet inputSheet, final Map<String, String> sqlIdMap, final Path outputPath) {
+        this.inputSheet = inputSheet;
+        this.sqlIdMap = sqlIdMap;
+        this.outputPath = outputPath;
+
+    }
+
+    /**
+     * テーブル論理名を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
      * @return テーブル論理名
      */
     @Override
-    public String getTableLogicNamee(final Sheet inputSheet) {
-        final String result = inputSheet.getSheetName();
+    public String getTableLogicName() {
+        String result = null;
+        if (KmgString.isNotEmpty(this.tableLogicName)) {
+            result = this.tableLogicName;
+            return result;
+        }
+        result = this.inputSheet.getSheetName();
+        this.tableLogicName = result;
         return result;
     }
 
@@ -61,15 +130,18 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param inputSheet
-     *                   入力シート
      * @return テーブル物理名
      */
     @Override
-    public String getTablePhysicsName(final Sheet inputSheet) {
+    public String getTablePhysicsName() {
         String result = null;
-        final Cell wkCell = PoiUtils.getCell(inputSheet, 0, 0);
+        if (KmgString.isNotEmpty(this.tablePhysicsName)) {
+            result = this.tablePhysicsName;
+            return result;
+        }
+        final Cell wkCell = PoiUtils.getCell(this.inputSheet, 0, 0);
         result = PoiUtils.getStringValue(wkCell);
+        this.tablePhysicsName = result;
         return result;
     }
 
@@ -79,15 +151,17 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sqlIdMap
-     *                         ＳＱＬＩＤマップ
-     * @param tablePhysicsName
-     *                         テーブル物理名
      * @return ＳＱＬＩＤ
      */
     @Override
-    public String getSqlId(final Map<String, String> sqlIdMap, final String tablePhysicsName) {
-        final String result = sqlIdMap.get(tablePhysicsName);
+    public String getSqlId() {
+        String result = null;
+        if (KmgString.isNotEmpty(this.sqlId)) {
+            result = this.sqlId;
+            return result;
+        }
+        result = this.sqlIdMap.get(this.getTablePhysicsName());
+        this.sqlId = result;
         return result;
     }
 
@@ -97,14 +171,12 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param path
-     *             パス
      * @throws IOException
      *                     入出力例外
      */
     @Override
-    public void createOutputFileDirectories(final Path path) throws IOException {
-        Files.createDirectories(path);
+    public void createOutputFileDirectories() throws IOException {
+        Files.createDirectories(this.outputPath);
     }
 
     /**
@@ -113,19 +185,18 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param path
-     *                         パス
-     * @param sqlId
-     *                         ＳＱＬＩＤ
-     * @param tablePhysicsName
-     *                         テーブル物理名
      * @return 出力ファイルパス
      */
     @Override
-    public Path getOutputFilePath(final Path path, final String sqlId, final String tablePhysicsName) {
-        final Path result = Paths.get(path.toAbsolutePath().toString(),
-            String.format("%s_insert_%s.sql", sqlId, tablePhysicsName));
-
+    public Path getOutputFilePath() {
+        Path result = null;
+        if (this.outputFilePath != null) {
+            result = this.outputFilePath;
+            return result;
+        }
+        result = Paths.get(this.outputPath.toAbsolutePath().toString(),
+            String.format("%s_insert_%s.sql", this.getSqlId(), this.getTablePhysicsName()));
+        this.outputFilePath = result;
         return result;
     }
 
@@ -135,13 +206,17 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tableLogicName
-     *                       テーブル論理名
      * @return 削除コメント
      */
     @Override
-    public String getDeleteComment(final String tableLogicName) {
-        final String result = String.format("-- %sのレコード削除", tableLogicName);
+    public String getDeleteComment() {
+        String result = null;
+        if (KmgString.isNotEmpty(this.deleteComment)) {
+            result = this.deleteComment;
+            return result;
+        }
+        result = String.format("-- %sのレコード削除", this.getTableLogicName());
+        this.deleteComment = result;
         return result;
     }
 
@@ -151,14 +226,17 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tablePhysicsName
-     *                         テーブル物理名
      * @return 削除ＳＱＬ
      */
     @Override
-    public String getDeleteSql(final String tablePhysicsName) {
-        final String result = String.format(InsertionSqlDataSheetCreationLogicImpl.DELETE_SQL_TEMPLATE,
-            tablePhysicsName);
+    public String getDeleteSql() {
+        String result = null;
+        if (KmgString.isNotEmpty(this.deleteSql)) {
+            result = this.deleteSql;
+            return result;
+        }
+        result = String.format(InsertionSqlDataSheetCreationLogicImpl.DELETE_SQL_TEMPLATE, this.getTablePhysicsName());
+        this.deleteSql = result;
         return result;
     }
 
@@ -175,6 +253,10 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
     @Override
     public Charset getCharset(final DbTypes dbTypes) {
         Charset result = null;
+        if (this.charset != null) {
+            result = this.charset;
+            return result;
+        }
 
         switch (dbTypes) {
         case NONE:
@@ -192,24 +274,28 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
 
         }
 
+        this.charset = result;
         return result;
     }
 
     /**
-     * 物理名リストを返す<br>
+     * カラム物理名リストを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param inputSheet
-     *                   入力シート
-     * @return 物理名リスト
+     * @return カラム物理名リスト
      */
     @Override
-    public List<String> getPhysicsNameList(final Sheet inputSheet) {
-        final List<String> result = new ArrayList<>();
+    public List<String> getColumnPhysicsNameList() {
+        List<String> result = null;
+        if (ListUtils.isNotEmpty(this.columnPhysicsNameList)) {
+            result = this.columnPhysicsNameList;
+            return result;
+        }
+        result = new ArrayList<>();
 
-        final Row physicsNameRow = inputSheet.getRow(2);
+        final Row physicsNameRow = this.inputSheet.getRow(2);
         for (short j = physicsNameRow.getFirstCellNum(); j <= physicsNameRow.getLastCellNum(); j++) {
             final Cell physicsNameCell = physicsNameRow.getCell(j);
             if (PoiUtils.isEmptyCell(physicsNameCell)) {
@@ -219,6 +305,22 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
             result.add(physicsName);
         }
 
+        this.columnPhysicsNameList = result;
+        return result;
+    }
+
+    /**
+     * カラム数を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return カラム数
+     */
+    @Override
+    public short getColumnNum() {
+        final short result = (short) this.getColumnPhysicsNameList().size();
+        this.columnNum = result;
         return result;
     }
 
@@ -228,24 +330,26 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param inputSheet
-     *                   入力シート
-     * @param columnNum
-     *                   カラム数
      * @return 型リスト
      */
     @Override
-    public List<DbDataTypeTypes> getTypeList(final Sheet inputSheet, final short columnNum) {
-        final List<DbDataTypeTypes> result = new ArrayList<>();
+    public List<DbDataTypeTypes> getTypeList() {
+        List<DbDataTypeTypes> result = null;
+        if (this.typeList != null) {
+            result = this.typeList;
+            return result;
+        }
+        result = new ArrayList<>();
 
-        final Row typeRow = inputSheet.getRow(3);
-        for (short j = typeRow.getFirstCellNum(); j < columnNum; j++) {
-            final Cell typeCell = typeRow.getCell(j);
+        final Row typeRow = this.inputSheet.getRow(3);
+        for (short cellNum = typeRow.getFirstCellNum(); cellNum < this.getColumnNum(); cellNum++) {
+            final Cell typeCell = typeRow.getCell(cellNum);
 
             final DbDataTypeTypes type = DbDataTypeTypes.getEnum(PoiUtils.getStringValue(typeCell));
             result.add(type);
         }
 
+        this.typeList = result;
         return result;
     }
 
@@ -255,13 +359,17 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tableLogicName
-     *                       テーブル論理名
      * @return 挿入コメント
      */
     @Override
-    public String getInsertComment(final String tableLogicName) {
-        final String result = String.format("-- %sのレコード挿入", tableLogicName);
+    public String getInsertComment() {
+        String result = null;
+        if (KmgString.isNotEmpty(this.insertComment)) {
+            result = this.insertComment;
+            return result;
+        }
+        result = String.format("-- %sのレコード挿入", this.getTableLogicName());
+        this.insertComment = result;
         return result;
     }
 
@@ -271,27 +379,20 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tablePhysicsName
-     *                              テーブル物理名
-     * @param columnPhysicsNameList
-     *                              カラム物理名リスト
      * @param datasRow
-     *                              データ行
-     * @param typeList
-     *                              型リスト
+     *                 データ行
      * @return 挿入ＳＱＬ
      */
     @Override
-    public String getInsertSql(final String tablePhysicsName, final List<String> columnPhysicsNameList,
-        final Row datasRow, final List<DbDataTypeTypes> typeList) {
+    public String getInsertSql(final Row datasRow) {
 
         String result = null;
 
         final List<String> dataList = new ArrayList<>();
 
-        for (short j = datasRow.getFirstCellNum(); j < columnPhysicsNameList.size(); j++) {
-            final Cell dataCell = datasRow.getCell(j);
-            final DbDataTypeTypes type = typeList.get(j);
+        for (short cellNum = datasRow.getFirstCellNum(); cellNum < this.getColumnNum(); cellNum++) {
+            final Cell dataCell = datasRow.getCell(cellNum);
+            final DbDataTypeTypes type = this.getTypeList().get(cellNum);
 
             String outputData = null;
             final String dataStr = PoiUtils.getStringValue(dataCell);
@@ -361,8 +462,8 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
             dataList.add(outputData);
         }
 
-        result = String.format(InsertionSqlDataSheetCreationLogicImpl.INSERT_SQL_TEMPLATE, tablePhysicsName,
-            DelimiterTypes.COMMA.joinAll(columnPhysicsNameList), DelimiterTypes.COMMA.joinAll(dataList));
+        result = String.format(InsertionSqlDataSheetCreationLogicImpl.INSERT_SQL_TEMPLATE, this.getTablePhysicsName(),
+            DelimiterTypes.COMMA.joinAll(this.getColumnPhysicsNameList()), DelimiterTypes.COMMA.joinAll(dataList));
 
         return result;
     }
