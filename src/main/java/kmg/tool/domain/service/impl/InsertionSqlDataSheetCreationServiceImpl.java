@@ -72,7 +72,7 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
     public void outputInsertionSql() {
 
         final InsertionSqlDataSheetCreationLogic insertionSqlDataSheetCreationLogic = new InsertionSqlDataSheetCreationLogicImpl();
-        insertionSqlDataSheetCreationLogic.initialize(this.inputSheet, this.sqlIdMap, this.outputPath);
+        insertionSqlDataSheetCreationLogic.initialize(this.dbTypes, this.inputSheet, this.sqlIdMap, this.outputPath);
 
         /* 出力ファイルのディレクトリの作成 */
         try {
@@ -86,7 +86,7 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
         final Path outputFilePath = insertionSqlDataSheetCreationLogic.getOutputFilePath();
 
         /* 文字セットを取得 */
-        final Charset charset = insertionSqlDataSheetCreationLogic.getCharset(this.dbTypes);
+        final Charset charset = insertionSqlDataSheetCreationLogic.getCharset();
 
         try (BufferedWriter bw = Files.newBufferedWriter(outputFilePath, charset)) {
 

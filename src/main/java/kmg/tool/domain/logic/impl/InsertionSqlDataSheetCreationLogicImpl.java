@@ -40,6 +40,9 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
     /** 挿入ＳＱＬテンプレート */
     private static final String INSERT_SQL_TEMPLATE = "INSERT INTO %s (%s) VALUES (%s);";
 
+    /** ＤＢの種類 */
+    private DbTypes dbTypes;
+
     /** 入力シート */
     private Sheet inputSheet;
 
@@ -76,8 +79,8 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
     /** カラム物理名リスト */
     private List<String> columnPhysicsNameList;
 
-    /** 型リスト */
-    private List<DbDataTypeTypes> typeList;
+    /** ＤＢデータ型リスト */
+    private List<DbDataTypeTypes> dbDataTypeList;
 
     /** 挿入コメント */
     private String insertComment;
@@ -88,6 +91,8 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param dbTypes
+     *                   ＤＢの種類
      * @param inputSheet
      *                   入力シート
      * @param sqlIdMap
@@ -97,11 +102,12 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      */
     @SuppressWarnings("hiding")
     @Override
-    public void initialize(final Sheet inputSheet, final Map<String, String> sqlIdMap, final Path outputPath) {
+    public void initialize(final DbTypes dbTypes, final Sheet inputSheet, final Map<String, String> sqlIdMap,
+        final Path outputPath) {
+        this.dbTypes = dbTypes;
         this.inputSheet = inputSheet;
         this.sqlIdMap = sqlIdMap;
         this.outputPath = outputPath;
-
     }
 
     /**
@@ -246,19 +252,17 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param dbTypes
-     *                ＤＢの種類
      * @return 文字セット
      */
     @Override
-    public Charset getCharset(final DbTypes dbTypes) {
+    public Charset getCharset() {
         Charset result = null;
         if (this.charset != null) {
             result = this.charset;
             return result;
         }
 
-        switch (dbTypes) {
+        switch (this.dbTypes) {
         case NONE:
             break;
         case MYSQL:
@@ -325,18 +329,18 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
     }
 
     /**
-     * 型リストを返す<br>
+     * ＤＢ型リストを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 型リスト
+     * @return ＤＢ型リスト
      */
     @Override
-    public List<DbDataTypeTypes> getTypeList() {
+    public List<DbDataTypeTypes> getDbDataTypeList() {
         List<DbDataTypeTypes> result = null;
-        if (this.typeList != null) {
-            result = this.typeList;
+        if (this.dbDataTypeList != null) {
+            result = this.dbDataTypeList;
             return result;
         }
         result = new ArrayList<>();
@@ -349,7 +353,7 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
             result.add(type);
         }
 
-        this.typeList = result;
+        this.dbDataTypeList = result;
         return result;
     }
 
@@ -392,7 +396,7 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
 
         for (short cellNum = datasRow.getFirstCellNum(); cellNum < this.getColumnNum(); cellNum++) {
             final Cell dataCell = datasRow.getCell(cellNum);
-            final DbDataTypeTypes type = this.getTypeList().get(cellNum);
+            final DbDataTypeTypes dDbDataType = this.getDbDataTypeList().get(cellNum);
 
             String outputData = null;
             final String dataStr = PoiUtils.getStringValue(dataCell);
@@ -401,62 +405,19 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
                 continue;
             }
 
-            switch (type) {
+            switch (this.dbTypes) {
             case NONE:
-                // 指定無し
-                outputData = PoiUtils.getStringValue(dataCell);
-                outputData = String.format("'%s'", outputData);
                 break;
-            case INTEGER:
-                // 4バイト整数
-            case LONG:
-                // 8バイト整数
-            case SMALLSERIAL:
-                // 自動4バイト
-            case SERIAL:
-                // 自動8バイト
-                outputData = String.valueOf((int) dataCell.getNumericCellValue());
+            case POSTGRE_SQL:
+                outputData = this.getOutputDataForPostgreSql(dataCell, dDbDataType);
                 break;
-            case FLOAT:
-                // 4バイト実数
-            case DOUBLE:
-                // 8バイト実数
-            case BIG_DECIMAL:
-                // 8バイト実数
-                outputData = String.valueOf(dataCell.getNumericCellValue());
+            case MYSQL:
                 break;
-            case DATE:
-                // 日付型
-                final String dateStrTmp = PoiUtils.getStringValue(dataCell);
-                // TODO KenichiroArai 2021/07/15 列挙型
-                if (KmgString.equals("-infinity", dateStrTmp)) {
-                    outputData = dateStrTmp;
-                } else if (KmgString.equals("infinity", dateStrTmp)) {
-                    outputData = dateStrTmp;
-                } else {
-                    final Date date = dataCell.getDateCellValue();
-                    outputData = LocalDateUtils.formatYyyyMmDd(date);
-                }
-                outputData = String.format("'%s'", outputData);
+            case ORACLE:
                 break;
-            case TIME:
-                // 日時型
-                final String dateTimeStrTmp = PoiUtils.getStringValue(dataCell);
-                // TODO KenichiroArai 2021/07/15 列挙型
-                if (KmgString.equals("-infinity", dateTimeStrTmp)) {
-                    outputData = dateTimeStrTmp;
-                } else if (KmgString.equals("infinity", dateTimeStrTmp)) {
-                    outputData = dateTimeStrTmp;
-                } else {
-                    final Date date = dataCell.getDateCellValue();
-                    outputData = LocalDateTimeUtils.formatYyyyMmDdHhMmSsSss(date);
-                }
-                outputData = String.format("'%s'", outputData);
+            case SQL_SERVER:
                 break;
-            case STRING:
-                // 文字列型
-                outputData = PoiUtils.getStringValue(dataCell);
-                outputData = String.format("'%s'", outputData);
+            default:
                 break;
             }
             dataList.add(outputData);
@@ -465,6 +426,87 @@ public class InsertionSqlDataSheetCreationLogicImpl implements InsertionSqlDataS
         result = String.format(InsertionSqlDataSheetCreationLogicImpl.INSERT_SQL_TEMPLATE, this.getTablePhysicsName(),
             DelimiterTypes.COMMA.joinAll(this.getColumnPhysicsNameList()), DelimiterTypes.COMMA.joinAll(dataList));
 
+        return result;
+    }
+
+    /**
+     * ＰｏｓｔｇｒｅＳＱＬの出力データを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param dataCell
+     *                    データセル
+     * @param dDbDataType
+     *                    ＤＢ型の種類
+     * @return 出力データ
+     */
+    @SuppressWarnings("static-method")
+    private String getOutputDataForPostgreSql(final Cell dataCell, final DbDataTypeTypes dDbDataType) {
+
+        String result = null;
+
+        String outputData = null;
+        switch (dDbDataType) {
+        case NONE:
+            // 指定無し
+            outputData = PoiUtils.getStringValue(dataCell);
+            outputData = String.format("'%s'", outputData);
+            break;
+        case INTEGER:
+            // 4バイト整数
+        case LONG:
+            // 8バイト整数
+        case SMALLSERIAL:
+            // 自動4バイト
+        case SERIAL:
+            // 自動8バイト
+            outputData = String.valueOf((int) dataCell.getNumericCellValue());
+            break;
+        case FLOAT:
+            // 4バイト実数
+        case DOUBLE:
+            // 8バイト実数
+        case BIG_DECIMAL:
+            // 8バイト実数
+            outputData = String.valueOf(dataCell.getNumericCellValue());
+            break;
+        case DATE:
+            // 日付型
+            final String dateStrTmp = PoiUtils.getStringValue(dataCell);
+            // TODO KenichiroArai 2021/07/15 列挙型
+            if (KmgString.equals("-infinity", dateStrTmp)) {
+                outputData = dateStrTmp;
+            } else if (KmgString.equals("infinity", dateStrTmp)) {
+                outputData = dateStrTmp;
+            } else {
+                final Date date = dataCell.getDateCellValue();
+                outputData = LocalDateUtils.formatYyyyMmDd(date);
+            }
+            outputData = String.format("'%s'", outputData);
+            break;
+        case TIME:
+            // 日時型
+            final String dateTimeStrTmp = PoiUtils.getStringValue(dataCell);
+            // TODO KenichiroArai 2021/07/15 列挙型
+            if (KmgString.equals("-infinity", dateTimeStrTmp)) {
+                outputData = dateTimeStrTmp;
+            } else if (KmgString.equals("infinity", dateTimeStrTmp)) {
+                outputData = dateTimeStrTmp;
+            } else {
+                final Date date = dataCell.getDateCellValue();
+                outputData = LocalDateTimeUtils.formatYyyyMmDdHhMmSsSss(date);
+            }
+            outputData = String.format("'%s'", outputData);
+            break;
+        case STRING:
+            // 文字列型
+            outputData = PoiUtils.getStringValue(dataCell);
+            outputData = String.format("'%s'", outputData);
+            break;
+        }
+
+        result = outputData;
         return result;
     }
 }

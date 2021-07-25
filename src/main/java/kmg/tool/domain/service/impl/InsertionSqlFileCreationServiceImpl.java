@@ -77,8 +77,7 @@ public class InsertionSqlFileCreationServiceImpl implements InsertionSqlFileCrea
             insertionSqlFileCreationLogic.initialize(inputWb);
 
             /* ＤＢの種類を取得 */
-            final String dbTypesStr = insertionSqlFileCreationLogic.getDbSetting();
-            final DbTypes dbTypes = DbTypes.getEnumByTarget(dbTypesStr);
+            final DbTypes dbTypes = insertionSqlFileCreationLogic.getDbTypes();
 
             /* ＳＱＬＩＤマップ */
             final Map<String, String> sqlIdMap = insertionSqlFileCreationLogic.getSqlIdMap();

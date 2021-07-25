@@ -27,6 +27,8 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param dbTypes
+     *                   ＤＢの種類
      * @param inputSheet
      *                   入力シート
      * @param sqlIdMap
@@ -34,7 +36,7 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @param outputPath
      *                   出力パス
      */
-    void initialize(Sheet inputSheet, Map<String, String> sqlIdMap, final Path outputPath);
+    void initialize(DbTypes dbTypes, Sheet inputSheet, Map<String, String> sqlIdMap, final Path outputPath);
 
     /**
      * テーブル論理名を返す<br>
@@ -93,11 +95,9 @@ public interface InsertionSqlDataSheetCreationLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param dbTypes
-     *                ＤＢの種類
      * @return 文字セット
      */
-    Charset getCharset(DbTypes dbTypes);
+    Charset getCharset();
 
     /**
      * 削除コメントを返す<br>
@@ -140,14 +140,14 @@ public interface InsertionSqlDataSheetCreationLogic {
     short getColumnNum();
 
     /**
-     * 型リストを返す<br>
+     * ＤＢデータ型リストを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 型リスト
+     * @return ＤＢデータ型リスト
      */
-    List<DbDataTypeTypes> getTypeList();
+    List<DbDataTypeTypes> getDbDataTypeList();
 
     /**
      * 挿入コメントを返す<br>

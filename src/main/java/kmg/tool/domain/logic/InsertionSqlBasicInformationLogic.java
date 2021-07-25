@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
+import kmg.core.infrastructure.types.DbTypes;
+
 /**
  * 挿入ＳＱＬ基本情報ロジックインタフェース<br>
  *
@@ -31,14 +33,14 @@ public interface InsertionSqlBasicInformationLogic {
     void initialize(final Workbook inputWk);
 
     /**
-     * ＤＢ設定を返す<br>
+     * ＤＢの種類を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return ＤＢ設定
+     * @return ＤＢの種類
      */
-    String getDbSetting();
+    DbTypes getDbTypes();
 
     /**
      * SQLIDマップ返す<br>

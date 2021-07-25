@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import kmg.core.infrastructure.types.DbTypes;
 import kmg.tool.domain.logic.InsertionSqlBasicInformationLogic;
 import kmg.tool.infrastructure.utils.PoiUtils;
 
@@ -38,21 +39,21 @@ public class InsertionSqlBasicInformationLogicImpl implements InsertionSqlBasicI
     }
 
     /**
-     * ＤＢ設定を返す<br>
+     * ＤＢの種類を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return ＤＢ設定
+     * @return ＤＢの種類
      */
     @Override
-    public String getDbSetting() {
-        String result = null;
+    public DbTypes getDbTypes() {
+        DbTypes result = null;
 
         final Sheet wkSheet = this.inputWk.getSheet(InsertionSqlBasicInformationLogic.SETTING_SHEET_NAME);
         final Cell wkCell = PoiUtils.getCell(wkSheet, 0, 1);
 
-        result = PoiUtils.getStringValue(wkCell);
+        result = DbTypes.getEnum(PoiUtils.getStringValue(wkCell));
 
         return result;
     }
