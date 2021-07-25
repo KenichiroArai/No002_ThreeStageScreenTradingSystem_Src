@@ -120,4 +120,16 @@ public class InsertionSqlDataSheetCreationServiceImpl implements InsertionSqlDat
 
     }
 
+    /**
+     * 挿入ＳＱＬ出力を実行する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     */
+    @Override
+    public void run() {
+        this.outputInsertionSql();
+    }
+
 }

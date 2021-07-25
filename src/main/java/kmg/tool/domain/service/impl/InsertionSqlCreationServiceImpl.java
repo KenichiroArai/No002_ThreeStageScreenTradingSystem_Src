@@ -20,6 +20,9 @@ public class InsertionSqlCreationServiceImpl implements InsertionSqlCreationServ
     /** 出力パス */
     private Path outputPath;
 
+    /** スレッド数 */
+    private short threadNum;
+
     /**
      * 初期化する<br>
      *
@@ -30,12 +33,15 @@ public class InsertionSqlCreationServiceImpl implements InsertionSqlCreationServ
      *                   入力パス
      * @param outputPath
      *                   出力パス
+     * @param threadNum
+     *                   スレッド数
      */
     @SuppressWarnings("hiding")
     @Override
-    public void initialize(final Path inputPath, final Path outputPath) {
+    public void initialize(final Path inputPath, final Path outputPath, final short threadNum) {
         this.inputPath = inputPath;
         this.outputPath = outputPath;
+        this.threadNum = threadNum;
     }
 
     /**
@@ -49,7 +55,7 @@ public class InsertionSqlCreationServiceImpl implements InsertionSqlCreationServ
     public void outputInsertionSql() {
 
         final InsertionSqlFileCreationService insertionSqlFileCreationService = new InsertionSqlFileCreationServiceImpl();
-        insertionSqlFileCreationService.initialize(this.inputPath, this.outputPath);
+        insertionSqlFileCreationService.initialize(this.inputPath, this.outputPath, this.threadNum);
         insertionSqlFileCreationService.outputInsertionSql();
 
     }

@@ -14,7 +14,7 @@ import kmg.core.infrastructure.types.DbTypes;
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface InsertionSqlDataSheetCreationService {
+public interface InsertionSqlDataSheetCreationService extends Runnable {
 
     /**
      * 初期化する<br>

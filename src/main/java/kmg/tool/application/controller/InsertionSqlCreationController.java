@@ -1,18 +1,20 @@
 package kmg.tool.application.controller;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
-import kmg.core.infrastructure.type.KmgString;
 import kmg.tool.domain.service.InsertionSqlCreationService;
 import kmg.tool.domain.service.impl.InsertionSqlCreationServiceImpl;
 
@@ -23,7 +25,7 @@ import kmg.tool.domain.service.impl.InsertionSqlCreationServiceImpl;
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class InsertionSqlCreationController {
+public class InsertionSqlCreationController implements Initializable {
 
     /** 入力ファイルテキストボックス */
     @FXML
@@ -41,6 +43,10 @@ public class InsertionSqlCreationController {
     @FXML
     private Button btnOutputDirectoryOpen;
 
+    /** スレッド数テキストボックス */
+    @FXML
+    private TextField txtThreadNum;
+
     /** 実行ボタン */
     @FXML
     private Button btnRun;
@@ -52,6 +58,36 @@ public class InsertionSqlCreationController {
     /** 処理時間単位ラベル */
     @FXML
     private Label lblProcTimeUnit;
+
+    /**
+     * 初期化<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param location
+     *                  ロケーション
+     * @param resources
+     *                  リソース
+     */
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+
+        /* 入力ファイルの初期値を設定する */
+        this.txtInputFile.setText(
+            "D:\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\DA010001_初期データ.xlsm");
+
+        /* 出力ファイルの初期値を設定する */
+        this.txtOutputDirectory.setText(
+            "D:\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\output");
+
+        /* スレッド数の初期値を設定する */
+        // ＣＰＵの論理プロセッサ数を取得
+        final Runtime runtime = Runtime.getRuntime();
+        final int threadNum = runtime.availableProcessors();
+        // テキストボックスに設定
+        this.txtThreadNum.setText(String.valueOf(threadNum));
+    }
 
     /**
      * 入力ファイル読み込みボタンクリックイベント
@@ -119,16 +155,6 @@ public class InsertionSqlCreationController {
     @FXML
     private void onCalcRunClicked(final ActionEvent event) {
 
-        // TODO KenichiroArai 2021/07/08 デバッグ用
-        if (KmgString.isEmpty(this.txtInputFile.getText())) {
-            this.txtInputFile.setText(
-                "D:\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\DA010001_初期データ.xlsm");
-        }
-        if (KmgString.isEmpty(this.txtOutputDirectory.getText())) {
-            this.txtOutputDirectory.setText(
-                "D:\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\output");
-        }
-
         final PfaMeasModel pfaMeas = new PfaMeasModel();
         pfaMeas.start();
         try {
@@ -154,12 +180,12 @@ public class InsertionSqlCreationController {
      * @param outputPath
      *                   出力パス
      */
-    @SuppressWarnings("static-method")
     protected void mainProc(final Path inputPath, final Path outputPath) {
 
         /* 挿入ＳＱＬ作成サービス */
         final InsertionSqlCreationService insertSqlCreationService = new InsertionSqlCreationServiceImpl();
-        insertSqlCreationService.initialize(inputPath, outputPath);
+        final short threadNum = Short.parseShort(this.txtThreadNum.getText());
+        insertSqlCreationService.initialize(inputPath, outputPath, threadNum);
         insertSqlCreationService.outputInsertionSql();
 
     }

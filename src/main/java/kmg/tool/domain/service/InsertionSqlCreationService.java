@@ -21,8 +21,10 @@ public interface InsertionSqlCreationService {
      *                   入力パス
      * @param outputPath
      *                   出力パス
+     * @param threadNum
+     *                   スレッド数
      */
-    void initialize(final Path inputPath, final Path outputPath);
+    void initialize(final Path inputPath, final Path outputPath, short threadNum);
 
     /**
      * 挿入ＳＱＬを出力する<br>

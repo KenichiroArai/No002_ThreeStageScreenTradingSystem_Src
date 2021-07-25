@@ -36,6 +36,8 @@
                         <Label prefWidth="80.0" text="処理時間：" />
                         <Label fx:id="lblProcTime" prefWidth="80.0" />
                         <Label fx:id="lblProcTimeUnit" prefWidth="80.0" />
+                        <Label prefWidth="60.0" text="スレッド数：" />
+                        <TextField fx:id="txtThreadNum" prefHeight="25.0" prefWidth="40.0" />
                     </children>
                 </HBox>
                 <HBox prefHeight="156.0" prefWidth="662.0">
