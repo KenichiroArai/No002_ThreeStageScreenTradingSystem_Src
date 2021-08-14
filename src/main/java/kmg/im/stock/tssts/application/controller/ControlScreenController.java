@@ -329,11 +329,13 @@ public class ControlScreenController {
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
+            // TODO KenichiroArai 2021/08/4 メッセージ
             final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
             ControlScreenController.LOGGER.error(logMsg, e);
         } catch (final Exception e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
+            // TODO KenichiroArai 2021/08/4 メッセージ
             final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
             ControlScreenController.LOGGER.error(logMsg, e);
         } finally {
@@ -375,6 +377,18 @@ public class ControlScreenController {
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
                 this.simulationService.simulate(code);
             }
+        } catch (final TsstsDomainException e) {
+            // 三段階スクリーン・トレーディング・システムドメイン例外
+
+            // TODO KenichiroArai 2021/08/4 メッセージ
+            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            ControlScreenController.LOGGER.error(logMsg, e);
+        } catch (final Exception e) {
+            // 三段階スクリーン・トレーディング・システムドメイン例外
+
+            // TODO KenichiroArai 2021/08/4 メッセージ
+            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            ControlScreenController.LOGGER.error(logMsg, e);
         } finally {
             pfaMeas.end();
             this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));

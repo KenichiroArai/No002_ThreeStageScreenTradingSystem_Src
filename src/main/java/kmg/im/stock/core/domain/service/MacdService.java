@@ -138,6 +138,7 @@ public interface MacdService {
      * @sine 1.0.0
      * @version 1.0.0
      */
+    // TODO KenichiroArai 2021/08/11 clac→calcのスペル間違え
     void clacLine();
 
     /**

@@ -41,6 +41,21 @@ public class TsstsDomainException extends TsstsException {
      *                    エラーメッセージ
      * @param logMsgTypes
      *                    ログメッセージの種類
+     */
+    public TsstsDomainException(final String errMsg, final LogMessageTypes logMsgTypes) {
+        super(errMsg, logMsgTypes);
+    }
+
+    /**
+     * コンストラクタ<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param errMsg
+     *                    エラーメッセージ
+     * @param logMsgTypes
+     *                    ログメッセージの種類
      * @param cause
      *                    原因
      */

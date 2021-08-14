@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 
 /**
@@ -72,6 +73,9 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
 
     /** 出来高 */
     private Long volume;
+
+    /** 株価計算値管理モデル */
+    private StockPriceCalcValueMgtModel stockPriceCalcValueMgtModel;
 
     /**
      * 識別番号を設定する<br>
@@ -591,4 +595,31 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
         return result;
     }
 
+    /**
+     * 株価計算値管理モデルを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param stockPriceCalcValueMgtModel
+     *                                    株価計算値管理モデル
+     */
+    @Override
+    public void setStockPriceCalcValueMgtModel(final StockPriceCalcValueMgtModel stockPriceCalcValueMgtModel) {
+        this.stockPriceCalcValueMgtModel = stockPriceCalcValueMgtModel;
+    }
+
+    /**
+     * 株価計算値管理モデルを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値管理モデル
+     */
+    @Override
+    public StockPriceCalcValueMgtModel getStockPriceCalcValueMgtModel() {
+        final StockPriceCalcValueMgtModel result = this.stockPriceCalcValueMgtModel;
+        return result;
+    }
 }

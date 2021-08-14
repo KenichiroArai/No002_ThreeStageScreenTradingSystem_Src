@@ -180,4 +180,5 @@ public interface StockPriceTimeSeriesMgtModel {
      * @return 勢力指数計算モデルリスト
      */
     List<PowerIndexCalcModel> toPowerIndexCalcModelList();
+
 }

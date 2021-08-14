@@ -20,22 +20,22 @@ public enum StockPriceCalcValueTypeTypes implements Supplier<Long> {
     NONE("指定無し", -1, TechIndicatorTypes.NONE),
 
     /** ＭＣＡＤライン */
-    MCADL("ＭＣＡＤライン）", 1, TechIndicatorTypes.MACD),
+    MCADL("ＭＣＡＤライン", 1, TechIndicatorTypes.MACD),
 
     /** ＭＣＡＤシグナル */
-    MCADS("ＭＣＡＤシグナル）", 2, TechIndicatorTypes.MACD),
+    MCADS("ＭＣＡＤシグナル", 2, TechIndicatorTypes.MACD),
 
     /** ＭＣＡＤヒストグラム */
-    MCADH("ＭＣＡＤヒストグラム）", 3, TechIndicatorTypes.MCADH),
+    MCADH("ＭＣＡＤヒストグラム", 3, TechIndicatorTypes.MCADH),
 
     /** 勢力指数 */
-    PI("勢力指数）", 4, TechIndicatorTypes.PI),
+    PI("勢力指数", 4, TechIndicatorTypes.PI),
 
     /** 勢力指数２ＥＭＡ */
-    PI2EMA("勢力指数２ＥＭＡ）", 5, TechIndicatorTypes.PI),
+    PI2EMA("勢力指数２ＥＭＡ", 5, TechIndicatorTypes.PI),
 
     /** 勢力指数１３ＥＭＡ */
-    PI13EMA("勢力指数１３ＥＭＡ）", 6, TechIndicatorTypes.PI),
+    PI13EMA("勢力指数１３ＥＭＡ", 6, TechIndicatorTypes.PI),
 
     /* 定義：終了 */
     ;

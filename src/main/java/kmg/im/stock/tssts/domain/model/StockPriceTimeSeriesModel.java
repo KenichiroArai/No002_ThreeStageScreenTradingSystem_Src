@@ -408,4 +408,24 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
     @Override
     BigDecimal get();
 
+    /**
+     * 株価計算値管理モデルを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param stockPriceCalcValueMgtModel
+     *                                    株価計算値管理モデル
+     */
+    void setStockPriceCalcValueMgtModel(StockPriceCalcValueMgtModel stockPriceCalcValueMgtModel);
+
+    /**
+     * 株価計算値管理モデルを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値管理モデル
+     */
+    StockPriceCalcValueMgtModel getStockPriceCalcValueMgtModel();
 }

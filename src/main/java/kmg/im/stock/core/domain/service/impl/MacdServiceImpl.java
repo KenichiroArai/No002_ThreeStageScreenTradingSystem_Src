@@ -331,7 +331,7 @@ public class MacdServiceImpl implements MacdService {
         if (ListUtils.isEmpty(this.signalList)) {
             this.clacSignal();
         } else {
-            this.signalList.clear();
+            this.histogramList.clear();
         }
 
         final List<Supplier<BigDecimal>> tmpList = this.macdLogic.getHistogramList(this.lineList, this.signalList);

@@ -1,7 +1,6 @@
 package kmg.im.stock.tssts.domain.logic;
 
-import java.util.Map;
-
+import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 
 /**
@@ -14,16 +13,16 @@ import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 public interface SimLogic {
 
     /**
-     * 株価コードに該当する株価時系列のマップを返す<br>
+     * 株価コードに該当する株価時系列管理モデルを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockCode
      *                  株価コード
-     * @return 株価時系列
+     * @return 株価時系列管理
      */
-    Map<Long, StockPriceTimeSeriesModel> getStockPriceTimeSeriesMap(long stockCode);
+    StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel(long stockCode);
 
     /**
      * 第１のスクリーンに掛ける<br>

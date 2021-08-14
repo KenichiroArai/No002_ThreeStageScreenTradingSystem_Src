@@ -1,17 +1,13 @@
-/**
- *
- */
 package kmg.im.stock.tssts.domain.logic.impl;
-
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.SimLogic;
+import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 
 /**
- * TODO クラス名<br>
+ * シミュレーションロジック<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
@@ -21,17 +17,17 @@ import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 public class SimLogicImpl implements SimLogic {
 
     /**
-     * 株価コードに該当する株価時系列のマップを返す<br>
+     * 株価コードに該当する株価時系列管理モデルを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockCode
      *                  株価コード
-     * @return 株価時系列
+     * @return 株価時系列管理
      */
     @Override
-    public Map<Long, StockPriceTimeSeriesModel> getStockPriceTimeSeriesMap(final long stockCode) {
+    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel(final long stockCode) {
         // TODO 自動生成されたメソッド・スタブ
         return null;
     }

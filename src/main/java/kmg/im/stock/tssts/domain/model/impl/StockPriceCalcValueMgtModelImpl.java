@@ -3,7 +3,10 @@ package kmg.im.stock.tssts.domain.model.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
+
+import org.apache.commons.collections4.map.HashedMap;
 
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
@@ -25,6 +28,15 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
     private final List<StockPriceCalcValueModel> dataList;
 
     /**
+     * 株価計算値マップ<br>
+     * <p>
+     * キー：株価計算値の種類の種類<br>
+     * 値：株価計算値モデル<br>
+     * </p>
+     */
+    private final Map<StockPriceCalcValueTypeTypes, StockPriceCalcValueModel> dataMap;
+
+    /**
      * デフォルトコンストラクタ<br>
      *
      * @author KenichiroArai
@@ -33,6 +45,7 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
      */
     public StockPriceCalcValueMgtModelImpl() {
         this.dataList = new ArrayList<>();
+        this.dataMap = new HashedMap<>();
     }
 
     /**
@@ -60,7 +73,12 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
             data.setSptsId(stockPriceTimeSeriesModel.getId());
             data.setSpcvtId(spcvt);
             data.setCalcValue(supplier.get());
+
+            // 株価計算値リストに追加
             this.dataList.add(data);
+
+            // 株価計算値マップに追加
+            this.dataMap.put(spcvt, data);
         }
     }
 
@@ -153,6 +171,22 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
     @Override
     public List<StockPriceCalcValueModel> getDataList() {
         final List<StockPriceCalcValueModel> result = this.dataList;
+        return result;
+    }
+
+    /**
+     * 株価計算値の種類に該当する株価計算値モデルを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param spcvt
+     *              株価計算値の種類
+     * @return 株価計算値モデル
+     */
+    @Override
+    public StockPriceCalcValueModel get(final StockPriceCalcValueTypeTypes spcvt) {
+        final StockPriceCalcValueModel result = this.dataMap.get(spcvt);
         return result;
     }
 
