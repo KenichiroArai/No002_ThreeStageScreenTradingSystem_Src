@@ -90,32 +90,79 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
     @Override
     public void register() throws TsstsDomainException {
 
-        /* 株価計算値月足 */
-        // 削除する
-        this.stockPriceCalcValueService.delete(this.stockPriceTimeSeriesMgtMonthlyModel.getSptsptId());
-        // 計算する
-        final MacdService monthlyMacdService = this.context.getBean(MacdService.class);
-        monthlyMacdService.initialize(this.stockPriceTimeSeriesMgtMonthlyModel.toSupplierDataList());
-        monthlyMacdService.clacHistogram();
-        final StockPriceCalcValueMgtModel stockPriceCalcValueMgtMonthlyModel = new StockPriceCalcValueMgtModelImpl(
-            this.stockPriceTimeSeriesMgtMonthlyModel, StockPriceCalcValueTypeTypes.MCADH,
-            monthlyMacdService.getHistogramList());
-        // 登録する
-        this.stockPriceCalcValueService.register(stockPriceCalcValueMgtMonthlyModel);
+        /* 株価計算値日足 */
+        this.register(this.stockPriceTimeSeriesMgtDailyModel);
 
         /* 株価計算値週足 */
-        // 削除する
-        this.stockPriceCalcValueService.delete(this.stockPriceTimeSeriesMgtWeeklyModel.getSptsptId());
-        // 計算する
-        final PowerIndexService powerIndexService = this.context.getBean(PowerIndexService.class);
-        powerIndexService.initialize(this.stockPriceTimeSeriesMgtWeeklyModel.toPowerIndexCalcModelList());
-        powerIndexService.defaultLtSmoothing();
-        final StockPriceCalcValueMgtModel stockPriceCalcValueMgtWeeklyModel = new StockPriceCalcValueMgtModelImpl(
-            this.stockPriceTimeSeriesMgtWeeklyModel, StockPriceCalcValueTypeTypes.PI2EMA,
-            powerIndexService.getSmoothingList());
-        // 登録する
-        this.stockPriceCalcValueService.register(stockPriceCalcValueMgtWeeklyModel);
+        this.register(this.stockPriceTimeSeriesMgtWeeklyModel);
 
+        /* 株価計算値月足 */
+        this.register(this.stockPriceTimeSeriesMgtMonthlyModel);
+
+    }
+
+    /**
+     * 株価計算値の登録する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param stockPriceTimeSeriesMgtModel
+     *                                     株価時系列管理モデル
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
+     */
+    private void register(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException {
+
+        /* 削除する */
+        this.stockPriceCalcValueService.delete(stockPriceTimeSeriesMgtModel.getSptsptId());
+
+        /* 計算する */
+
+        // ＭＣＡＤ
+        final MacdService macdService = this.context.getBean(MacdService.class);
+        macdService.initialize(stockPriceTimeSeriesMgtModel.toSupplierDataList());
+        // ＭＣＡＤライン
+        macdService.clacLine();
+        final StockPriceCalcValueMgtModel spcvMgtMacdlModel = new StockPriceCalcValueMgtModelImpl(
+            stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.MCADL, macdService.getLineList());
+        // ＭＣＡＤシグナル
+        macdService.clacSignal();
+        final StockPriceCalcValueMgtModel spcvMgtMacdsModel = new StockPriceCalcValueMgtModelImpl(
+            stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.MCADS, macdService.getSignalList());
+        // ＭＣＡＤヒストグラム
+        macdService.clacHistogram();
+        final StockPriceCalcValueMgtModel spcvMgtMacdhModel = new StockPriceCalcValueMgtModelImpl(
+            stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.MCADH, macdService.getHistogramList());
+
+        // 勢力指数
+        final PowerIndexService piService = this.context.getBean(PowerIndexService.class);
+        piService.initialize(stockPriceTimeSeriesMgtModel.toPowerIndexCalcModelList());
+        piService.calc();
+        final StockPriceCalcValueMgtModel spcvMgtPiModel = new StockPriceCalcValueMgtModelImpl(
+            stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.PI, piService.getCalcResultList());
+        // 勢力指数２ＥＭＡ
+        piService.defaultStSmoothing();
+        final StockPriceCalcValueMgtModel spcvMgtPi2EmaModel = new StockPriceCalcValueMgtModelImpl(
+            stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.PI2EMA, piService.getSmoothingList());
+        // 勢力指数１３ＥＭＡ
+        piService.defaultLtSmoothing();
+        final StockPriceCalcValueMgtModel spcvMgtPi13EmaModel = new StockPriceCalcValueMgtModelImpl(
+            stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.PI13EMA, piService.getSmoothingList());
+
+        /* 登録する */
+        // ＭＣＡＤライン
+        this.stockPriceCalcValueService.register(spcvMgtMacdlModel);
+        // ＭＣＡＤシグナル
+        this.stockPriceCalcValueService.register(spcvMgtMacdsModel);
+        // ＭＣＡＤヒストグラム
+        this.stockPriceCalcValueService.register(spcvMgtMacdhModel);
+        // 勢力指数
+        this.stockPriceCalcValueService.register(spcvMgtPiModel);
+        // 勢力指数２ＥＭＡ
+        this.stockPriceCalcValueService.register(spcvMgtPi2EmaModel);
+        // 勢力指数１３ＥＭＡ
+        this.stockPriceCalcValueService.register(spcvMgtPi13EmaModel);
     }
 
 }
