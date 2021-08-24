@@ -2,8 +2,6 @@ package kmg.im.stock.tssts.domain.model;
 
 import java.util.List;
 
-import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
-
 /**
  * 株価計算値管理モデルインタフェース<br>
  *
@@ -73,17 +71,5 @@ public interface StockPriceCalcValueMgtModel {
      * @return 株価計算値リスト
      */
     List<StockPriceCalcValueModel> getDataList();
-
-    /**
-     * 株価計算値の種類に該当する株価計算値モデルを返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param spcvt
-     *              株価計算値の種類
-     * @return 株価計算値モデル
-     */
-    StockPriceCalcValueModel get(StockPriceCalcValueTypeTypes spcvt);
 
 }

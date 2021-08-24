@@ -2,6 +2,7 @@ package kmg.im.stock.tssts.domain.model;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.function.Supplier;
 
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
@@ -101,44 +102,44 @@ public interface StockPriceTimeSeriesMgtModel {
     PeriodTypeTypes getPeriodTypeTypes();
 
     /**
-     * 株価時系列リストをクリアする<br>
+     * 株価時系列マップをクリアする<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      */
-    void clearDataList();
+    void clearDataMap();
 
     /**
-     * 株価時系列リストが空か<br>
+     * 株価時系列マップが空か<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @return true：空、false：空ではない
      */
-    boolean isDataListEmpty();
+    boolean isDataMapEmpty();
 
     /**
-     * 株価時系列リストが空ではないか<br>
+     * 株価時系列マップが空ではないか<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @return true：空ではない、false：空
      */
-    boolean isDataListNotEmpty();
+    boolean isDataMapNotEmpty();
 
     /**
-     * 株価時系列を追加する<br>
+     * 株価データを追加する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param data
-     *             株価時系列
+     *             株価データ
      */
-    void addData(StockPriceTimeSeriesModel data);
+    void addData(final StockPriceTimeSeriesModel data);
 
     /**
      * 株価時系列リストを全て追加する<br>
@@ -146,20 +147,30 @@ public interface StockPriceTimeSeriesMgtModel {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param addData
-     *                追加株価時系列リスト
+     * @param addDataList
+     *                    追加株価時系列リスト
      */
-    void addAllData(List<StockPriceTimeSeriesModel> addData);
+    void addAllData(final List<StockPriceTimeSeriesModel> addDataList);
 
     /**
-     * 株価時系列リストを返す<br>
+     * 株価時系列マップを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列リスト
+     * @return 株価時系列マップ
      */
-    List<StockPriceTimeSeriesModel> getDataList();
+    SortedMap<Long, StockPriceTimeSeriesModel> getDataMap();
+
+    /**
+     * 株価時系列リストとして返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列マップ
+     */
+    List<StockPriceTimeSeriesModel> toDataList();
 
     /**
      * サプライヤデータリストとして返す<br>

@@ -1,60 +1,48 @@
-package kmg.im.stock.tssts.domain.model.impl;
+package kmg.im.stock.tssts.data.dto.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.springframework.stereotype.Service;
-
-import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
-import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
+import kmg.im.stock.tssts.data.dto.SimDto;
 
 /**
- * 株価時系列モデル<br>
+ * シミュレーションＤＴＯ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-//TODO KenichiroArai 2021/05/28 ベースとなるクラスを作成する
-@Service
-public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel {
+public class SimDtoImpl implements SimDto {
 
-    /** 識別番号 */
-    private Long id;
+    /** 株銘柄ID */
+    private long stockBrandId;
 
-    /** 開始日 */
-    private LocalDate startDate;
+    /** 株銘柄名称 */
+    private String stockBrandName;
 
-    /** 終了日 */
-    private LocalDate endDate;
+    /** 株価銘柄コード */
+    private long stockBrandCode;
 
-    /** ロケールID */
-    private String localeId;
+    /** 株価時系列期間の種類ID */
+    private long sptsptId;
 
-    /** 作成者 */
-    private String creator;
+    /** 株価時系列期間の種類名称 */
+    private String sptsptName;
 
-    /** 作成日 */
-    private LocalDateTime createdDate;
+    /** 期間の種類ID */
+    private long periodTypeId;
 
-    /** 更新者 */
-    private String updater;
+    /** 期間の種類名称 */
+    private String periodTypeName;
 
-    /** 更新日 */
-    private LocalDateTime updateDate;
+    /** 株価時系列ID */
+    private long sptsId;
 
-    /** 備考 */
-    private String note;
-
-    /** 名称 */
-    private String name;
+    /** 株価時系列名称 */
+    private String sptsName;
 
     /** 番号 */
-    private Long no;
+    private long no;
 
     /** 期間開始日 */
     private LocalDate periodStartDate;
@@ -75,299 +63,266 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
     private BigDecimal cp;
 
     /** 出来高 */
-    private Long volume;
+    private long volume;
 
-    /** 株価計算値モデルのマップ */
-    private final Map<StockPriceCalcValueTypeTypes, StockPriceCalcValueModel> spcvModelMap;
+    /** 株価計算値の種類ID */
+    private long spcvtId;
+
+    /** 株価計算値の種類名称 */
+    private String spcvtName;
+
+    /** 計算値 */
+    private BigDecimal calcValue;
 
     /**
-     * デフォルトコンストラクタ<br>
+     * 株銘柄IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param stockBrandId
+     *                     株銘柄ID
      */
-    public StockPriceTimeSeriesModelImpl() {
-        this.spcvModelMap = new HashMap<>();
+    @Override
+    public void setStockBrandId(final long stockBrandId) {
+        this.stockBrandId = stockBrandId;
     }
 
     /**
-     * 識別番号を設定する<br>
+     * 株銘柄IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param id
-     *           識別番号
+     * @return 株銘柄ID
      */
     @Override
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * 識別番号を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 識別番号
-     */
-    @Override
-    public Long getId() {
-        final Long result = this.id;
+    public long getStockBrandId() {
+        final long result = this.stockBrandId;
         return result;
     }
 
     /**
-     * 開始日を設定する<br>
+     * 株銘柄名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param startDate
-     *                  開始日
+     * @param stockBrandName
+     *                       株銘柄名称
      */
     @Override
-    public void setStartDate(final LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStockBrandName(final String stockBrandName) {
+        this.stockBrandName = stockBrandName;
     }
 
     /**
-     * 開始日を返す<br>
+     * 株銘柄名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 開始日
+     * @return 株銘柄名称
      */
     @Override
-    public LocalDate getStartDate() {
-        final LocalDate result = this.startDate;
+    public String getStockBrandName() {
+        final String result = this.stockBrandName;
         return result;
     }
 
     /**
-     * 終了日を設定する<br>
+     * 株価銘柄コードを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param endDate
-     *                終了日
+     * @param stockBrandCode
+     *                       株価銘柄コード
      */
     @Override
-    public void setEndDate(final LocalDate endDate) {
-        this.endDate = endDate;
+    public void setStockBrandCode(final long stockBrandCode) {
+        this.stockBrandCode = stockBrandCode;
     }
 
     /**
-     * 終了日を返す<br>
+     * 株価銘柄コードを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 終了日
+     * @return 株価銘柄コード
      */
     @Override
-    public LocalDate getEndDate() {
-        final LocalDate result = this.endDate;
+    public long getStockBrandCode() {
+        final long result = this.stockBrandCode;
         return result;
     }
 
     /**
-     * ロケールIDを設定する<br>
+     * 株価時系列期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param localeId
-     *                 ロケールID
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
      */
     @Override
-    public void setLocaleId(final String localeId) {
-        this.localeId = localeId;
+    public void setSptsptId(final long sptsptId) {
+        this.sptsptId = sptsptId;
     }
 
     /**
-     * ロケールIDを返す<br>
+     * 株価時系列期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return ロケールID
+     * @return 株価時系列期間の種類ID
      */
     @Override
-    public String getLocaleId() {
-        final String result = this.localeId;
+    public long getSptsptId() {
+        final long result = this.sptsptId;
         return result;
     }
 
     /**
-     * 作成者を設定する<br>
+     * 株価時系列期間の種類名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param creator
-     *                作成者
+     * @param sptsptName
+     *                   株価時系列期間の種類名称
      */
     @Override
-    public void setCreator(final String creator) {
-        this.creator = creator;
+    public void setSptsptName(final String sptsptName) {
+        this.sptsptName = sptsptName;
     }
 
     /**
-     * 作成者を返す<br>
+     * 株価時系列期間の種類名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 作成者
+     * @return 株価時系列期間の種類名称
      */
     @Override
-    public String getCreator() {
-        final String result = this.creator;
+    public String getSptsptName() {
+        final String result = this.sptsptName;
         return result;
     }
 
     /**
-     * 作成日を設定する<br>
+     * 期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param createdDate
-     *                    作成日
+     * @param periodTypeId
+     *                     期間の種類ID
      */
     @Override
-    public void setCreatedDate(final LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setPeriodTypeId(final long periodTypeId) {
+        this.periodTypeId = periodTypeId;
     }
 
     /**
-     * 作成日を返す<br>
+     * 期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 作成日
+     * @return 期間の種類ID
      */
     @Override
-    public LocalDateTime getCreatedDate() {
-        final LocalDateTime result = this.createdDate;
+    public long getPeriodTypeId() {
+        final long result = this.periodTypeId;
         return result;
     }
 
     /**
-     * 更新者を設定する<br>
+     * 期間の種類名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param updater
-     *                更新者
+     * @param periodTypeName
+     *                       期間の種類名称
      */
     @Override
-    public void setUpdater(final String updater) {
-        this.updater = updater;
+    public void setPeriodTypeName(final String periodTypeName) {
+        this.periodTypeName = periodTypeName;
     }
 
     /**
-     * 更新者を返す<br>
+     * 期間の種類名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 更新者
+     * @return 期間の種類名称
      */
     @Override
-    public String getUpdater() {
-        final String result = this.updater;
+    public String getPeriodTypeName() {
+        final String result = this.periodTypeName;
         return result;
     }
 
     /**
-     * 更新日を設定する<br>
+     * 株価時系列IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param updateDate
-     *                   更新日
+     * @param sptsId
+     *               株価時系列ID
      */
     @Override
-    public void setUpdateDate(final LocalDateTime updateDate) {
-        this.updateDate = updateDate;
+    public void setSptsId(final long sptsId) {
+        this.sptsId = sptsId;
     }
 
     /**
-     * 更新日を返す<br>
+     * 株価時系列IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 更新日
+     * @return 株価時系列ID
      */
     @Override
-    public LocalDateTime getUpdateDate() {
-        final LocalDateTime result = this.updateDate;
+    public long getSptsId() {
+        final long result = this.sptsId;
         return result;
     }
 
     /**
-     * 備考を設定する<br>
+     * 株価時系列名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param note
-     *             備考
+     * @param sptsName
+     *                 株価時系列名称
      */
     @Override
-    public void setNote(final String note) {
-        this.note = note;
+    public void setSptsName(final String sptsName) {
+        this.sptsName = sptsName;
     }
 
     /**
-     * 備考を返す<br>
+     * 株価時系列名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 備考
+     * @return 株価時系列名称
      */
     @Override
-    public String getNote() {
-        final String result = this.note;
-        return result;
-    }
-
-    /**
-     * 名称を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param name
-     *             名称
-     */
-    @Override
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * 名称を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 名称
-     */
-    @Override
-    public String getName() {
-        final String result = this.name;
+    public String getSptsName() {
+        final String result = this.sptsName;
         return result;
     }
 
@@ -381,7 +336,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      *           番号
      */
     @Override
-    public void setNo(final Long no) {
+    public void setNo(final long no) {
         this.no = no;
     }
 
@@ -394,8 +349,8 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      * @return 番号
      */
     @Override
-    public Long getNo() {
-        final Long result = this.no;
+    public long getNo() {
+        final long result = this.no;
         return result;
     }
 
@@ -577,7 +532,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      *               出来高
      */
     @Override
-    public void setVolume(final Long volume) {
+    public void setVolume(final long volume) {
         this.volume = volume;
     }
 
@@ -590,56 +545,92 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      * @return 出来高
      */
     @Override
-    public Long getVolume() {
-        final Long result = this.volume;
+    public long getVolume() {
+        final long result = this.volume;
         return result;
     }
 
     /**
-     * 終値を返す<br>
+     * 株価計算値の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 終値
+     * @param spcvtId
+     *                株価計算値の種類ID
      */
     @Override
-    public BigDecimal get() {
-        final BigDecimal result = this.cp;
+    public void setSpcvtId(final long spcvtId) {
+        this.spcvtId = spcvtId;
+    }
+
+    /**
+     * 株価計算値の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値の種類ID
+     */
+    @Override
+    public long getSpcvtId() {
+        final long result = this.spcvtId;
         return result;
     }
 
     /**
-     * 株価計算値モデルを追加する<br>
+     * 株価計算値の種類名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceCalcValueTypeTypes
-     *                                     株価計算値の種類の種類
-     * @param stockPriceCalcValueModel
-     *                                     株価計算値モデル
+     * @param spcvtName
+     *                  株価計算値の種類名称
      */
     @Override
-    public void addSpcvModel(final StockPriceCalcValueTypeTypes stockPriceCalcValueTypeTypes,
-        final StockPriceCalcValueModel stockPriceCalcValueModel) {
-        this.spcvModelMap.put(stockPriceCalcValueTypeTypes, stockPriceCalcValueModel);
+    public void setSpcvtName(final String spcvtName) {
+        this.spcvtName = spcvtName;
     }
 
     /**
-     * 株価計算値モデルを返す<br>
+     * 株価計算値の種類名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceCalcValueTypeTypes
-     *                                     株価計算値の種類の種類
-     * @return 株価計算値モデル
+     * @return 株価計算値の種類名称
      */
     @Override
-    public StockPriceCalcValueModel getStockPriceCalcValueModel(
-        final StockPriceCalcValueTypeTypes stockPriceCalcValueTypeTypes) {
-        final StockPriceCalcValueModel result = this.spcvModelMap.get(stockPriceCalcValueTypeTypes);
+    public String getSpcvtName() {
+        final String result = this.spcvtName;
+        return result;
+    }
+
+    /**
+     * 計算値を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param calcValue
+     *                  計算値
+     */
+    @Override
+    public void setCalcValue(final BigDecimal calcValue) {
+        this.calcValue = calcValue;
+    }
+
+    /**
+     * 計算値を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 計算値
+     */
+    @Override
+    public BigDecimal getCalcValue() {
+        final BigDecimal result = this.calcValue;
         return result;
     }
 

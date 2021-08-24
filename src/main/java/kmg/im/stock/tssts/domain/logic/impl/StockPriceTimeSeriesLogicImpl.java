@@ -91,12 +91,12 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
     @Override
     public void register(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException {
 
-        if (stockPriceTimeSeriesMgtModel.isDataListEmpty()) {
+        if (stockPriceTimeSeriesMgtModel.isDataMapEmpty()) {
             return;
         }
 
         final StockPriceTimeSeriesMgtDto stockPriceTimeSeriesMgtDto = new StockPriceTimeSeriesMgtDtoImpl();
-        for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.getDataList()) {
+        for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.toDataList()) {
 
             // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
             final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();

@@ -3,9 +3,13 @@ package kmg.im.stock.tssts.domain.model.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import kmg.core.infrastructure.utils.ListUtils;
+import kmg.core.infrastructure.utils.MapUtils;
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
@@ -32,8 +36,13 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
     /** 期間の種類の種類 */
     private PeriodTypeTypes PeriodTypeTypes;
 
-    /** 株価時系列リスト */
-    private final List<StockPriceTimeSeriesModel> dataList;
+    /**
+     * 株価時系列マップ<br>
+     * <p>
+     * キー：番号、値：株価時系列モデル
+     * </p>
+     */
+    private final SortedMap<Long, StockPriceTimeSeriesModel> dataMap;
 
     /**
      * デフォルトコンストラクタ<br>
@@ -43,7 +52,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @version 1.0.0
      */
     public StockPriceTimeSeriesMgtModelImpl() {
-        this.dataList = new ArrayList<>();
+        this.dataMap = new TreeMap<>();
     }
 
     /**
@@ -159,19 +168,19 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
     }
 
     /**
-     * 株価時系列リストをクリアする<br>
+     * 株価時系列マップをクリアする<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      */
     @Override
-    public void clearDataList() {
-        this.dataList.clear();
+    public void clearDataMap() {
+        this.dataMap.clear();
     }
 
     /**
-     * 株価時系列リストが空か<br>
+     * 株価時系列マップが空か<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -179,10 +188,10 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @return true：空、false：空ではない
      */
     @Override
-    public boolean isDataListEmpty() {
+    public boolean isDataMapEmpty() {
         boolean result = true;
 
-        if (ListUtils.isEmpty(this.dataList)) {
+        if (MapUtils.isEmpty(this.dataMap)) {
             return result;
         }
 
@@ -191,7 +200,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
     }
 
     /**
-     * 株価時系列リストが空ではないか<br>
+     * 株価時系列マップが空ではないか<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -199,8 +208,8 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @return true：空ではない、false：空
      */
     @Override
-    public boolean isDataListNotEmpty() {
-        final boolean result = !this.isDataListEmpty();
+    public boolean isDataMapNotEmpty() {
+        final boolean result = !this.isDataMapEmpty();
         return result;
     }
 
@@ -215,7 +224,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      */
     @Override
     public void addData(final StockPriceTimeSeriesModel data) {
-        this.dataList.add(data);
+        this.dataMap.put(data.getNo(), data);
     }
 
     /**
@@ -224,29 +233,45 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param addData
-     *                追加株価時系列リスト
+     * @param addDataList
+     *                    追加株価時系列リスト
      */
     @Override
-    public void addAllData(final List<StockPriceTimeSeriesModel> addData) {
-        if (ListUtils.isEmpty(addData)) {
+    public void addAllData(final List<StockPriceTimeSeriesModel> addDataList) {
+        if (ListUtils.isEmpty(addDataList)) {
             return;
         }
 
-        this.dataList.addAll(addData);
+        for (final StockPriceTimeSeriesModel addData : addDataList) {
+            this.dataMap.put(addData.getNo(), addData);
+        }
     }
 
     /**
-     * 株価時系列リストを返す<br>
+     * 株価時系列マップを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列リスト
+     * @return 株価時系列マップ
      */
     @Override
-    public List<StockPriceTimeSeriesModel> getDataList() {
-        final List<StockPriceTimeSeriesModel> result = this.dataList;
+    public SortedMap<Long, StockPriceTimeSeriesModel> getDataMap() {
+        final SortedMap<Long, StockPriceTimeSeriesModel> result = this.dataMap;
+        return result;
+    }
+
+    /**
+     * 株価時系列リストとして返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列マップ
+     */
+    @Override
+    public List<StockPriceTimeSeriesModel> toDataList() {
+        final List<StockPriceTimeSeriesModel> result = new ArrayList<>(this.dataMap.values());
         return result;
     }
 
@@ -261,9 +286,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
     @Override
     public List<Supplier<BigDecimal>> toSupplierDataList() {
 
-        final List<Supplier<BigDecimal>> result = new ArrayList<>();
-        result.addAll(this.dataList);
-
+        final List<Supplier<BigDecimal>> result = this.dataMap.values().stream().collect(Collectors.toList());
         return result;
     }
 
@@ -277,9 +300,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      */
     @Override
     public List<PowerIndexCalcModel> toPowerIndexCalcModelList() {
-        final List<PowerIndexCalcModel> result = new ArrayList<>();
-        result.addAll(this.dataList);
-
+        final List<PowerIndexCalcModel> result = this.dataMap.values().stream().collect(Collectors.toList());
         return result;
     }
 

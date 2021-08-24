@@ -1,232 +1,204 @@
-package kmg.im.stock.tssts.domain.model;
+package kmg.im.stock.tssts.data.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.function.Supplier;
-
-import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
-import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 
 /**
- * 株価時系列モデル<br>
+ * シミュレーションＤＴＯインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-//TODO KenichiroArai 2021/05/28 ベースとなるクラスを作成する
-public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIndexCalcModel {
-
+public interface SimDto {
     /**
-     * 識別番号を設定する<br>
+     * 株銘柄IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param id
-     *           識別番号
+     * @param stockBrandId
+     *                     株銘柄ID
      */
-    void setId(Long id);
+    void setStockBrandId(long stockBrandId);
 
     /**
-     * 識別番号を返す<br>
+     * 株銘柄IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 識別番号
+     * @return 株銘柄ID
      */
-    Long getId();
+    long getStockBrandId();
 
     /**
-     * 開始日を設定する<br>
+     * 株銘柄名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param startDate
-     *                  開始日
+     * @param stockBrandName
+     *                       株銘柄名称
      */
-    void setStartDate(LocalDate startDate);
+    void setStockBrandName(String stockBrandName);
 
     /**
-     * 開始日を返す<br>
+     * 株銘柄名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 開始日
+     * @return 株銘柄名称
      */
-    LocalDate getStartDate();
+    String getStockBrandName();
 
     /**
-     * 終了日を設定する<br>
+     * 株価銘柄コードを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param endDate
-     *                終了日
+     * @param stockBrandCode
+     *                       株価銘柄コード
      */
-    void setEndDate(LocalDate endDate);
+    void setStockBrandCode(long stockBrandCode);
 
     /**
-     * 終了日を返す<br>
+     * 株価銘柄コードを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 終了日
+     * @return 株価銘柄コード
      */
-    LocalDate getEndDate();
+    long getStockBrandCode();
 
     /**
-     * ロケールIDを設定する<br>
+     * 株価時系列期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param localeId
-     *                 ロケールID
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
      */
-    void setLocaleId(String localeId);
+    void setSptsptId(long sptsptId);
 
     /**
-     * ロケールIDを返す<br>
+     * 株価時系列期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return ロケールID
+     * @return 株価時系列期間の種類ID
      */
-    String getLocaleId();
+    long getSptsptId();
 
     /**
-     * 作成者を設定する<br>
+     * 株価時系列期間の種類名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param creator
-     *                作成者
+     * @param sptsptName
+     *                   株価時系列期間の種類名称
      */
-    void setCreator(String creator);
+    void setSptsptName(String sptsptName);
 
     /**
-     * 作成者を返す<br>
+     * 株価時系列期間の種類名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 作成者
+     * @return 株価時系列期間の種類名称
      */
-    String getCreator();
+    String getSptsptName();
 
     /**
-     * 作成日を設定する<br>
+     * 期間の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param createdDate
-     *                    作成日
+     * @param periodTypeId
+     *                     期間の種類ID
      */
-    void setCreatedDate(LocalDateTime createdDate);
+    void setPeriodTypeId(long periodTypeId);
 
     /**
-     * 作成日を返す<br>
+     * 期間の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 作成日
+     * @return 期間の種類ID
      */
-    LocalDateTime getCreatedDate();
+    long getPeriodTypeId();
 
     /**
-     * 更新者を設定する<br>
+     * 期間の種類名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param updater
-     *                更新者
+     * @param periodTypeName
+     *                       期間の種類名称
      */
-    void setUpdater(String updater);
+    void setPeriodTypeName(String periodTypeName);
 
     /**
-     * 更新者を返す<br>
+     * 期間の種類名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 更新者
+     * @return 期間の種類名称
      */
-    String getUpdater();
+    String getPeriodTypeName();
 
     /**
-     * 更新日を設定する<br>
+     * 株価時系列IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param updateDate
-     *                   更新日
+     * @param sptsId
+     *               株価時系列ID
      */
-    void setUpdateDate(LocalDateTime updateDate);
+    void setSptsId(long sptsId);
 
     /**
-     * 更新日を返す<br>
+     * 株価時系列IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 更新日
+     * @return 株価時系列ID
      */
-    LocalDateTime getUpdateDate();
+    long getSptsId();
 
     /**
-     * 備考を設定する<br>
+     * 株価時系列名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param note
-     *             備考
+     * @param sptsName
+     *                 株価時系列名称
      */
-    void setNote(String note);
+    void setSptsName(String sptsName);
 
     /**
-     * 備考を返す<br>
+     * 株価時系列名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 備考
+     * @return 株価時系列名称
      */
-    String getNote();
-
-    /**
-     * 名称を設定する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param name
-     *             名称
-     */
-    void setName(String name);
-
-    /**
-     * 名称を返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 名称
-     */
-    String getName();
+    String getSptsName();
 
     /**
      * 番号を設定する<br>
@@ -237,7 +209,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @param no
      *           番号
      */
-    void setNo(Long no);
+    void setNo(long no);
 
     /**
      * 番号を返す<br>
@@ -247,7 +219,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @version 1.0.0
      * @return 番号
      */
-    Long getNo();
+    long getNo();
 
     /**
      * 期間開始日を設定する<br>
@@ -373,7 +345,6 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @version 1.0.0
      * @return 終値
      */
-    @Override
     BigDecimal getCp();
 
     /**
@@ -385,7 +356,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @param volume
      *               出来高
      */
-    void setVolume(Long volume);
+    void setVolume(long volume);
 
     /**
      * 出来高を返す<br>
@@ -395,45 +366,69 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @version 1.0.0
      * @return 出来高
      */
-    @Override
-    Long getVolume();
+    long getVolume();
 
     /**
-     * 終値を返す<br>
+     * 株価計算値の種類IDを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 終値
+     * @param spcvtId
+     *                株価計算値の種類ID
      */
-    @Override
-    BigDecimal get();
+    void setSpcvtId(long spcvtId);
 
     /**
-     * 株価計算値モデルを追加する<br>
+     * 株価計算値の種類IDを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceCalcValueTypeTypes
-     *                                     株価計算値の種類の種類
-     * @param stockPriceCalcValueModel
-     *                                     株価計算値モデル
+     * @return 株価計算値の種類ID
      */
-    void addSpcvModel(final StockPriceCalcValueTypeTypes stockPriceCalcValueTypeTypes,
-        final StockPriceCalcValueModel stockPriceCalcValueModel);
+    long getSpcvtId();
 
     /**
-     * 株価計算値モデルを返す<br>
+     * 株価計算値の種類名称を設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceCalcValueTypeTypes
-     *                                     株価計算値の種類の種類
-     * @return 株価計算値モデル
+     * @param spcvtName
+     *                  株価計算値の種類名称
      */
-    StockPriceCalcValueModel getStockPriceCalcValueModel(
-        final StockPriceCalcValueTypeTypes stockPriceCalcValueTypeTypes);
+    void setSpcvtName(String spcvtName);
+
+    /**
+     * 株価計算値の種類名称を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価計算値の種類名称
+     */
+    String getSpcvtName();
+
+    /**
+     * 計算値を設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param calcValue
+     *                  計算値
+     */
+    void setCalcValue(BigDecimal calcValue);
+
+    /**
+     * 計算値を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 計算値
+     */
+    BigDecimal getCalcValue();
 
 }

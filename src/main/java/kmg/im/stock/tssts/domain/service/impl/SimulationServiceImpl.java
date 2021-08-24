@@ -93,7 +93,7 @@ public class SimulationServiceImpl implements SimulationService {
             throw new TsstsDomainException(errMsg, LogMessageTypes.NONE);
         }
 
-        for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.getDataList()) {
+        for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.toDataList()) {
 
             // ポジションを取得する
             final PosModel pos = this.getPosModel();

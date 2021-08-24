@@ -43,7 +43,7 @@ public abstract class AbstractStockPriceTimeSeriesService implements StockPriceT
     @Override
     public void register(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException {
 
-        if (stockPriceTimeSeriesMgtModel.isDataListEmpty()) {
+        if (stockPriceTimeSeriesMgtModel.isDataMapEmpty()) {
             return;
         }
 

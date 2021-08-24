@@ -146,6 +146,7 @@ public class StockPriceTimeSeriesDao {
         /* DBを実行する */
         final SqlParameterSource params = new BeanPropertySqlParameterSource(stockPriceTimeSeriesDto);
 
+        // TODO KenichiroArai 2021/08/17 見直しが必要
         final List<StockPriceTimeSeriesDtoImpl> tmp = this.jdbc.query(
             StockPriceTimeSeriesDao.FIND_BY_SPTSPT_ID_SQL_PATH.toSql(), params,
             BeanPropertyRowMapper.newInstance(StockPriceTimeSeriesDtoImpl.class));
