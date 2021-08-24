@@ -82,8 +82,8 @@ public class AccessorInterfaceCreationlTool {
                     continue;
                 }
 
-                final Pattern patternSrc = Pattern.compile("private\\s+((\\w|\\[\\]|<|>)+)\\s+(\\w+);");
-                final Matcher matcherSrc = patternSrc.matcher(line);
+                Pattern patternSrc = Pattern.compile("private\\s+((\\w|\\[\\]|<|>)+)\\s+(\\w+);");
+                Matcher matcherSrc = patternSrc.matcher(line);
                 if (matcherSrc.find()) {
                     output = output.replace("$type", matcherSrc.group(1));
                     output = output.replace("$item", matcherSrc.group(3));
@@ -92,6 +92,19 @@ public class AccessorInterfaceCreationlTool {
                     bw.write(output);
                     bw.write(System.lineSeparator());
                     output = template;
+                } else {
+                    patternSrc = Pattern.compile("private\\s+(Map<\\w+,\\s+\\w+>)\\s+(\\w+);");
+                    matcherSrc = patternSrc.matcher(line);
+                    if (matcherSrc.find()) {
+                        output = output.replace("$type", matcherSrc.group(1));
+                        output = output.replace("$item", matcherSrc.group(2));
+                        output = output.replace("$Item",
+                            matcherSrc.group(2).substring(0, 1).toUpperCase() + matcherSrc.group(2).substring(1));
+                        bw.write(output);
+                        bw.write(System.lineSeparator());
+                        output = template;
+                    }
+
                 }
 
             }
