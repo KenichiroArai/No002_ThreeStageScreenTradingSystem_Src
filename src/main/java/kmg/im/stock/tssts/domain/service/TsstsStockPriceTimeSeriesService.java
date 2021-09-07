@@ -1,7 +1,7 @@
 package kmg.im.stock.tssts.domain.service;
 
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
@@ -42,7 +42,7 @@ public interface TsstsStockPriceTimeSeriesService {
      * @version 1.0.0
      * @return 株価時系列日足管理モデル
      */
-    StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtDailyModel();
+    StockBrandModel getStockPriceTimeSeriesMgtDailyModel();
 
     /**
      * 株価時系列週足管理モデルを返す<br>
@@ -52,7 +52,7 @@ public interface TsstsStockPriceTimeSeriesService {
      * @version 1.0.0
      * @return 株価時系列週足管理モデル
      */
-    StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtWeeklyModel();
+    StockBrandModel getStockPriceTimeSeriesMgtWeeklyModel();
 
     /**
      * 株価時系列月足管理モデルを返す<br>
@@ -62,7 +62,7 @@ public interface TsstsStockPriceTimeSeriesService {
      * @version 1.0.0
      * @return 株価時系列月足管理モデル
      */
-    StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtMonthlyModel();
+    StockBrandModel getStockPriceTimeSeriesMgtMonthlyModel();
 
     /**
      * 登録する<br>

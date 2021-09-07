@@ -9,7 +9,7 @@ import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 
 /**
@@ -41,19 +41,19 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceTimeSeriesMgtModel
+     * @param stockBrandModel
      *                                     株価時系列管理モデル
      * @param spcvt
      *                                     株価計算値の種類
      * @param supplierList
      *                                     サプライヤリスト
      */
-    public StockPriceCalcValueMgtModelImpl(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel,
+    public StockPriceCalcValueMgtModelImpl(final StockBrandModel stockBrandModel,
         final StockPriceCalcValueTypeTypes spcvt, final List<Supplier<BigDecimal>> supplierList) {
         this();
 
-        for (int i = 0; i < stockPriceTimeSeriesMgtModel.toAllDataList().size(); i++) {
-            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockPriceTimeSeriesMgtModel.toAllDataList()
+        for (int i = 0; i < stockBrandModel.toAllDataList().size(); i++) {
+            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockBrandModel.toAllDataList()
                 .get(i);
             final Supplier<BigDecimal> supplier = supplierList.get(i);
             final StockPriceCalcValueModel data = new StockPriceCalcValueModelImpl();

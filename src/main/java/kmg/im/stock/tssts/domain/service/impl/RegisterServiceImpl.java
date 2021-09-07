@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.service.RegisterService;
 import kmg.im.stock.tssts.domain.service.StockPriceDataService;
 import kmg.im.stock.tssts.domain.service.TsstsStockPriceCalcValueService;
@@ -158,11 +158,11 @@ public class RegisterServiceImpl implements RegisterService {
             .getBean(TsstsStockPriceTimeSeriesService.class);
         tsstsStockPriceTimeSeriesService.initialize(stockPriceDataMgtModel);
         tsstsStockPriceTimeSeriesService.register();
-        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtDailyModel = tsstsStockPriceTimeSeriesService
+        final StockBrandModel stockPriceTimeSeriesMgtDailyModel = tsstsStockPriceTimeSeriesService
             .getStockPriceTimeSeriesMgtDailyModel();
-        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtWeeklyModel = tsstsStockPriceTimeSeriesService
+        final StockBrandModel stockPriceTimeSeriesMgtWeeklyModel = tsstsStockPriceTimeSeriesService
             .getStockPriceTimeSeriesMgtWeeklyModel();
-        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtMonthlyModel = tsstsStockPriceTimeSeriesService
+        final StockBrandModel stockPriceTimeSeriesMgtMonthlyModel = tsstsStockPriceTimeSeriesService
             .getStockPriceTimeSeriesMgtMonthlyModel();
 
         // 三段階スクリーン・トレーディング・システム株価計算値サービス

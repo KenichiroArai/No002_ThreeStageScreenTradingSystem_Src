@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
-import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
+import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
@@ -83,10 +83,10 @@ public class StockPriceTimeSeriesDailyServiceImpl extends StockPriceTimeSeriesSe
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel toStockPriceTimeSeriesMgtModel(
+    public StockBrandModel toStockPriceTimeSeriesMgtModel(
         final StockPriceDataMgtModel stockPriceDataMgtModel) throws TsstsDomainException {
 
-        final StockPriceTimeSeriesMgtModel result = new StockPriceTimeSeriesMgtModelImpl();
+        final StockBrandModel result = new StockBrandModelImpl();
         stockPriceDataMgtModel.setStockBrandCode(stockPriceDataMgtModel.getStockBrandCode());
 
         // 株価銘柄IDを取得する
@@ -122,8 +122,8 @@ public class StockPriceTimeSeriesDailyServiceImpl extends StockPriceTimeSeriesSe
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException {
-        final StockPriceTimeSeriesMgtModel result = null;
+    public StockBrandModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException {
+        final StockBrandModel result = null;
         // TODO KenichiroArai 2021/09/05 未使用
         return result;
     }
@@ -144,9 +144,9 @@ public class StockPriceTimeSeriesDailyServiceImpl extends StockPriceTimeSeriesSe
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
+    public StockBrandModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
 
-        final StockPriceTimeSeriesMgtModel result = this.stockPriceTimeSeriesLogic.findBySptsptId(sptsptId,
+        final StockBrandModel result = this.stockPriceTimeSeriesLogic.findBySptsptId(sptsptId,
             StockPriceTimeSeriesDailyServiceImpl.PERIOD_TYPE_TYPES);
         return result;
 

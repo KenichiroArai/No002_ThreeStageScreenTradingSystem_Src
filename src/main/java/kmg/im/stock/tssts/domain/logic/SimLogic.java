@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.domain.logic;
 
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
@@ -25,7 +25,7 @@ public interface SimLogic {
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel(long stockCode) throws TsstsDomainException;
+    StockBrandModel getStockPriceTimeSeriesMgtModel(long stockCode) throws TsstsDomainException;
 
     /**
      * 第１のスクリーンに掛ける<br>

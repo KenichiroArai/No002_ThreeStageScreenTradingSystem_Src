@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.domain.service;
 
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
@@ -25,9 +25,9 @@ public interface TsstsStockPriceCalcValueService {
      * @param stockPriceTimeSeriesMgtMonthlyModel
      *                                            株価時系列月足管理モデル
      */
-    void initialize(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtDailyModel,
-        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtWeeklyModel,
-        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtMonthlyModel);
+    void initialize(final StockBrandModel stockPriceTimeSeriesMgtDailyModel,
+        final StockBrandModel stockPriceTimeSeriesMgtWeeklyModel,
+        final StockBrandModel stockPriceTimeSeriesMgtMonthlyModel);
 
     /**
      * 登録する<br>

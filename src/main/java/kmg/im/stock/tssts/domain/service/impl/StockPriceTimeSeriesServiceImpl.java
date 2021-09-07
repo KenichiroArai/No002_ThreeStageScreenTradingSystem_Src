@@ -2,7 +2,7 @@ package kmg.im.stock.tssts.domain.service.impl;
 
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
@@ -60,7 +60,7 @@ public class StockPriceTimeSeriesServiceImpl implements StockPriceTimeSeriesServ
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel toStockPriceTimeSeriesMgtModel(
+    public StockBrandModel toStockPriceTimeSeriesMgtModel(
         final StockPriceDataMgtModel stockPriceDataMgtModel) throws TsstsDomainException {
         // TODO KenichiroArai 2021/09/05 未実装
         return null;
@@ -72,19 +72,19 @@ public class StockPriceTimeSeriesServiceImpl implements StockPriceTimeSeriesServ
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceTimeSeriesMgtModel
+     * @param stockBrandModel
      *                                     株価時系列管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public void register(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException {
+    public void register(final StockBrandModel stockBrandModel) throws TsstsDomainException {
 
-        if (stockPriceTimeSeriesMgtModel.isDataMapEmpty()) {
+        if (stockBrandModel.isDataMapEmpty()) {
             return;
         }
 
-        this.stockPriceTimeSeriesLogic.register(stockPriceTimeSeriesMgtModel);
+        this.stockPriceTimeSeriesLogic.register(stockBrandModel);
     }
 
     /**
@@ -98,7 +98,7 @@ public class StockPriceTimeSeriesServiceImpl implements StockPriceTimeSeriesServ
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException {
+    public StockBrandModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException {
         // TODO KenichiroArai 2021/09/05 未実装
         return null;
     }
@@ -119,7 +119,7 @@ public class StockPriceTimeSeriesServiceImpl implements StockPriceTimeSeriesServ
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
+    public StockBrandModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
         // TODO KenichiroArai 2021/09/05 未実装
         return null;
     }

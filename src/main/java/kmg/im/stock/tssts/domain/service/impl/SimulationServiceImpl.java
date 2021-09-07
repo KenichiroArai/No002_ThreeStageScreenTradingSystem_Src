@@ -12,7 +12,7 @@ import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.logic.SimLogic;
 import kmg.im.stock.tssts.domain.model.PosModel;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.service.SimulationService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -89,15 +89,15 @@ public class SimulationServiceImpl implements SimulationService {
         // TODO KenichiroArai 2021/05/25 実装中
 
         /* 株価時系列管理モデルを取得する */
-        final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel = this.simLogic
+        final StockBrandModel stockBrandModel = this.simLogic
             .getStockPriceTimeSeriesMgtModel(stockCode);
-        if (stockPriceTimeSeriesMgtModel == null) {
+        if (stockBrandModel == null) {
 
             // TODO KenichiroArai 2021/08/04 エラー対応
             final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
             throw new TsstsDomainException(errMsg, LogMessageTypes.NONE);
         }
-        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = stockPriceTimeSeriesMgtModel
+        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = stockBrandModel
             .toAllDataList();
         if (ListUtils.isEmpty(stockPriceTimeSeriesModelList)) {
             return;

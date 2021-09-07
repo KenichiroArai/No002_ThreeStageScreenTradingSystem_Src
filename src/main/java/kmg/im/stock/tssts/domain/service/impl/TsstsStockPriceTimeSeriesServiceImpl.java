@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesMonthlyService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesWeeklyService;
@@ -26,13 +26,13 @@ public class TsstsStockPriceTimeSeriesServiceImpl implements TsstsStockPriceTime
     private StockPriceDataMgtModel stockPriceDataMgtModel;
 
     /** 株価時系列日足管理モデル */
-    private StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtDailyModel;
+    private StockBrandModel stockPriceTimeSeriesMgtDailyModel;
 
     /** 株価時系列週足管理モデル */
-    private StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtWeeklyModel;
+    private StockBrandModel stockPriceTimeSeriesMgtWeeklyModel;
 
     /** 株価時系列月足管理モデル */
-    private StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtMonthlyModel;
+    private StockBrandModel stockPriceTimeSeriesMgtMonthlyModel;
 
     /** 株価時系列日足サービス */
     private final StockPriceTimeSeriesDailyService stockPriceTimeSeriesDailyService;
@@ -102,8 +102,8 @@ public class TsstsStockPriceTimeSeriesServiceImpl implements TsstsStockPriceTime
      * @return 株価時系列日足管理モデル
      */
     @Override
-    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtDailyModel() {
-        final StockPriceTimeSeriesMgtModel result = this.stockPriceTimeSeriesMgtDailyModel;
+    public StockBrandModel getStockPriceTimeSeriesMgtDailyModel() {
+        final StockBrandModel result = this.stockPriceTimeSeriesMgtDailyModel;
         return result;
     }
 
@@ -116,8 +116,8 @@ public class TsstsStockPriceTimeSeriesServiceImpl implements TsstsStockPriceTime
      * @return 株価時系列週足管理モデル
      */
     @Override
-    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtWeeklyModel() {
-        final StockPriceTimeSeriesMgtModel result = this.stockPriceTimeSeriesMgtWeeklyModel;
+    public StockBrandModel getStockPriceTimeSeriesMgtWeeklyModel() {
+        final StockBrandModel result = this.stockPriceTimeSeriesMgtWeeklyModel;
         return result;
     }
 
@@ -130,8 +130,8 @@ public class TsstsStockPriceTimeSeriesServiceImpl implements TsstsStockPriceTime
      * @return 株価時系列月足管理モデル
      */
     @Override
-    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtMonthlyModel() {
-        final StockPriceTimeSeriesMgtModel result = this.stockPriceTimeSeriesMgtMonthlyModel;
+    public StockBrandModel getStockPriceTimeSeriesMgtMonthlyModel() {
+        final StockBrandModel result = this.stockPriceTimeSeriesMgtMonthlyModel;
         return result;
     }
 

@@ -13,10 +13,10 @@ import kmg.im.stock.tssts.data.dao.SimDao;
 import kmg.im.stock.tssts.data.dto.SimDto;
 import kmg.im.stock.tssts.domain.logic.SimLogic;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceCalcValueModelImpl;
-import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
+import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
@@ -61,9 +61,9 @@ public class SimLogicImpl implements SimLogic {
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel(final long stockCode)
+    public StockBrandModel getStockPriceTimeSeriesMgtModel(final long stockCode)
         throws TsstsDomainException {
-        final StockPriceTimeSeriesMgtModel result = new StockPriceTimeSeriesMgtModelImpl();
+        final StockBrandModel result = new StockBrandModelImpl();
 
         /* シミュレーションを行うデータを取得する */
         List<SimDto> simDtoList = null;

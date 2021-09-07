@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.domain.logic;
 
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
@@ -36,12 +36,12 @@ public interface StockPriceTimeSeriesLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceTimeSeriesMgtModel
+     * @param stockBrandModel
      *                                     株価時系列管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    void register(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException;
+    void register(final StockBrandModel stockBrandModel) throws TsstsDomainException;
 
     /**
      * 株価時系列管理モデルを検索する<br>
@@ -60,6 +60,6 @@ public interface StockPriceTimeSeriesLogic {
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    StockPriceTimeSeriesMgtModel findBySptsptId(long sptsptId, PeriodTypeTypes periodTypeTypes)
+    StockBrandModel findBySptsptId(long sptsptId, PeriodTypeTypes periodTypeTypes)
         throws TsstsDomainException;
 }

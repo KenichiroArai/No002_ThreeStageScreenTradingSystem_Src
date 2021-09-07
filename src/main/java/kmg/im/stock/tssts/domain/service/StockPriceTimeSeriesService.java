@@ -1,7 +1,7 @@
 package kmg.im.stock.tssts.domain.service;
 
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
@@ -37,7 +37,7 @@ public interface StockPriceTimeSeriesService {
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    StockPriceTimeSeriesMgtModel toStockPriceTimeSeriesMgtModel(StockPriceDataMgtModel stockPriceDataMgtModel)
+    StockBrandModel toStockPriceTimeSeriesMgtModel(StockPriceDataMgtModel stockPriceDataMgtModel)
         throws TsstsDomainException;
 
     /**
@@ -46,12 +46,12 @@ public interface StockPriceTimeSeriesService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceTimeSeriesMgtModel
+     * @param stockBrandModel
      *                                     株価時系列管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    void register(StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException;
+    void register(StockBrandModel stockBrandModel) throws TsstsDomainException;
 
     /**
      * 株価時系列管理モデルを返す<br>
@@ -63,7 +63,7 @@ public interface StockPriceTimeSeriesService {
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException;
+    StockBrandModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException;
 
     /**
      * 株価時系列管理モデルを検索する<br>
@@ -80,5 +80,5 @@ public interface StockPriceTimeSeriesService {
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId) throws TsstsDomainException;
+    StockBrandModel findBySptsptId(final long sptsptId) throws TsstsDomainException;
 }

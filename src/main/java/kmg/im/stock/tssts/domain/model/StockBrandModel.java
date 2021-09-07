@@ -9,13 +9,13 @@ import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
- * 株価時系列管理モデルインタフェース<br>
+ * 株銘柄モデルインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface StockPriceTimeSeriesMgtModel {
+public interface StockBrandModel {
 
     /**
      * 株銘柄IDを設定する<br>

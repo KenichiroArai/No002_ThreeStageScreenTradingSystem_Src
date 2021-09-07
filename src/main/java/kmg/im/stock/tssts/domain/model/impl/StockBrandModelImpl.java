@@ -11,19 +11,18 @@ import java.util.stream.Collectors;
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.core.infrastructure.utils.MapUtils;
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
- * 株価時系列管理モデル<br>
+ * 株銘柄モデル<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-//TODO KenichiroArai 2021/09/05 株銘柄のデータなので物理名を変更する
-public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgtModel {
+public class StockBrandModelImpl implements StockBrandModel {
 
     /** 株銘柄ID */
     private long stockBrandId;
@@ -52,7 +51,7 @@ public class StockPriceTimeSeriesMgtModelImpl implements StockPriceTimeSeriesMgt
      * @sine 1.0.0
      * @version 1.0.0
      */
-    public StockPriceTimeSeriesMgtModelImpl() {
+    public StockBrandModelImpl() {
         this.dataMap = new TreeMap<>();
     }
 

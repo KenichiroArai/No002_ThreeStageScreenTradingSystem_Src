@@ -14,9 +14,9 @@ import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesMgtDto;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesMgtDtoImpl;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
-import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
+import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
@@ -84,20 +84,20 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockPriceTimeSeriesMgtModel
+     * @param stockBrandModel
      *                                     株価時系列管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public void register(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException {
+    public void register(final StockBrandModel stockBrandModel) throws TsstsDomainException {
 
-        if (stockPriceTimeSeriesMgtModel.isDataMapEmpty()) {
+        if (stockBrandModel.isDataMapEmpty()) {
             return;
         }
 
         final StockPriceTimeSeriesMgtDto stockPriceTimeSeriesMgtDto = new StockPriceTimeSeriesMgtDtoImpl();
-        final SortedMap<PeriodTypeTypes, SortedMap<Long, StockPriceTimeSeriesModel>> dataMap = stockPriceTimeSeriesMgtModel
+        final SortedMap<PeriodTypeTypes, SortedMap<Long, StockPriceTimeSeriesModel>> dataMap = stockBrandModel
             .getDataMap();
         for (final PeriodTypeTypes periodTypeTypes : dataMap.keySet()) {
             final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap = dataMap.get(periodTypeTypes);
@@ -146,10 +146,10 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId, final PeriodTypeTypes periodTypeTypes)
+    public StockBrandModel findBySptsptId(final long sptsptId, final PeriodTypeTypes periodTypeTypes)
         throws TsstsDomainException {
 
-        final StockPriceTimeSeriesMgtModel result = new StockPriceTimeSeriesMgtModelImpl();
+        final StockBrandModel result = new StockBrandModelImpl();
 
         /* 株価時系列期間の種類ID株価時系列管理を検索し、該当する株価時系列ＤＴＯのリストを取得する */
         List<StockPriceTimeSeriesDto> stockPriceTimeSeriesDtoList = null;
