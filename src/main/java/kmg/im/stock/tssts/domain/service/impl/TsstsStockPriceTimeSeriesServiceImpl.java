@@ -156,8 +156,9 @@ public class TsstsStockPriceTimeSeriesServiceImpl implements TsstsStockPriceTime
         // 登録する
         this.stockPriceTimeSeriesDailyService.register(this.stockPriceTimeSeriesMgtDailyModel);
         // 登録データを取得
-        this.stockPriceTimeSeriesMgtDailyModel = this.stockPriceTimeSeriesDailyService
-            .findBySptsptId(this.stockPriceTimeSeriesMgtDailyModel.getSptsptId());
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        this.stockPriceTimeSeriesMgtDailyModel = this.stockPriceTimeSeriesDailyService
+//            .findBySptsptId(this.stockPriceTimeSeriesMgtDailyModel.getSptsptId());
 
         /* 株価時系列週足 */
         // 削除する
@@ -168,8 +169,9 @@ public class TsstsStockPriceTimeSeriesServiceImpl implements TsstsStockPriceTime
         // 登録する
         this.stockPriceTimeSeriesWeeklyService.register(this.stockPriceTimeSeriesMgtWeeklyModel);
         // 登録データを取得
-        this.stockPriceTimeSeriesMgtWeeklyModel = this.stockPriceTimeSeriesDailyService
-            .findBySptsptId(this.stockPriceTimeSeriesMgtWeeklyModel.getSptsptId());
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        this.stockPriceTimeSeriesMgtWeeklyModel = this.stockPriceTimeSeriesWeeklyService
+//            .findBySptsptId(this.stockPriceTimeSeriesMgtWeeklyModel.getSptsptId());
 
         /* 株価時系列月足 */
         // 削除する
@@ -180,7 +182,8 @@ public class TsstsStockPriceTimeSeriesServiceImpl implements TsstsStockPriceTime
         // 登録する
         this.stockPriceTimeSeriesMonthlyService.register(this.stockPriceTimeSeriesMgtMonthlyModel);
         // 登録データを取得
-        this.stockPriceTimeSeriesMgtMonthlyModel = this.stockPriceTimeSeriesDailyService
-            .findBySptsptId(this.stockPriceTimeSeriesMgtMonthlyModel.getSptsptId());
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        this.stockPriceTimeSeriesMgtMonthlyModel = this.stockPriceTimeSeriesMonthlyService
+//            .findBySptsptId(this.stockPriceTimeSeriesMgtMonthlyModel.getSptsptId());
     }
 }

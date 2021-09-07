@@ -75,11 +75,11 @@ public class InsertionSqlCreationController implements Initializable {
 
         /* 入力ファイルの初期値を設定する */
         this.txtInputFile.setText(
-            "D:\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\DA010001_初期データ.xlsm");
+            "D:\\project\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\DA010001_初期データ.xlsm");
 
         /* 出力ファイルの初期値を設定する */
         this.txtOutputDirectory.setText(
-            "D:\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\output");
+            "D:\\project\\投資システム\\No002_三段階スクリーン・トレーディング・システム\\ドキュメント\\AF010_環境\\BB010_DB\\CB030_データ\\DA010_管理\\output");
 
         /* スレッド数の初期値を設定する */
         // ＣＰＵの論理プロセッサ数を取得

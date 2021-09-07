@@ -2,6 +2,7 @@ package kmg.im.stock.tssts.domain.logic.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -96,16 +97,22 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
         }
 
         final StockPriceTimeSeriesMgtDto stockPriceTimeSeriesMgtDto = new StockPriceTimeSeriesMgtDtoImpl();
-        for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.toDataList()) {
+        final SortedMap<PeriodTypeTypes, SortedMap<Long, StockPriceTimeSeriesModel>> dataMap = stockPriceTimeSeriesMgtModel
+            .getDataMap();
+        for (final PeriodTypeTypes periodTypeTypes : dataMap.keySet()) {
+            final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap = dataMap.get(periodTypeTypes);
+            for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : dataNoMap.values()) {
 
-            // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
-            final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
-            BeanUtils.copyProperties(stockPriceTimeSeriesModel, stockPriceTimeSeriesDto);
+                // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
+                final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
+                BeanUtils.copyProperties(stockPriceTimeSeriesModel, stockPriceTimeSeriesDto);
 
-            // 株価時系列期間の種類IDを設定する
-            stockPriceTimeSeriesDto.setSptsptId(stockPriceTimeSeriesMgtModel.getSptsptId());
+                // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+                // 株価時系列期間の種類IDを設定する
+//                stockPriceTimeSeriesDto.setSptsptId(stockPriceTimeSeriesMgtModel.getSptsptId());
 
-            stockPriceTimeSeriesMgtDto.addData(stockPriceTimeSeriesDto);
+                stockPriceTimeSeriesMgtDto.addData(stockPriceTimeSeriesDto);
+            }
         }
         // TODO KenichiroArai 2021/05/16 実装中
         for (final StockPriceTimeSeriesDto stockPriceTimeSeriesDto : stockPriceTimeSeriesMgtDto.getDataList()) {
@@ -131,13 +138,16 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
      * @sine 1.0.0
      * @version 1.0.0
      * @param sptsptId
-     *                 株価時系列期間の種類ID
+     *                        株価時系列期間の種類ID
+     * @param periodTypeTypes
+     *                        期間の種類の種類
      * @return 株価時系列管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
+    public StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId, final PeriodTypeTypes periodTypeTypes)
+        throws TsstsDomainException {
 
         final StockPriceTimeSeriesMgtModel result = new StockPriceTimeSeriesMgtModelImpl();
 
@@ -159,8 +169,8 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
             final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
             BeanUtils.copyProperties(stockPriceTimeSeriesDto, stockPriceTimeSeriesModel);
             stockPriceTimeSeriesModelList.add(stockPriceTimeSeriesModel);
+            result.addAllData(periodTypeTypes, stockPriceTimeSeriesModelList);
         }
-        result.addAllData(stockPriceTimeSeriesModelList);
 
         return result;
 

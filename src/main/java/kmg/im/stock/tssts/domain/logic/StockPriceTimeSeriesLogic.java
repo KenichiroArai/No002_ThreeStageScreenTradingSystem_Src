@@ -53,10 +53,13 @@ public interface StockPriceTimeSeriesLogic {
      * @sine 1.0.0
      * @version 1.0.0
      * @param sptsptId
-     *                 株価時系列期間の種類ID
+     *                        株価時系列期間の種類ID
+     * @param periodTypeTypes
+     *                        期間の種類の種類
      * @return 株価時系列管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    StockPriceTimeSeriesMgtModel findBySptsptId(long sptsptId) throws TsstsDomainException;
+    StockPriceTimeSeriesMgtModel findBySptsptId(long sptsptId, PeriodTypeTypes periodTypeTypes)
+        throws TsstsDomainException;
 }

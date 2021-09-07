@@ -37,6 +37,9 @@ public enum StockPriceCalcValueTypeTypes implements Supplier<Long> {
     /** 勢力指数１３ＥＭＡ */
     PI13EMA("勢力指数１３ＥＭＡ", 6, TechIndicatorTypes.PI),
 
+    /** 過去３期間の最安値 */
+    LOWEST_PRICE_IN_LAST3_PERIODS("過去３期間の最安値", 7, TechIndicatorTypes.LOWEST_PRICE_IN_PAST),
+
     /* 定義：終了 */
     ;
 

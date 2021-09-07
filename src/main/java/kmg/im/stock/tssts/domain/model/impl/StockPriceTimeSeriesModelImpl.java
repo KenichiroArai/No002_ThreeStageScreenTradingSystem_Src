@@ -3,8 +3,8 @@ package kmg.im.stock.tssts.domain.model.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Service;
 
@@ -78,7 +78,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
     private Long volume;
 
     /** 株価計算値モデルのマップ */
-    private final Map<StockPriceCalcValueTypeTypes, StockPriceCalcValueModel> spcvModelMap;
+    private final SortedMap<StockPriceCalcValueTypeTypes, StockPriceCalcValueModel> spcvModelMap;
 
     /**
      * デフォルトコンストラクタ<br>
@@ -88,7 +88,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      * @version 1.0.0
      */
     public StockPriceTimeSeriesModelImpl() {
-        this.spcvModelMap = new HashMap<>();
+        this.spcvModelMap = new TreeMap<>();
     }
 
     /**

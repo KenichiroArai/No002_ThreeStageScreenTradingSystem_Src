@@ -290,4 +290,15 @@ public interface StockPriceCalcValueModel extends Supplier<BigDecimal> {
      */
     BigDecimal getCalcValue();
 
+    /**
+     * 計算値を返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 計算値
+     */
+    @Override
+    BigDecimal get();
+
 }

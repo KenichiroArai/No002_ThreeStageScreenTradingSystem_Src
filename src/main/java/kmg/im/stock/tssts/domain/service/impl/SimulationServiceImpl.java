@@ -1,12 +1,17 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import kmg.core.infrastructure.utils.ListUtils;
+import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.logic.SimLogic;
 import kmg.im.stock.tssts.domain.model.PosModel;
+import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.service.SimulationService;
@@ -92,43 +97,58 @@ public class SimulationServiceImpl implements SimulationService {
             final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
             throw new TsstsDomainException(errMsg, LogMessageTypes.NONE);
         }
+        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = stockPriceTimeSeriesMgtModel
+            .toAllDataList();
+        if (ListUtils.isEmpty(stockPriceTimeSeriesModelList)) {
+            return;
+        }
 
-        for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : stockPriceTimeSeriesMgtModel.toDataList()) {
+        /* シミュレーションを行う */
+        StockPriceTimeSeriesModel preStockPriceTimeSeriesModel = stockPriceTimeSeriesModelList.get(0);
+        StockPriceCalcValueModel preStockPriceCalcValueMcadhModel = preStockPriceTimeSeriesModel
+            .getStockPriceCalcValueModel(StockPriceCalcValueTypeTypes.MCADH);
+        for (int i = 1; i < stockPriceTimeSeriesModelList.size(); i++) {
 
-            // ポジションを取得する
-            final PosModel pos = this.getPosModel();
-            if (pos == null) {
-                // ポジションがない場合
+            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockPriceTimeSeriesModelList.get(i);
+            final StockPriceCalcValueModel stockPriceCalcValueMcadhModel = stockPriceTimeSeriesModel
+                .getStockPriceCalcValueModel(StockPriceCalcValueTypeTypes.MCADH);
 
-                // 第１のスクリーンに掛ける
-                final boolean firstFlg = this.simLogic.hangOnFirstScreen(stockPriceTimeSeriesModel);
-                if (!firstFlg) {
+            try {
+                /* 第一のスクリーン */
+                // 直近の週足２本のＭＡＣＤヒストグラムが変化なしまたは下向きか
+                if (preStockPriceCalcValueMcadhModel.get().compareTo(stockPriceCalcValueMcadhModel.get()) >= 0) {
+                    // 変化なしまたは下向きである場合
+
+                    // 第一のスクリーンを突破しない
                     continue;
                 }
 
-                // 第２のスクリーンに掛ける
-                final boolean secondFlg = this.simLogic.hangOnFirstScreen(stockPriceTimeSeriesModel);
-                if (!secondFlg) {
+                /* 第二のスクリーン */
+                final StockPriceCalcValueModel stockPriceCalcValuePi2emaModel = stockPriceTimeSeriesModel
+                    .getStockPriceCalcValueModel(StockPriceCalcValueTypeTypes.PI2EMA);
+                // 勢力指数２ＥＭＡが中心線よりも上以上か
+                if (stockPriceCalcValuePi2emaModel.get().compareTo(BigDecimal.ZERO) >= 0) {
+                    // 上以上である場合
+
+                    // 第二のスクリーンを突破しない
+                    continue;
+                }
+                final StockPriceCalcValueModel stockPriceCalcValueLpil3pModel = stockPriceTimeSeriesModel
+                    .getStockPriceCalcValueModel(StockPriceCalcValueTypeTypes.LOWEST_PRICE_IN_LAST3_PERIODS);
+                // 過去３日間の最安値より安値が安いか
+                if (stockPriceCalcValueLpil3pModel.get().compareTo(stockPriceTimeSeriesModel.getLp()) < 0) {
+                    // 安い場合
+
+                    // 第二のスクリーンを突破しない
                     continue;
                 }
 
-                // 第３のスクリーンに掛ける
-                final boolean thirdFlg = this.simLogic.hangOnFirstScreen(stockPriceTimeSeriesModel);
-                if (!thirdFlg) {
-                    continue;
-                }
+                System.out.println(stockPriceTimeSeriesModel.getPeriodStartDate());
 
-                // 買い情報を明細に登録する
-                System.out.println("買い情報を明細に登録する");
-            } else {
-                // ポジションがある場合
-
-                // ロスストップに引っかかるか
-                // 引っかかる場合：
-                // 損切り情報を明細に登録する
-                // 利確の条件か
-                // 条件に一致する場合：
-                // 利確情報を明細に登録する
+            } finally {
+                preStockPriceTimeSeriesModel = stockPriceTimeSeriesModelList.get(i);
+                preStockPriceCalcValueMcadhModel = preStockPriceTimeSeriesModel
+                    .getStockPriceCalcValueModel(StockPriceCalcValueTypeTypes.MCADH);
             }
         }
     }

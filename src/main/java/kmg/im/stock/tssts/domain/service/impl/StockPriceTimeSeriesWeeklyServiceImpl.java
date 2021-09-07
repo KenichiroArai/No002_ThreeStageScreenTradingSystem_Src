@@ -11,8 +11,6 @@ import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
-import kmg.im.stock.tssts.domain.service.AbstractStockPriceTimeSeriesService;
-import kmg.im.stock.tssts.domain.service.SptsptService;
 import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesWeeklyService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -26,17 +24,17 @@ import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
  * @version 1.0.0
  */
 @Service
-public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTimeSeriesService
+public class StockPriceTimeSeriesWeeklyServiceImpl extends StockPriceTimeSeriesServiceImpl
     implements StockPriceTimeSeriesWeeklyService {
+
+    /** 期間の種類の種類 */
+    private static final PeriodTypeTypes PERIOD_TYPE_TYPES = PeriodTypeTypes.WEEKLY;
 
     /** 株価時系列ロジック */
     private final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic;
 
     /** 株銘柄サービス */
     private final StockBrandService stockBrandService;
-
-    /** 株価時系列期間の種類サービス */
-    private final SptsptService sptsptService;
 
     /**
      * コンストラクタ<br>
@@ -48,15 +46,12 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
      *                                  株価時系列ロジック
      * @param stockBrandService
      *                                  株銘柄サービス
-     * @param sptsptService
-     *                                  株価時系列期間の種類サービス
      */
     public StockPriceTimeSeriesWeeklyServiceImpl(final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
-        final StockBrandService stockBrandService, final SptsptService sptsptService) {
+        final StockBrandService stockBrandService) {
         super(stockPriceTimeSeriesLogic);
         this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
         this.stockBrandService = stockBrandService;
-        this.sptsptService = sptsptService;
     }
 
     /**
@@ -71,7 +66,8 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
      */
     @Override
     public long delete() throws TsstsDomainException {
-        final long result = this.stockPriceTimeSeriesLogic.delete(PeriodTypeTypes.WEEKLY);
+        final long result = this.stockPriceTimeSeriesLogic
+            .delete(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES);
         return result;
     }
 
@@ -103,11 +99,6 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
         final long stockBrandId = this.stockBrandService.getStockBrandId(stockPriceDataMgtModel.getStockBrandCode());
         // 株価銘柄IDを設定する
         result.setStockBrandId(stockBrandId);
-        // 期間の種類の種類を設定する
-        result.setPeriodTypeTypes(PeriodTypeTypes.WEEKLY);
-        // 株価銘柄IDを設定する
-        final long sptsptId = this.sptsptService.getSptsptId(result.getStockBrandId(), result.getPeriodTypeTypes());
-        result.setSptsptId(sptsptId);
 
         // TODO KenichiroArai 2021/05/16 SQLとの作成とどちらが早いか試す
         StockPriceTimeSeriesModel addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl(); // 追加する週足
@@ -137,7 +128,7 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
                 addStockPriceTimeSeriesModel.setVolume(volume);
 
                 // 株価週足のリストに追加
-                result.addData(addStockPriceTimeSeriesModel);
+                result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
 
                 // 現在の情報を追加する株価週足ＤＴＯに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
@@ -167,7 +158,7 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
                 addStockPriceTimeSeriesModel.setVolume(volume);
 
                 // 株価週足のリストに追加
-                result.addData(addStockPriceTimeSeriesModel);
+                result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
 
                 // 現在の情報を追加する株価週足ＤＴＯに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
@@ -199,7 +190,7 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
         addStockPriceTimeSeriesModel.setVolume(volume);
 
         // 株価週足のリストに追加
-        result.addData(addStockPriceTimeSeriesModel);
+        result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
         return result;
     }
 
@@ -217,5 +208,29 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends AbstractStockPriceTim
     public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException {
         final StockPriceTimeSeriesMgtModel result = null;
         return result;
+    }
+
+    /**
+     * 株価時系列管理モデルを検索する<br>
+     * <p>
+     * 株価時系列期間の種類IDに該当する株価時系列管理モデルを検索し、該当する株価時系列管理モデルを返す。<br>
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
+     * @return 株価時系列管理モデル
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
+     */
+    @Override
+    public StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
+
+        final StockPriceTimeSeriesMgtModel result = this.stockPriceTimeSeriesLogic.findBySptsptId(sptsptId,
+            StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES);
+        return result;
+
     }
 }

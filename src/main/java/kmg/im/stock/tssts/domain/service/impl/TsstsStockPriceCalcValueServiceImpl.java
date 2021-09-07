@@ -115,13 +115,15 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
     private void register(final StockPriceTimeSeriesMgtModel stockPriceTimeSeriesMgtModel) throws TsstsDomainException {
 
         /* 削除する */
-        this.stockPriceCalcValueService.delete(stockPriceTimeSeriesMgtModel.getSptsptId());
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        this.stockPriceCalcValueService.delete(stockPriceTimeSeriesMgtModel.getSptsptId());
 
         /* 計算する */
 
         // ＭＣＡＤ
         final MacdService macdService = this.context.getBean(MacdService.class);
-        macdService.initialize(stockPriceTimeSeriesMgtModel.toSupplierDataList());
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        macdService.initialize(stockPriceTimeSeriesMgtModel.toSupplierDataList());
         // ＭＣＡＤライン
         macdService.clacLine();
         final StockPriceCalcValueMgtModel spcvMgtMacdlModel = new StockPriceCalcValueMgtModelImpl(
@@ -137,7 +139,8 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
 
         // 勢力指数
         final PowerIndexService piService = this.context.getBean(PowerIndexService.class);
-        piService.initialize(stockPriceTimeSeriesMgtModel.toPowerIndexCalcModelList());
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        piService.initialize(stockPriceTimeSeriesMgtModel.toPowerIndexCalcModelList());
         piService.calc();
         final StockPriceCalcValueMgtModel spcvMgtPiModel = new StockPriceCalcValueMgtModelImpl(
             stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.PI, piService.getCalcResultList());
@@ -149,6 +152,20 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
         piService.defaultLtSmoothing();
         final StockPriceCalcValueMgtModel spcvMgtPi13EmaModel = new StockPriceCalcValueMgtModelImpl(
             stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.PI13EMA, piService.getSmoothingList());
+
+        // 過去３期間の最安値
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        final LowestPriceInPastService lowestPriceInPastService = this.context.getBean(LowestPriceInPastService.class);
+//        final List<Supplier<BigDecimal>> lowestPriceInPastCalcResultList = stockPriceTimeSeriesMgtModel.getDataMap()
+//            .values().stream().map(mapper -> {
+//                final Supplier<BigDecimal> supplier = () -> mapper.getLp();
+//                return supplier;
+//            }).collect(Collectors.toList());
+//        lowestPriceInPastService.initialize(lowestPriceInPastCalcResultList, 3);
+//        lowestPriceInPastService.calc();
+//        final StockPriceCalcValueMgtModel spcvMgtLpl3pPModel = new StockPriceCalcValueMgtModelImpl(
+//            stockPriceTimeSeriesMgtModel, StockPriceCalcValueTypeTypes.LOWEST_PRICE_IN_LAST3_PERIODS,
+//            lowestPriceInPastService.getClacResultList());
 
         /* 登録する */
         // ＭＣＡＤライン
@@ -163,6 +180,9 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
         this.stockPriceCalcValueService.register(spcvMgtPi2EmaModel);
         // 勢力指数１３ＥＭＡ
         this.stockPriceCalcValueService.register(spcvMgtPi13EmaModel);
+        // 過去３期間の最安値
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        this.stockPriceCalcValueService.register(spcvMgtLpl3pPModel);
     }
 
 }

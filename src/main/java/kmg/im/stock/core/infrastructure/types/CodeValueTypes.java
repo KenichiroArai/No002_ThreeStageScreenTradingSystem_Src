@@ -34,8 +34,11 @@ public enum CodeValueTypes implements Supplier<Long> {
     /** オシレーター */
     OSCILLATOR("オシレーター", 5, CodeKindTypes.INDICATOR_TYPE),
 
-    /** その他 */
-    OTHER("その他", 6, CodeKindTypes.INDICATOR_TYPE),
+    /** 計算その他 */
+    CALC_OTHER("計算その他", 6, CodeKindTypes.INDICATOR_TYPE),
+
+    /** 統計 */
+    STATISTICS("統計", 7, CodeKindTypes.INDICATOR_TYPE),
 
     /* 定義：終了 */
     ;

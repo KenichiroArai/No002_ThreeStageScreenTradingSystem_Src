@@ -82,10 +82,7 @@ public class SimLogicImpl implements SimLogic {
             final SimDto simDto = simDtoList.get(0);
 
             result.setStockBrandId(simDto.getStockBrandId()); // 株銘柄ID
-            result.setSptsptId(simDto.getSptsptId()); // 株価時系列期間の種類ID
             result.setStockBrandCode(simDto.getStockBrandCode()); // 株価銘柄コード
-            result.setPeriodTypeTypes(PeriodTypeTypes.getEnum(simDto.getPeriodTypeId())); // 期間の種類の種類
-
         }
 
         /* 株価時系列情報を設定する */
@@ -114,7 +111,8 @@ public class SimLogicImpl implements SimLogic {
                 sptsMap.put(simDto.getNo(), sptsModel);
 
                 // 株価時系列管理モデルに追加する
-                result.addData(sptsModel);
+                final PeriodTypeTypes periodTypeTypes = PeriodTypeTypes.getEnum(simDto.getPeriodTypeId());
+                result.addData(periodTypeTypes, sptsModel);
             }
 
             // 株価計算値を設定する
@@ -151,7 +149,7 @@ public class SimLogicImpl implements SimLogic {
      */
     @Override
     public boolean hangOnFirstScreen(final StockPriceTimeSeriesModel stockPriceTimeSeries) {
-        // TODO 自動生成されたメソッド・スタブ
+        // TODO KenichiroArai 2021/08/24 未実装
         return false;
     }
 
@@ -167,7 +165,7 @@ public class SimLogicImpl implements SimLogic {
      */
     @Override
     public boolean hangOnSecondScreen(final StockPriceTimeSeriesModel stockPriceTimeSeries) {
-        // TODO 自動生成されたメソッド・スタブ
+        // TODO KenichiroArai 2021/08/24 未実装
         return false;
     }
 
@@ -183,7 +181,7 @@ public class SimLogicImpl implements SimLogic {
      */
     @Override
     public boolean hangOnThirdScreen(final StockPriceTimeSeriesModel stockPriceTimeSeries) {
-        // TODO 自動生成されたメソッド・スタブ
+        // TODO KenichiroArai 2021/08/24 未実装
         return false;
     }
 

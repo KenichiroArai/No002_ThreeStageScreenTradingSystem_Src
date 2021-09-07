@@ -52,8 +52,8 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
         final StockPriceCalcValueTypeTypes spcvt, final List<Supplier<BigDecimal>> supplierList) {
         this();
 
-        for (int i = 0; i < stockPriceTimeSeriesMgtModel.toDataList().size(); i++) {
-            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockPriceTimeSeriesMgtModel.toDataList()
+        for (int i = 0; i < stockPriceTimeSeriesMgtModel.toAllDataList().size(); i++) {
+            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockPriceTimeSeriesMgtModel.toAllDataList()
                 .get(i);
             final Supplier<BigDecimal> supplier = supplierList.get(i);
             final StockPriceCalcValueModel data = new StockPriceCalcValueModelImpl();

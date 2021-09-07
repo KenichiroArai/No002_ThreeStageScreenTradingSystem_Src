@@ -10,8 +10,6 @@ import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesMgtModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
-import kmg.im.stock.tssts.domain.service.AbstractStockPriceTimeSeriesService;
-import kmg.im.stock.tssts.domain.service.SptsptService;
 import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -25,17 +23,17 @@ import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
  * @version 1.0.0
  */
 @Service
-public class StockPriceTimeSeriesDailyServiceImpl extends AbstractStockPriceTimeSeriesService
+public class StockPriceTimeSeriesDailyServiceImpl extends StockPriceTimeSeriesServiceImpl
     implements StockPriceTimeSeriesDailyService {
+
+    /** 期間の種類の種類 */
+    private static final PeriodTypeTypes PERIOD_TYPE_TYPES = PeriodTypeTypes.DAILY;
 
     /** 株価時系列ロジック */
     private final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic;
 
     /** 株銘柄サービス */
     private final StockBrandService stockBrandService;
-
-    /** 株価時系列期間の種類サービス */
-    private final SptsptService sptsptService;
 
     /**
      * コンストラクタ<br>
@@ -47,15 +45,12 @@ public class StockPriceTimeSeriesDailyServiceImpl extends AbstractStockPriceTime
      *                                  株価時系列ロジック
      * @param stockBrandService
      *                                  株銘柄サービス
-     * @param sptsptService
-     *                                  株価時系列期間の種類サービス
      */
     public StockPriceTimeSeriesDailyServiceImpl(final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
-        final StockBrandService stockBrandService, final SptsptService sptsptService) {
+        final StockBrandService stockBrandService) {
         super(stockPriceTimeSeriesLogic);
         this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
         this.stockBrandService = stockBrandService;
-        this.sptsptService = sptsptService;
     }
 
     /**
@@ -70,7 +65,8 @@ public class StockPriceTimeSeriesDailyServiceImpl extends AbstractStockPriceTime
      */
     @Override
     public long delete() throws TsstsDomainException {
-        final long result = this.stockPriceTimeSeriesLogic.delete(PeriodTypeTypes.DAILY);
+        final long result = this.stockPriceTimeSeriesLogic
+            .delete(StockPriceTimeSeriesDailyServiceImpl.PERIOD_TYPE_TYPES);
         return result;
     }
 
@@ -97,11 +93,6 @@ public class StockPriceTimeSeriesDailyServiceImpl extends AbstractStockPriceTime
         final long stockBrandId = this.stockBrandService.getStockBrandId(stockPriceDataMgtModel.getStockBrandCode());
         // 株価銘柄IDを設定する
         result.setStockBrandId(stockBrandId);
-        // 期間の種類の種類を設定する
-        result.setPeriodTypeTypes(PeriodTypeTypes.DAILY);
-        // 株価銘柄IDを設定する
-        final long sptsptId = this.sptsptService.getSptsptId(result.getStockBrandId(), result.getPeriodTypeTypes());
-        result.setSptsptId(sptsptId);
 
         for (final StockPriceDataModel stockPriceDataModel : stockPriceDataMgtModel.getDataList()) {
 
@@ -114,7 +105,7 @@ public class StockPriceTimeSeriesDailyServiceImpl extends AbstractStockPriceTime
             // 期間終了日を設定する
             stockPriceTimeSeriesModel.setPeriodEndDate(stockPriceDataModel.getDate());
 
-            result.addData(stockPriceTimeSeriesModel);
+            result.addData(StockPriceTimeSeriesDailyServiceImpl.PERIOD_TYPE_TYPES, stockPriceTimeSeriesModel);
         }
 
         return result;
@@ -133,6 +124,31 @@ public class StockPriceTimeSeriesDailyServiceImpl extends AbstractStockPriceTime
     @Override
     public StockPriceTimeSeriesMgtModel getStockPriceTimeSeriesMgtModel() throws TsstsDomainException {
         final StockPriceTimeSeriesMgtModel result = null;
+        // TODO KenichiroArai 2021/09/05 未使用
         return result;
+    }
+
+    /**
+     * 株価時系列管理モデルを検索する<br>
+     * <p>
+     * 株価時系列期間の種類IDに該当する株価時系列管理モデルを検索し、該当する株価時系列管理モデルを返す。<br>
+     * </p>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
+     * @return 株価時系列管理モデル
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
+     */
+    @Override
+    public StockPriceTimeSeriesMgtModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
+
+        final StockPriceTimeSeriesMgtModel result = this.stockPriceTimeSeriesLogic.findBySptsptId(sptsptId,
+            StockPriceTimeSeriesDailyServiceImpl.PERIOD_TYPE_TYPES);
+        return result;
+
     }
 }

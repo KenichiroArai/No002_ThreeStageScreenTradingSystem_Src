@@ -68,22 +68,25 @@ public enum TechIndicatorTypes implements Supplier<Long> {
     CCI("コモディティー・チャネル指数", 16, CodeValueTypes.OSCILLATOR),
 
     /** 新高値―新安値指数 */
-    NHNLI("新高値―新安値指数", 17, CodeValueTypes.OTHER),
+    NHNLI("新高値―新安値指数", 17, CodeValueTypes.CALC_OTHER),
 
     /** プット―コール比率 */
-    PCR("プット―コール比率", 18, CodeValueTypes.OTHER),
+    PCR("プット―コール比率", 18, CodeValueTypes.CALC_OTHER),
 
     /** 強気のコンセンサス */
-    BC("強気のコンセンサス", 19, CodeValueTypes.OTHER),
+    BC("強気のコンセンサス", 19, CodeValueTypes.CALC_OTHER),
 
     /** ＣｏＴ（コミットメント・オブ・トレーダーズ） */
-    COT("ＣｏＴ（コミットメント・オブ・トレーダーズ）", 20, CodeValueTypes.OTHER),
+    COT("ＣｏＴ（コミットメント・オブ・トレーダーズ）", 20, CodeValueTypes.CALC_OTHER),
 
     /** 騰落指数 */
-    RFI("騰落指数", 21, CodeValueTypes.OTHER),
+    RFI("騰落指数", 21, CodeValueTypes.CALC_OTHER),
 
     /** トレーダー指数 */
-    TI("トレーダー指数", 22, CodeValueTypes.OTHER),
+    TI("トレーダー指数", 22, CodeValueTypes.CALC_OTHER),
+
+    /** 過去の最安値 */
+    LOWEST_PRICE_IN_PAST("過去の最安値", 23, CodeValueTypes.CALC_OTHER),
 
     /* 定義：終了 */
     ;
