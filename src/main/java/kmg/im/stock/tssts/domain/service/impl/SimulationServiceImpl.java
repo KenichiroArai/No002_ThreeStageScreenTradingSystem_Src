@@ -1,6 +1,7 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,8 @@ import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.logic.SimLogic;
 import kmg.im.stock.tssts.domain.model.PosModel;
-import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
+import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.service.SimulationService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -89,16 +90,16 @@ public class SimulationServiceImpl implements SimulationService {
         // TODO KenichiroArai 2021/05/25 実装中
 
         /* 株価時系列管理モデルを取得する */
-        final StockBrandModel stockBrandModel = this.simLogic
-            .getStockPriceTimeSeriesMgtModel(stockCode);
+        final StockBrandModel stockBrandModel = this.simLogic.getStockPriceTimeSeriesMgtModel(stockCode);
         if (stockBrandModel == null) {
 
             // TODO KenichiroArai 2021/08/04 エラー対応
             final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
             throw new TsstsDomainException(errMsg, LogMessageTypes.NONE);
         }
-        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = stockBrandModel
-            .toAllDataList();
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = stockBrandModel.toAllDataList();
+        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = new ArrayList<>();
         if (ListUtils.isEmpty(stockPriceTimeSeriesModelList)) {
             return;
         }

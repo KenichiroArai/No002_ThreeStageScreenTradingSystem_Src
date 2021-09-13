@@ -3,8 +3,8 @@ package kmg.im.stock.tssts.domain.service.impl;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
+import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesDailyService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesMonthlyService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesWeeklyService;

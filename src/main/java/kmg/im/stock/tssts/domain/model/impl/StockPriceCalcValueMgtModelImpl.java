@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
-import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 
 /**
@@ -42,19 +42,20 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandModel
-     *                                     株価時系列管理モデル
+     *                        株価時系列管理モデル
      * @param spcvt
-     *                                     株価計算値の種類
+     *                        株価計算値の種類
      * @param supplierList
-     *                                     サプライヤリスト
+     *                        サプライヤリスト
      */
     public StockPriceCalcValueMgtModelImpl(final StockBrandModel stockBrandModel,
         final StockPriceCalcValueTypeTypes spcvt, final List<Supplier<BigDecimal>> supplierList) {
         this();
 
-        for (int i = 0; i < stockBrandModel.toAllDataList().size(); i++) {
-            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockBrandModel.toAllDataList()
-                .get(i);
+        for (int i = 0; i < stockBrandModel.toSptsptModelList().size(); i++) {
+            // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockBrandModel.toSptsptModelList().get(i);
+            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
             final Supplier<BigDecimal> supplier = supplierList.get(i);
             final StockPriceCalcValueModel data = new StockPriceCalcValueModelImpl();
             data.setSptsId(stockPriceTimeSeriesModel.getId());

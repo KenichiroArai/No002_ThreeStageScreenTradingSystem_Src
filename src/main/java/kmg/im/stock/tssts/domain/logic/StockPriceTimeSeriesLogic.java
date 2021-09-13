@@ -37,7 +37,7 @@ public interface StockPriceTimeSeriesLogic {
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandModel
-     *                                     株価時系列管理モデル
+     *                        株銘柄モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
@@ -60,6 +60,5 @@ public interface StockPriceTimeSeriesLogic {
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    StockBrandModel findBySptsptId(long sptsptId, PeriodTypeTypes periodTypeTypes)
-        throws TsstsDomainException;
+    StockBrandModel findBySptsptId(long sptsptId, PeriodTypeTypes periodTypeTypes) throws TsstsDomainException;
 }

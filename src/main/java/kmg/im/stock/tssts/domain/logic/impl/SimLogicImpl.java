@@ -12,15 +12,14 @@ import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.data.dao.SimDao;
 import kmg.im.stock.tssts.data.dto.SimDto;
 import kmg.im.stock.tssts.domain.logic.SimLogic;
-import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
+import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
-import kmg.im.stock.tssts.domain.model.impl.StockPriceCalcValueModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
+import kmg.im.stock.tssts.domain.model.impl.StockPriceCalcValueModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * シミュレーションロジック<br>
@@ -61,8 +60,7 @@ public class SimLogicImpl implements SimLogic {
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockBrandModel getStockPriceTimeSeriesMgtModel(final long stockCode)
-        throws TsstsDomainException {
+    public StockBrandModel getStockPriceTimeSeriesMgtModel(final long stockCode) throws TsstsDomainException {
         final StockBrandModel result = new StockBrandModelImpl();
 
         /* シミュレーションを行うデータを取得する */
@@ -111,8 +109,9 @@ public class SimLogicImpl implements SimLogic {
                 sptsMap.put(simDto.getNo(), sptsModel);
 
                 // 株価時系列管理モデルに追加する
-                final PeriodTypeTypes periodTypeTypes = PeriodTypeTypes.getEnum(simDto.getPeriodTypeId());
-                result.addData(periodTypeTypes, sptsModel);
+                // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//                final PeriodTypeTypes periodTypeTypes = PeriodTypeTypes.getEnum(simDto.getPeriodTypeId());
+//                result.addData(periodTypeTypes, sptsModel);
             }
 
             // 株価計算値を設定する

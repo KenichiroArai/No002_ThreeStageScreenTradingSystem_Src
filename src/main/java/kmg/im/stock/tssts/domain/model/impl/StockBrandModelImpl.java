@@ -1,18 +1,14 @@
 package kmg.im.stock.tssts.domain.model.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.core.infrastructure.utils.MapUtils;
-import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
+import kmg.im.stock.tssts.domain.model.SptsptModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
@@ -30,19 +26,8 @@ public class StockBrandModelImpl implements StockBrandModel {
     /** 株価銘柄コード */
     private long stockBrandCode;
 
-    /*
-     * TODO KenichiroArai 2021/09/06
-     * 株価時系列期間の種類のモデルを配下にする。株価時系列期間の種類の配下に株価時系列のデータを配下にする。
-     */
-
-    /**
-     * 株価時系列マップ<br>
-     * <p>
-     * キー：期間の種類の種類<br>
-     * 値：キー：番号、値：株価時系列モデル<br>
-     * </p>
-     */
-    private final SortedMap<PeriodTypeTypes, SortedMap<Long, StockPriceTimeSeriesModel>> dataMap;
+    /** 株価時系列期間の種類のマップ */
+    private final SortedMap<PeriodTypeTypes, SptsptModel> sptsptMap;
 
     /**
      * デフォルトコンストラクタ<br>
@@ -52,7 +37,7 @@ public class StockBrandModelImpl implements StockBrandModel {
      * @version 1.0.0
      */
     public StockBrandModelImpl() {
-        this.dataMap = new TreeMap<>();
+        this.sptsptMap = new TreeMap<>();
     }
 
     /**
@@ -112,19 +97,19 @@ public class StockBrandModelImpl implements StockBrandModel {
     }
 
     /**
-     * 株価時系列マップをクリアする<br>
+     * 株価時系列期間の種類のマップをクリアする<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      */
     @Override
-    public void clearDataMap() {
-        this.dataMap.clear();
+    public void clearSptspMap() {
+        this.sptsptMap.clear();
     }
 
     /**
-     * 株価時系列マップが空か<br>
+     * 株価時系列期間の種類のマップが空か<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -132,10 +117,10 @@ public class StockBrandModelImpl implements StockBrandModel {
      * @return true：空、false：空ではない
      */
     @Override
-    public boolean isDataMapEmpty() {
+    public boolean isSptspMapEmpty() {
         boolean result = true;
 
-        if (MapUtils.isEmpty(this.dataMap)) {
+        if (MapUtils.isEmpty(this.sptsptMap)) {
             return result;
         }
 
@@ -144,7 +129,7 @@ public class StockBrandModelImpl implements StockBrandModel {
     }
 
     /**
-     * 株価時系列マップが空ではないか<br>
+     * 株価時系列期間の種類のマップが空ではないか<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -152,166 +137,86 @@ public class StockBrandModelImpl implements StockBrandModel {
      * @return true：空ではない、false：空
      */
     @Override
-    public boolean isDataMapNotEmpty() {
-        final boolean result = !this.isDataMapEmpty();
+    public boolean isSptspMapNotEmpty() {
+        final boolean result = !this.isSptspMapEmpty();
         return result;
     }
 
     /**
-     * 株価データ番号マップを追加する<br>
+     * 株価時系列期間の種類モデルを追加する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param periodTypeTypes
-     *                        期間の種類の種類
-     * @param dataNoMap
-     *                        株価データ番号マップ
+     * @param sptsptModel
+     *                    株価時系列期間の種類モデル
      */
     @Override
-    public void addData(final PeriodTypeTypes periodTypeTypes,
-        final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap) {
-        this.dataMap.put(periodTypeTypes, dataNoMap);
+    public void addSptsptModel(final SptsptModel sptsptModel) {
+        this.sptsptMap.put(sptsptModel.getPeriodTypeTypes(), sptsptModel);
     }
 
     /**
-     * 株価データを追加する<br>
+     * 株価時系列期間の種類モデルのリストを全て追加する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param periodTypeTypes
-     *                        期間の種類の種類
-     * @param data
-     *                        株価データ
+     * @param sptsptModelList
+     *                        株価時系列期間の種類モデルのリスト
      */
     @Override
-    public void addData(final PeriodTypeTypes periodTypeTypes, final StockPriceTimeSeriesModel data) {
-        final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap = this.dataMap.get(periodTypeTypes);
-        dataNoMap.put(data.getNo(), data);
-        this.addData(periodTypeTypes, dataNoMap);
-    }
-
-    /**
-     * 株価時系列リストを全て追加する<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param periodTypeTypes
-     *                        期間の種類の種類
-     * @param addDataList
-     *                        追加株価時系列リスト
-     */
-    @Override
-    public void addAllData(final PeriodTypeTypes periodTypeTypes, final List<StockPriceTimeSeriesModel> addDataList) {
-        if (ListUtils.isEmpty(addDataList)) {
+    public void addAllSptsptModel(final List<SptsptModel> sptsptModelList) {
+        if (ListUtils.isEmpty(sptsptModelList)) {
             return;
         }
 
-        for (final StockPriceTimeSeriesModel addData : addDataList) {
-            this.addData(periodTypeTypes, addData);
+        for (final SptsptModel sptsptModel : sptsptModelList) {
+            this.addSptsptModel(sptsptModel);
         }
     }
 
     /**
-     * 株価時系列マップを返す<br>
+     * 株価時系列期間の種類モデルのマップを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列マップ
+     * @return 株価時系列期間の種類モデルのマップ
      */
     @Override
-    public SortedMap<PeriodTypeTypes, SortedMap<Long, StockPriceTimeSeriesModel>> getDataMap() {
-        final SortedMap<PeriodTypeTypes, SortedMap<Long, StockPriceTimeSeriesModel>> result = this.dataMap;
+    public SortedMap<PeriodTypeTypes, SptsptModel> getSptsptModelMap() {
+        final SortedMap<PeriodTypeTypes, SptsptModel> result = this.sptsptMap;
         return result;
     }
 
     /**
-     * 株価時系列番号マップを返す<br>
+     * 期間の種類の種類に該当する株価時系列期間の種類モデルを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param periodTypeTypes
      *                        期間の種類の種類
-     * @return 株価時系列マップ
+     * @return 株価時系列期間の種類モデル
      */
     @Override
-    public SortedMap<Long, StockPriceTimeSeriesModel> getDataNoMap(final PeriodTypeTypes periodTypeTypes) {
-        final SortedMap<Long, StockPriceTimeSeriesModel> result = this.dataMap.get(periodTypeTypes);
+    public SptsptModel getSptsptModel(final PeriodTypeTypes periodTypeTypes) {
+        final SptsptModel result = this.sptsptMap.get(periodTypeTypes);
         return result;
     }
 
     /**
-     * 株価時系列リストとして返す<br>
+     * 株価時系列期間の種類モデルのリストとして返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param periodTypeTypes
-     *                        期間の種類の種類
-     * @return 株価時系列マップ
+     * @return 株価時系列期間の種類モデルのリスト
      */
     @Override
-    public List<StockPriceTimeSeriesModel> toDataList(final PeriodTypeTypes periodTypeTypes) {
-        List<StockPriceTimeSeriesModel> result = null;
-        final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap = this.dataMap.get(periodTypeTypes);
-        result = new ArrayList<>(dataNoMap.values());
-        return result;
-    }
-
-    /**
-     * 株価時系列全リストとして返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @return 株価時系列マップ
-     */
-    @Override
-    public List<StockPriceTimeSeriesModel> toAllDataList() {
-        final List<StockPriceTimeSeriesModel> result = new ArrayList<>();
-        this.dataMap.forEach((key, value) -> {
-            value.forEach((key2, value2) -> {
-                result.add(value2);
-            });
-        });
-        return result;
-    }
-
-    /**
-     * サプライヤデータリストとして返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param periodTypeTypes
-     *                        期間の種類の種類
-     * @return サプライヤデータリスト
-     */
-    @Override
-    public List<Supplier<BigDecimal>> toSupplierDataList(final PeriodTypeTypes periodTypeTypes) {
-        final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap = this.dataMap.get(periodTypeTypes);
-        final List<Supplier<BigDecimal>> result = dataNoMap.values().stream().collect(Collectors.toList());
-        return result;
-    }
-
-    /**
-     * 勢力指数計算モデルリストとして返す<br>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param periodTypeTypes
-     *                        期間の種類の種類
-     * @return 勢力指数計算モデルリスト
-     */
-    @Override
-    public List<PowerIndexCalcModel> toPowerIndexCalcModelList(final PeriodTypeTypes periodTypeTypes) {
-        final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap = this.dataMap.get(periodTypeTypes);
-        final List<PowerIndexCalcModel> result = dataNoMap.values().stream().collect(Collectors.toList());
+    public List<SptsptModel> toSptsptModelList() {
+        final List<SptsptModel> result = this.sptsptMap.values().stream().collect(Collectors.toList());
         return result;
     }
 

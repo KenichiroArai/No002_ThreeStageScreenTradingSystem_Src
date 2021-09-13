@@ -1,7 +1,7 @@
 package kmg.im.stock.tssts.domain.service;
 
-import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
+import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
@@ -11,6 +11,7 @@ import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
  * @sine 1.0.0
  * @version 1.0.0
  */
+//TODO KenichiroArai 2021/09/12 論理名と物理名を変更する
 public interface TsstsStockPriceTimeSeriesService {
 
     /**

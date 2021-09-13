@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
-import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
@@ -84,8 +84,8 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends StockPriceTimeSeriesS
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockBrandModel toStockPriceTimeSeriesMgtModel(
-        final StockPriceDataMgtModel stockPriceDataMgtModel) throws TsstsDomainException {
+    public StockBrandModel toStockPriceTimeSeriesMgtModel(final StockPriceDataMgtModel stockPriceDataMgtModel)
+        throws TsstsDomainException {
 
         final StockBrandModel result = new StockBrandModelImpl();
 
@@ -128,7 +128,8 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends StockPriceTimeSeriesS
                 addStockPriceTimeSeriesModel.setVolume(volume);
 
                 // 株価週足のリストに追加
-                result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
+                // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//                result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
 
                 // 現在の情報を追加する株価週足ＤＴＯに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
@@ -158,7 +159,8 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends StockPriceTimeSeriesS
                 addStockPriceTimeSeriesModel.setVolume(volume);
 
                 // 株価週足のリストに追加
-                result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
+                // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//                result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
 
                 // 現在の情報を追加する株価週足ＤＴＯに設定する
                 addStockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
@@ -190,7 +192,8 @@ public class StockPriceTimeSeriesWeeklyServiceImpl extends StockPriceTimeSeriesS
         addStockPriceTimeSeriesModel.setVolume(volume);
 
         // 株価週足のリストに追加
-        result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        result.addData(StockPriceTimeSeriesWeeklyServiceImpl.PERIOD_TYPE_TYPES, addStockPriceTimeSeriesModel);
         return result;
     }
 

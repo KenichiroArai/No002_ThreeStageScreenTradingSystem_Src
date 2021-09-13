@@ -1,8 +1,6 @@
 package kmg.im.stock.tssts.domain.logic.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -10,10 +8,9 @@ import org.springframework.stereotype.Service;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
-import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesMgtDto;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
-import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesMgtDtoImpl;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
+import kmg.im.stock.tssts.domain.model.SptsptModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
@@ -85,37 +82,27 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandModel
-     *                                     株価時系列管理モデル
+     *                        株銘柄モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
     public void register(final StockBrandModel stockBrandModel) throws TsstsDomainException {
 
-        if (stockBrandModel.isDataMapEmpty()) {
+        if (stockBrandModel.isSptspMapEmpty()) {
             return;
         }
 
-        final StockPriceTimeSeriesMgtDto stockPriceTimeSeriesMgtDto = new StockPriceTimeSeriesMgtDtoImpl();
-        final SortedMap<PeriodTypeTypes, SortedMap<Long, StockPriceTimeSeriesModel>> dataMap = stockBrandModel
-            .getDataMap();
-        for (final PeriodTypeTypes periodTypeTypes : dataMap.keySet()) {
-            final SortedMap<Long, StockPriceTimeSeriesModel> dataNoMap = dataMap.get(periodTypeTypes);
-            for (final StockPriceTimeSeriesModel stockPriceTimeSeriesModel : dataNoMap.values()) {
+        final List<SptsptModel> sptsptModelList = stockBrandModel.toSptsptModelList();
+        for (final SptsptModel sptsptModel : sptsptModelList) {
 
-                // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
-                final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
-                BeanUtils.copyProperties(stockPriceTimeSeriesModel, stockPriceTimeSeriesDto);
+            // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
+            final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
+            BeanUtils.copyProperties(sptsptModel, stockPriceTimeSeriesDto);
 
-                // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
-                // 株価時系列期間の種類IDを設定する
-//                stockPriceTimeSeriesDto.setSptsptId(stockPriceTimeSeriesMgtModel.getSptsptId());
+            // 株価時系列期間の種類IDを設定する
+            stockPriceTimeSeriesDto.setSptsptId(sptsptModel.getPeriodTypeTypes().getValue());
 
-                stockPriceTimeSeriesMgtDto.addData(stockPriceTimeSeriesDto);
-            }
-        }
-        // TODO KenichiroArai 2021/05/16 実装中
-        for (final StockPriceTimeSeriesDto stockPriceTimeSeriesDto : stockPriceTimeSeriesMgtDto.getDataList()) {
             try {
                 this.stockPriceTimeSeriesDao.insert(stockPriceTimeSeriesDto);
             } catch (final KmgDomainException e) {
@@ -151,7 +138,7 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
 
         final StockBrandModel result = new StockBrandModelImpl();
 
-        /* 株価時系列期間の種類ID株価時系列管理を検索し、該当する株価時系列ＤＴＯのリストを取得する */
+        /* 株価時系列期間の種類IDに該当する株価時系列管理モデルを検索し、該当する株価時系列ＤＴＯのリストを取得する */
         List<StockPriceTimeSeriesDto> stockPriceTimeSeriesDtoList = null;
         try {
             stockPriceTimeSeriesDtoList = this.stockPriceTimeSeriesDao.findBySptsptId(sptsptId);
@@ -163,13 +150,15 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
         }
 
-        /* 株価時系列管理モデルへ詰め替える */
-        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = new ArrayList<>();
+        /* 株価時系列期間の種類モデルへ詰め替える */
+        // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//        final List<SptsptModel> sptsptModelList = new ArrayList<>();
         for (final StockPriceTimeSeriesDto stockPriceTimeSeriesDto : stockPriceTimeSeriesDtoList) {
             final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
             BeanUtils.copyProperties(stockPriceTimeSeriesDto, stockPriceTimeSeriesModel);
-            stockPriceTimeSeriesModelList.add(stockPriceTimeSeriesModel);
-            result.addAllData(periodTypeTypes, stockPriceTimeSeriesModelList);
+            // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//            stockPriceTimeSeriesModelList.add(stockPriceTimeSeriesModel);
+//            result.addAllSptsptModel(stockPriceTimeSeriesModelList);
         }
 
         return result;

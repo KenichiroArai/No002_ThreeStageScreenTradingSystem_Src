@@ -1,8 +1,8 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
-import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
+import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
@@ -60,8 +60,8 @@ public class StockPriceTimeSeriesServiceImpl implements StockPriceTimeSeriesServ
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockBrandModel toStockPriceTimeSeriesMgtModel(
-        final StockPriceDataMgtModel stockPriceDataMgtModel) throws TsstsDomainException {
+    public StockBrandModel toStockPriceTimeSeriesMgtModel(final StockPriceDataMgtModel stockPriceDataMgtModel)
+        throws TsstsDomainException {
         // TODO KenichiroArai 2021/09/05 未実装
         return null;
     }
@@ -73,14 +73,14 @@ public class StockPriceTimeSeriesServiceImpl implements StockPriceTimeSeriesServ
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandModel
-     *                                     株価時系列管理モデル
+     *                        株価時系列管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
     public void register(final StockBrandModel stockBrandModel) throws TsstsDomainException {
 
-        if (stockBrandModel.isDataMapEmpty()) {
+        if (stockBrandModel.isSptspMapEmpty()) {
             return;
         }
 

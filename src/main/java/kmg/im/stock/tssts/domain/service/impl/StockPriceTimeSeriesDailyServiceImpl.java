@@ -4,9 +4,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
+import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceDataModel;
-import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceTimeSeriesModelImpl;
@@ -83,8 +83,8 @@ public class StockPriceTimeSeriesDailyServiceImpl extends StockPriceTimeSeriesSe
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public StockBrandModel toStockPriceTimeSeriesMgtModel(
-        final StockPriceDataMgtModel stockPriceDataMgtModel) throws TsstsDomainException {
+    public StockBrandModel toStockPriceTimeSeriesMgtModel(final StockPriceDataMgtModel stockPriceDataMgtModel)
+        throws TsstsDomainException {
 
         final StockBrandModel result = new StockBrandModelImpl();
         stockPriceDataMgtModel.setStockBrandCode(stockPriceDataMgtModel.getStockBrandCode());
@@ -105,7 +105,8 @@ public class StockPriceTimeSeriesDailyServiceImpl extends StockPriceTimeSeriesSe
             // 期間終了日を設定する
             stockPriceTimeSeriesModel.setPeriodEndDate(stockPriceDataModel.getDate());
 
-            result.addData(StockPriceTimeSeriesDailyServiceImpl.PERIOD_TYPE_TYPES, stockPriceTimeSeriesModel);
+            // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
+//            result.addData(StockPriceTimeSeriesDailyServiceImpl.PERIOD_TYPE_TYPES, stockPriceTimeSeriesModel);
         }
 
         return result;
