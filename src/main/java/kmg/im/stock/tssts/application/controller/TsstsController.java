@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import kmg.im.stock.tssts.domain.service.RegisterService;
+import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
@@ -25,8 +25,8 @@ public class TsstsController {
     /** ログメッセージリゾルバ */
     private final LogMessageResolver logMessageResolver;
 
-    /** 登録サービス */
-    private final RegisterService registerService;
+    /** 三段階スクリーン・トレーディング・システム株価データ登録サービス */
+    private final TsstsSpDataRegisterService tsstsSpDataRegisterService;
 
     /**
      * コンストラクタ<br>
@@ -35,13 +35,14 @@ public class TsstsController {
      * @sine 1.0.0
      * @version 1.0.0
      * @param logMessageResolver
-     *                           ログメッセージリゾルバ
-     * @param registerService
-     *                           登録サービス
+     *                                   ログメッセージリゾルバ
+     * @param tsstsSpDataRegisterService
+     *                                   三段階スクリーン・トレーディング・システム株価データ登録サービス
      */
-    public TsstsController(final LogMessageResolver logMessageResolver, final RegisterService registerService) {
+    public TsstsController(final LogMessageResolver logMessageResolver,
+        final TsstsSpDataRegisterService tsstsSpDataRegisterService) {
         this.logMessageResolver = logMessageResolver;
-        this.registerService = registerService;
+        this.tsstsSpDataRegisterService = tsstsSpDataRegisterService;
     }
 
     /**
@@ -56,7 +57,7 @@ public class TsstsController {
     public void registerAllStockPriceData() throws TsstsDomainException {
 
         try {
-            this.registerService.registerAllStockPriceData();
+            this.tsstsSpDataRegisterService.registerAllSpData();
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 

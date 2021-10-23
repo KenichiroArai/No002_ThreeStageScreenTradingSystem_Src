@@ -1,10 +1,12 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.SptsptLogic;
+import kmg.im.stock.tssts.domain.model.SptsptModel;
 import kmg.im.stock.tssts.domain.service.SptsptService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
@@ -92,6 +94,30 @@ public class SptsptServiceImpl implements SptsptService {
         this.sptsptLogic.register(stockBrandId, periodTypeTypes);
         result = this.sptsptLogic.getSptsptId(stockBrandId, periodTypeTypes, baseDate);
 
+        return result;
+    }
+
+    /**
+     * 期間の種類ごとの株価時系列期間の種類のマップを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param stockBrandId
+     *                        株銘柄ID
+     * @param periodTypeTypes
+     *                        期間の種類の種類
+     * @param baseDate
+     *                        基準日
+     * @return 株価銘柄ID
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
+     */
+    @Override
+    public Map<PeriodTypeTypes, SptsptModel> findSptsptModelMap(final long stockBrandId,
+        final PeriodTypeTypes periodTypeTypes, final LocalDate baseDate) throws TsstsDomainException {
+        final Map<PeriodTypeTypes, SptsptModel> result = this.sptsptLogic.findSptsptModelMap(stockBrandId,
+            periodTypeTypes, baseDate);
         return result;
     }
 

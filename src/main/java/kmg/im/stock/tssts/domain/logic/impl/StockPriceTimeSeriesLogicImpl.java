@@ -6,11 +6,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
+import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
-import kmg.im.stock.tssts.domain.model.SptsptModel;
+import kmg.im.stock.tssts.domain.model.SptsMainDataModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.domain.model.impl.StockBrandModelImpl;
@@ -46,14 +47,13 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
     }
 
     /**
-     * 削除する<br>
-     * <p>
-     * 期間の種類に該当するデータを削除する。
-     * </p>
+     * 株価銘柄コードと期間の種類の種類に該当するデータを削除する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param sbCd
+     *                        株価銘柄コード
      * @param periodTypeTypes
      *                        期間の種類の種類
      * @return 削除数
@@ -61,12 +61,13 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public long delete(final PeriodTypeTypes periodTypeTypes) throws TsstsDomainException {
+    public long deleteBySbCdAndPeriodTypeTypes(final long sbCd, final PeriodTypeTypes periodTypeTypes)
+        throws TsstsDomainException {
         long result = 0;
         try {
-            result = this.stockPriceTimeSeriesDao.delete(periodTypeTypes);
+            result = this.stockPriceTimeSeriesDao.deleteBySbCdAndPeriodTypeTypes(sbCd, periodTypeTypes);
         } catch (final KmgDomainException e) {
-            // TODO KenichiroArai 2021/06/09 例外処理
+            // TODO KenichiroArai 2021/06/11 例外処理
             final String errMsg = "";
             final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
             final Object[] logMsgArg = {};
@@ -76,35 +77,34 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
     }
 
     /**
-     * 登録する<br>
+     * 期間の種類で株価時系列メインデータモデルのリストを登録する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockBrandModel
-     *                        株銘柄モデル
+     * @param periodTypeTypes
+     *                              期間の種類の種類
+     * @param sptsMainDataModelList
+     *                              株価時系列メインデータモデルのリスト
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public void register(final StockBrandModel stockBrandModel) throws TsstsDomainException {
+    public void register(final PeriodTypeTypes periodTypeTypes, final List<SptsMainDataModel> sptsMainDataModelList)
+        throws TsstsDomainException {
 
-        if (stockBrandModel.isSptspMapEmpty()) {
+        if (ListUtils.isEmpty(sptsMainDataModelList)) {
             return;
         }
 
-        final List<SptsptModel> sptsptModelList = stockBrandModel.toSptsptModelList();
-        for (final SptsptModel sptsptModel : sptsptModelList) {
+        for (final SptsMainDataModel sptsMainDataModel : sptsMainDataModelList) {
 
             // TODO KenichiroArai 2021/05/20 BeanUtils.copyPropertiesをユーティリティ化する
             final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
-            BeanUtils.copyProperties(sptsptModel, stockPriceTimeSeriesDto);
-
-            // 株価時系列期間の種類IDを設定する
-            stockPriceTimeSeriesDto.setSptsptId(sptsptModel.getPeriodTypeTypes().getValue());
+            BeanUtils.copyProperties(sptsMainDataModel, stockPriceTimeSeriesDto);
 
             try {
-                this.stockPriceTimeSeriesDao.insert(stockPriceTimeSeriesDto);
+                this.stockPriceTimeSeriesDao.insertByPttAndSptsDto(periodTypeTypes, stockPriceTimeSeriesDto);
             } catch (final KmgDomainException e) {
                 // TODO KenichiroArai 2021/06/12 例外処理
                 final String errMsg = "";

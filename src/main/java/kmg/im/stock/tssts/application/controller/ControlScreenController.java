@@ -22,9 +22,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.domain.service.RegisterService;
 import kmg.im.stock.tssts.domain.service.SigChkService;
 import kmg.im.stock.tssts.domain.service.SimulationService;
+import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.resolver.MessageResolver;
@@ -115,8 +115,8 @@ public class ControlScreenController {
     /** ログメッセージリゾルバ */
     private final LogMessageResolver logMessageResolver;
 
-    /** 登録サービス */
-    private final RegisterService registerService;
+    /** 三段階スクリーン・トレーディング・システム株価データ登録サービス */
+    private final TsstsSpDataRegisterService tsstsSpDataRegisterService;
 
     /** シミュレーションサービス */
     private final SimulationService simulationService;
@@ -131,25 +131,25 @@ public class ControlScreenController {
      * @sine 1.0.0
      * @version 1.0.0
      * @param nameResolver
-     *                           名称リゾルバ
+     *                                   名称リゾルバ
      * @param messageResolver
-     *                           メッセージリゾルバ
+     *                                   メッセージリゾルバ
      * @param logMessageResolver
-     *                           ログメッセージリゾルバ
-     * @param registerService
-     *                           登録サービス
+     *                                   ログメッセージリゾルバ
+     * @param tsstsSpDataRegisterService
+     *                                   三段階スクリーン・トレーディング・システム株価データ登録サービス
      * @param simulationService
-     *                           シミュレーションサービス
+     *                                   シミュレーションサービス
      * @param sigChkService
-     *                           シグナル確認サービス
+     *                                   シグナル確認サービス
      */
     public ControlScreenController(final NameResolver nameResolver, final MessageResolver messageResolver,
-        final LogMessageResolver logMessageResolver, final RegisterService registerService,
+        final LogMessageResolver logMessageResolver, final TsstsSpDataRegisterService tsstsSpDataRegisterService,
         final SimulationService simulationService, final SigChkService sigChkService) {
         this.nameResolver = nameResolver;
         this.messageResolver = messageResolver;
         this.logMessageResolver = logMessageResolver;
-        this.registerService = registerService;
+        this.tsstsSpDataRegisterService = tsstsSpDataRegisterService;
         this.simulationService = simulationService;
         this.sigChkService = sigChkService;
     }
@@ -241,7 +241,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.registerService.registerStockPriceDataOfDirectory(importPath);
+            this.tsstsSpDataRegisterService.registerSpDataOfDirectory(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
@@ -325,7 +325,7 @@ public class ControlScreenController {
             }
 
             /* 株価データを登録する */
-            this.registerService.registerStockPriceDataOfFile(importPath);
+            this.tsstsSpDataRegisterService.registerSpDataOfFile(importPath);
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
