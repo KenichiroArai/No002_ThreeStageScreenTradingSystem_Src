@@ -1,6 +1,9 @@
 package kmg.im.stock.tssts.domain.service;
 
+import java.util.List;
+
 import kmg.im.stock.tssts.domain.model.SpDataRegMgtModel;
+import kmg.im.stock.tssts.domain.model.SptsMainDataModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
@@ -46,6 +49,18 @@ public interface TsstsSptsRegService {
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     void register() throws TsstsDomainException;
+
+    /**
+     * 株価時系列メインデータモデルのリストにして返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列メインデータモデルのリスト
+     * @throws TsstsDomainException
+     *                              三段階スクリーン・トレーディング・システムドメイン例外
+     */
+    List<SptsMainDataModel> toSptsMainDataModelList() throws TsstsDomainException;
 
     /**
      * 株価時系列管理モデルを検索する<br>

@@ -1,6 +1,7 @@
 package kmg.im.stock.tssts.domain.service;
 
 import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列サービスインタフェース<br>
@@ -18,11 +19,11 @@ public interface StockPriceTimeSeriesService {
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandCode
-     *                       株銘柄コード
-     * @param periodTypeId
-     *                       期間の種類ID
+     *                        株銘柄コード
+     * @param periodTypeTypes
+     *                        期間の種類の種類
      * @return シンプル株価時系列管理モデル
      */
-    SimpleSptsMgtModel findSimpleBySbcAndPti(long stockBrandCode, long periodTypeId);
+    SimpleSptsMgtModel findSimpleBySbcAndPti(long stockBrandCode, PeriodTypeTypes periodTypeTypes);
 
 }

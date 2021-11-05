@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
+import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列ＤＡＯテスト<br>
@@ -57,7 +58,7 @@ public class StockPriceTimeSeriesDaoTests {
         /* テスト対象を呼び出す */
         final long actual = 0;
         try {
-            this.testTarget.insert(stockPriceTimeSeriesDto);
+            this.testTarget.insertByPttAndSptsDto(PeriodTypeTypes.DAILY, stockPriceTimeSeriesDto);
         } catch (final KmgDomainException e) {
             e.printStackTrace();
             /* 期待値と比較 */

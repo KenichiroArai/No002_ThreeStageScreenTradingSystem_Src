@@ -9,14 +9,19 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
 import kmg.im.stock.tssts.domain.logic.TsstsSpRawDataLoadLogic;
+import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
 import kmg.im.stock.tssts.domain.model.SpDataRegMgtModel;
 import kmg.im.stock.tssts.domain.model.SpDataRegModel;
 import kmg.im.stock.tssts.domain.model.SpRawDataAcqMgtModel;
 import kmg.im.stock.tssts.domain.model.SpRawDataAcqModel;
+import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
 import kmg.im.stock.tssts.domain.model.impl.SpDataRegMgtModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.SpDataRegModelImpl;
+import kmg.im.stock.tssts.domain.model.impl.TsstsSpcvInitMgtModelImpl;
+import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesService;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsDailyRegService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsMonthlyRegService;
@@ -25,6 +30,7 @@ import kmg.im.stock.tssts.domain.service.TsstsStockPriceCalcValueService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価データ登録サービスインタフェース<br>
@@ -33,6 +39,7 @@ import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
  * @sine 1.0.0
  * @version 1.0.0
  */
+@Service
 public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterService {
 
     /** アプリケーションコンテキスト */
@@ -44,6 +51,9 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
     /** 三段階スクリーン・トレーディング・システム株価生データ読み込みロジック */
     private final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic;
 
+    /** 株価時系列サービス */
+    private final StockPriceTimeSeriesService stockPriceTimeSeriesService;
+
     /**
      * コンストラクタ<br>
      *
@@ -51,18 +61,21 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
      * @sine 1.0.0
      * @version 1.0.0
      * @param context
-     *                                アプリケーションコンテキスト
+     *                                    アプリケーションコンテキスト
      * @param logMessageResolver
-     *                                ログメッセージリソルバ
+     *                                    ログメッセージリソルバ
      * @param tsstsSpRawDataLoadLogic
-     *                                三段階スクリーン・トレーディング・システム株価生データ読み込みロジック
+     *                                    三段階スクリーン・トレーディング・システム株価生データ読み込みロジック
+     * @param stockPriceTimeSeriesService
+     *                                    株価時系列サービス
      */
     public TsstsSpDataRegisterServiceImpl(final ApplicationContext context, final LogMessageResolver logMessageResolver,
-        final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic) {
+        final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic,
+        final StockPriceTimeSeriesService stockPriceTimeSeriesService) {
         this.context = context;
         this.logMessageResolver = logMessageResolver;
         this.tsstsSpRawDataLoadLogic = tsstsSpRawDataLoadLogic;
-
+        this.stockPriceTimeSeriesService = stockPriceTimeSeriesService;
     }
 
     /**
@@ -185,12 +198,15 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         // 登録する
         tsstsSptsDailyRegService.register();
         // 登録データを取得する
-
+        final SimpleSptsMgtModel simpleSptsMgtDailyModel = this.stockPriceTimeSeriesService
+            .findSimpleBySbcAndPti(spDataRegMgtModel.getStockBrandCode(), PeriodTypeTypes.DAILY);
         // 株価計算値を登録する
-        final TsstsStockPriceCalcValueService dailyCalcVlueService = this.context
+        final TsstsSpcvInitMgtModel tsstsSpcvInitMgtDailyModel = new TsstsSpcvInitMgtModelImpl();
+        tsstsSpcvInitMgtDailyModel.from(simpleSptsMgtDailyModel);
+        final TsstsStockPriceCalcValueService calcVlueDailyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
-        dailyCalcVlueService.initialize(dailySptsMainDataMgtModel);
-        dailyCalcVlueService.register();
+        calcVlueDailyService.initialize(tsstsSpcvInitMgtDailyModel);
+        calcVlueDailyService.register();
 
         /* 株価時系列週足 */
         final TsstsSptsWeeklyRegService tsstsSptsWeeklyRegService = this.context
@@ -202,11 +218,15 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         // 登録する
         tsstsSptsWeeklyRegService.register();
         // 登録データを取得する
+        final SimpleSptsMgtModel simpleSptsMgtWeeklyModel = this.stockPriceTimeSeriesService
+            .findSimpleBySbcAndPti(spDataRegMgtModel.getStockBrandCode(), PeriodTypeTypes.DAILY);
         // 株価計算値を登録する
-        final TsstsStockPriceCalcValueService weeklyCalcVlueService = this.context
+        final TsstsSpcvInitMgtModel tsstsSpcvInitMgtWeeklyModel = new TsstsSpcvInitMgtModelImpl();
+        tsstsSpcvInitMgtWeeklyModel.from(simpleSptsMgtWeeklyModel);
+        final TsstsStockPriceCalcValueService calcVlueWeeklyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
-        weeklyCalcVlueService.initialize(weeklySptsMainDataMgtModel);
-        weeklyCalcVlueService.register();
+        calcVlueWeeklyService.initialize(tsstsSpcvInitMgtWeeklyModel);
+        calcVlueWeeklyService.register();
 
         /* 株価時系列月足 */
         final TsstsSptsMonthlyRegService tsstsSptsMonthlyRegService = this.context
@@ -218,11 +238,15 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         // 登録する
         tsstsSptsMonthlyRegService.register();
         // 登録データを取得する
+        final SimpleSptsMgtModel simpleSptsMgtMonthlyModel = this.stockPriceTimeSeriesService
+            .findSimpleBySbcAndPti(spDataRegMgtModel.getStockBrandCode(), PeriodTypeTypes.DAILY);
         // 株価計算値を登録する
-        final TsstsStockPriceCalcValueService monthlyCalcVlueService = this.context
+        final TsstsSpcvInitMgtModel tsstsSpcvInitMgtMonthlyModel = new TsstsSpcvInitMgtModelImpl();
+        tsstsSpcvInitMgtMonthlyModel.from(simpleSptsMgtMonthlyModel);
+        final TsstsStockPriceCalcValueService calcVlueMonthlyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
-        monthlyCalcVlueService.initialize(monthlySptsMainDataMgtModel);
-        monthlyCalcVlueService.register();
+        calcVlueMonthlyService.initialize(tsstsSpcvInitMgtMonthlyModel);
+        calcVlueMonthlyService.register();
 
     }
 

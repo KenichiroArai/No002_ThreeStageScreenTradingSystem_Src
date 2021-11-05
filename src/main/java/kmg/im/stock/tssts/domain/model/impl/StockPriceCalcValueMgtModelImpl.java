@@ -7,10 +7,10 @@ import java.util.function.Supplier;
 
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
-import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.model.StockPriceCalcValueModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
+import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
+import kmg.im.stock.tssts.domain.model.TsstsSpcvInitModel;
 
 /**
  * 株価計算値管理モデル<br>
@@ -41,24 +41,22 @@ public class StockPriceCalcValueMgtModelImpl implements StockPriceCalcValueMgtMo
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockBrandModel
-     *                        株価時系列管理モデル
+     * @param tsstsSpcvInitMgtModel
+     *                              三段階スクリーン・トレーディング・システム株価計算値初期化管理モデル
      * @param spcvt
-     *                        株価計算値の種類
+     *                              株価計算値の種類
      * @param supplierList
-     *                        サプライヤリスト
+     *                              サプライヤリスト
      */
-    public StockPriceCalcValueMgtModelImpl(final StockBrandModel stockBrandModel,
+    public StockPriceCalcValueMgtModelImpl(final TsstsSpcvInitMgtModel tsstsSpcvInitMgtModel,
         final StockPriceCalcValueTypeTypes spcvt, final List<Supplier<BigDecimal>> supplierList) {
         this();
 
-        for (int i = 0; i < stockBrandModel.toSptsptModelList().size(); i++) {
-            // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
-//            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = stockBrandModel.toSptsptModelList().get(i);
-            final StockPriceTimeSeriesModel stockPriceTimeSeriesModel = new StockPriceTimeSeriesModelImpl();
+        for (int i = 0; i < tsstsSpcvInitMgtModel.getDataList().size(); i++) {
+            final TsstsSpcvInitModel tsstsSpcvInitModel = tsstsSpcvInitMgtModel.getDataList().get(i);
             final Supplier<BigDecimal> supplier = supplierList.get(i);
             final StockPriceCalcValueModel data = new StockPriceCalcValueModelImpl();
-            data.setSptsId(stockPriceTimeSeriesModel.getId());
+            data.setSptsId(tsstsSpcvInitModel.getId());
             data.setSpcvtId(spcvt);
             data.setCalcValue(supplier.get());
 

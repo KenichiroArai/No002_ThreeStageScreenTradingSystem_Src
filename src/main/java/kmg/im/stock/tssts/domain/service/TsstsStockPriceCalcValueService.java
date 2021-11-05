@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.domain.service;
 
-import kmg.im.stock.tssts.domain.model.SptsMainDataMgtModel;
+import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
@@ -18,10 +18,10 @@ public interface TsstsStockPriceCalcValueService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sptsMainDataMgtModel
-     *                             株価時系列メインデータ管理モデル
+     * @param tsstsSpcvInitMgtModel
+     *                              株価時系列メインデータ管理モデル
      */
-    void initialize(SptsMainDataMgtModel sptsMainDataMgtModel);
+    void initialize(final TsstsSpcvInitMgtModel tsstsSpcvInitMgtModel);
 
     /**
      * 登録する<br>

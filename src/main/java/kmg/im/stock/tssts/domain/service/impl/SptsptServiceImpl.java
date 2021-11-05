@@ -97,6 +97,7 @@ public class SptsptServiceImpl implements SptsptService {
         return result;
     }
 
+    // TODO KenichiroArai 2021/10/26 不要なら削除する
     /**
      * 期間の種類ごとの株価時系列期間の種類のマップを返す<br>
      *

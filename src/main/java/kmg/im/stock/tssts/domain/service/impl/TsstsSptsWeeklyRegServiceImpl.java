@@ -15,6 +15,7 @@ import kmg.im.stock.tssts.domain.model.SpDataRegModel;
 import kmg.im.stock.tssts.domain.model.SptsMainDataModel;
 import kmg.im.stock.tssts.domain.model.StockBrandModel;
 import kmg.im.stock.tssts.domain.model.impl.SptsMainDataModelImpl;
+import kmg.im.stock.tssts.domain.service.AbstractTsstsSptsRegService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsWeeklyRegService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
@@ -27,7 +28,7 @@ import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
  * @version 1.0.0
  */
 @Service
-public class TsstsSptsWeeklyRegServiceImpl extends TsstsSptsRegServiceImpl implements TsstsSptsWeeklyRegService {
+public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService implements TsstsSptsWeeklyRegService {
 
     /** 期間の種類の種類 */
     private static final PeriodTypeTypes PERIOD_TYPE_TYPES = PeriodTypeTypes.WEEKLY;
@@ -42,7 +43,7 @@ public class TsstsSptsWeeklyRegServiceImpl extends TsstsSptsRegServiceImpl imple
     private final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic;
 
     /** 株価計算値ロジック */
-    private StockPriceCalcValueLogic stockPriceCalcValueLogic;
+    private final StockPriceCalcValueLogic stockPriceCalcValueLogic;
 
     /**
      * コンストラクタ<br>
@@ -60,9 +61,9 @@ public class TsstsSptsWeeklyRegServiceImpl extends TsstsSptsRegServiceImpl imple
     public TsstsSptsWeeklyRegServiceImpl(final SptsptLogic sptsptLogic,
         final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
         final StockPriceCalcValueLogic stockPriceCalcValueLogic) {
-        super(stockPriceTimeSeriesLogic);
         this.sptsptLogic = sptsptLogic;
         this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
+        this.stockPriceCalcValueLogic = stockPriceCalcValueLogic;
     }
 
     /**
