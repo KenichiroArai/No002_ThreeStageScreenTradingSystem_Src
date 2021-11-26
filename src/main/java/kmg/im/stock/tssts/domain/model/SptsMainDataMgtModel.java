@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 
 /**
- * 株価時系列メインデータ管理モデルインタフェース<br>
+ * 株価時系列登録データ管理モデルインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
@@ -16,7 +16,7 @@ import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 public interface SptsMainDataMgtModel {
 
     /**
-     * 株価時系列メインデータモデルのリストをクリアする<br>
+     * 株価時系列登録データモデルのリストをクリアする<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -25,7 +25,7 @@ public interface SptsMainDataMgtModel {
     void clearDataList();
 
     /**
-     * 株価時系列メインデータモデルのリストが空か<br>
+     * 株価時系列登録データモデルのリストが空か<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -35,7 +35,7 @@ public interface SptsMainDataMgtModel {
     boolean isDataListEmpty();
 
     /**
-     * 株価時系列メインデータモデルのリストが空ではないか<br>
+     * 株価時系列登録データモデルのリストが空ではないか<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -45,36 +45,36 @@ public interface SptsMainDataMgtModel {
     boolean isDataListNotEmpty();
 
     /**
-     * 株価時系列メインデータモデルを追加する<br>
+     * 株価時系列登録データモデルを追加する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param data
-     *             株価時系列メインデータモデル
+     *             株価時系列登録データモデル
      */
-    void addData(SptsMainDataModel data);
+    void addData(SptsRegDataModel data);
 
     /**
-     * 株価時系列メインデータモデルのリストを全て追加する<br>
+     * 株価時系列登録データモデルのリストを全て追加する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param addData
-     *                追加株価時系列メインデータモデルのリスト
+     *                追加株価時系列登録データモデルのリスト
      */
-    void addAllData(List<SptsMainDataModel> addData);
+    void addAllData(List<SptsRegDataModel> addData);
 
     /**
-     * 株価時系列メインデータモデルのリストを返す<br>
+     * 株価時系列登録データモデルのリストを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列メインデータモデルのリスト
+     * @return 株価時系列登録データモデルのリスト
      */
-    List<SptsMainDataModel> getDataList();
+    List<SptsRegDataModel> getDataList();
 
     /**
      * サプライヤデータリストとして返す<br>

@@ -1,15 +1,15 @@
 package kmg.im.stock.tssts.data.dto.impl;
 
-import kmg.im.stock.tssts.data.dto.SptsDeleteCondDto;
+import kmg.im.stock.tssts.data.dto.SpcvDeleteCondDto;
 
 /**
- * 株価時系列削除条件ＤＴＯ<br>
+ * 株価計算値削除条件ＤＴＯ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class SptsDeleteCondDtoImpl implements SptsDeleteCondDto {
+public class SpcvDeleteCondDtoImpl implements SpcvDeleteCondDto {
 
     /** 株価銘柄ＩＤ */
     private long stockBrandId;

@@ -3,19 +3,22 @@ package kmg.im.stock.tssts.domain.model.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import kmg.im.stock.tssts.domain.model.SptsMainDataModel;
+import kmg.im.stock.tssts.domain.model.SptsRegDataModel;
 
 /**
- * 株価時系列メインデータモデル<br>
+ * 株価時系列登録データモデル<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class SptsMainDataModelImpl implements SptsMainDataModel {
+public class SptsRegDataModelImpl implements SptsRegDataModel {
+
+    /** 株価時系列期間の種類ID */
+    private long sptsptId;
 
     /** 番号 */
-    private Long no;
+    private long no;
 
     /** 期間開始日 */
     private LocalDate periodStartDate;
@@ -36,7 +39,35 @@ public class SptsMainDataModelImpl implements SptsMainDataModel {
     private BigDecimal cp;
 
     /** 出来高 */
-    private Long volume;
+    private long volume;
+
+    /**
+     * 株価時系列期間の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
+     */
+    @Override
+    public void setSptsptId(final long sptsptId) {
+        this.sptsptId = sptsptId;
+    }
+
+    /**
+     * 株価時系列期間の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列期間の種類ID
+     */
+    @Override
+    public long getSptsptId() {
+        final long result = this.sptsptId;
+        return result;
+    }
 
     /**
      * 番号を設定する<br>
@@ -48,7 +79,7 @@ public class SptsMainDataModelImpl implements SptsMainDataModel {
      *           番号
      */
     @Override
-    public void setNo(final Long no) {
+    public void setNo(final long no) {
         this.no = no;
     }
 
@@ -61,8 +92,8 @@ public class SptsMainDataModelImpl implements SptsMainDataModel {
      * @return 番号
      */
     @Override
-    public Long getNo() {
-        final Long result = this.no;
+    public long getNo() {
+        final long result = this.no;
         return result;
     }
 
@@ -244,7 +275,7 @@ public class SptsMainDataModelImpl implements SptsMainDataModel {
      *               出来高
      */
     @Override
-    public void setVolume(final Long volume) {
+    public void setVolume(final long volume) {
         this.volume = volume;
     }
 
@@ -257,8 +288,8 @@ public class SptsMainDataModelImpl implements SptsMainDataModel {
      * @return 出来高
      */
     @Override
-    public Long getVolume() {
-        final Long result = this.volume;
+    public long getVolume() {
+        final long result = this.volume;
         return result;
     }
 

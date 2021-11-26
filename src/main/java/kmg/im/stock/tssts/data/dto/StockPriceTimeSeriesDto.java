@@ -23,7 +23,7 @@ public interface StockPriceTimeSeriesDto {
      * @param id
      *           識別番号
      */
-    void setId(Long id);
+    void setId(long id);
 
     /**
      * 識別番号を返す<br>
@@ -33,7 +33,7 @@ public interface StockPriceTimeSeriesDto {
      * @version 1.0.0
      * @return 識別番号
      */
-    Long getId();
+    long getId();
 
     /**
      * 開始日を設定する<br>
@@ -254,7 +254,7 @@ public interface StockPriceTimeSeriesDto {
      * @param no
      *           番号
      */
-    void setNo(Long no);
+    void setNo(long no);
 
     /**
      * 番号を返す<br>
@@ -264,7 +264,7 @@ public interface StockPriceTimeSeriesDto {
      * @version 1.0.0
      * @return 番号
      */
-    Long getNo();
+    long getNo();
 
     /**
      * 期間開始日を設定する<br>
@@ -401,7 +401,7 @@ public interface StockPriceTimeSeriesDto {
      * @param volume
      *               出来高
      */
-    void setVolume(Long volume);
+    void setVolume(long volume);
 
     /**
      * 出来高を返す<br>
@@ -411,6 +411,6 @@ public interface StockPriceTimeSeriesDto {
      * @version 1.0.0
      * @return 出来高
      */
-    Long getVolume();
+    long getVolume();
 
 }

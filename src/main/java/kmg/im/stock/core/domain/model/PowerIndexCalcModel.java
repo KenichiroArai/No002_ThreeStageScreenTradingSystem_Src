@@ -29,5 +29,5 @@ public interface PowerIndexCalcModel {
      * @version 1.0.0
      * @return 出来高
      */
-    Long getVolume();
+    long getVolume();
 }

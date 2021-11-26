@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
+
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.tssts.domain.model.SimpleSptsModel;
 import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
 import kmg.im.stock.tssts.domain.model.TsstsSpcvInitModel;
 
@@ -46,7 +49,11 @@ public class TsstsSpcvInitMgtModelImpl implements TsstsSpcvInitMgtModel {
      */
     @Override
     public void from(final SimpleSptsMgtModel simpleSptsMgtDailyModel) {
-        // TODO KenichiroArai 2021/10/26 未実装
+        for (final SimpleSptsModel simpleSptsModel : simpleSptsMgtDailyModel.getDataList()) {
+            final TsstsSpcvInitModel tsstsSpcvInitModel = new TsstsSpcvInitModelImpl();
+            BeanUtils.copyProperties(simpleSptsModel, tsstsSpcvInitModel);
+            this.dataList.add(tsstsSpcvInitModel);
+        }
     }
 
     /**

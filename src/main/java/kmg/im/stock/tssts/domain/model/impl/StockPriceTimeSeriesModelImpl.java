@@ -24,7 +24,7 @@ import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
 public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel {
 
     /** 識別番号 */
-    private Long id;
+    private long id;
 
     /** 開始日 */
     private LocalDate startDate;
@@ -54,7 +54,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
     private String name;
 
     /** 番号 */
-    private Long no;
+    private long no;
 
     /** 期間開始日 */
     private LocalDate periodStartDate;
@@ -75,7 +75,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
     private BigDecimal cp;
 
     /** 出来高 */
-    private Long volume;
+    private long volume;
 
     /** 株価計算値モデルのマップ */
     private final SortedMap<StockPriceCalcValueTypeTypes, StockPriceCalcValueModel> spcvModelMap;
@@ -101,7 +101,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      *           識別番号
      */
     @Override
-    public void setId(final Long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -114,8 +114,8 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      * @return 識別番号
      */
     @Override
-    public Long getId() {
-        final Long result = this.id;
+    public long getId() {
+        final long result = this.id;
         return result;
     }
 
@@ -381,7 +381,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      *           番号
      */
     @Override
-    public void setNo(final Long no) {
+    public void setNo(final long no) {
         this.no = no;
     }
 
@@ -394,8 +394,8 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      * @return 番号
      */
     @Override
-    public Long getNo() {
-        final Long result = this.no;
+    public long getNo() {
+        final long result = this.no;
         return result;
     }
 
@@ -577,7 +577,7 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      *               出来高
      */
     @Override
-    public void setVolume(final Long volume) {
+    public void setVolume(final long volume) {
         this.volume = volume;
     }
 
@@ -590,8 +590,8 @@ public class StockPriceTimeSeriesModelImpl implements StockPriceTimeSeriesModel 
      * @return 出来高
      */
     @Override
-    public Long getVolume() {
-        final Long result = this.volume;
+    public long getVolume() {
+        final long result = this.volume;
         return result;
     }
 

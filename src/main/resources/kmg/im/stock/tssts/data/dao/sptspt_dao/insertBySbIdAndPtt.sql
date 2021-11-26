@@ -20,14 +20,14 @@ SELECT
 ,   /*:updater*/'user'
 ,   /*:updateDate*/'2021/06/05'
 ,   /*:note*/''
-, (
-    SELECT
-        name
-    FROM
-        stock_brand
-    WHERE
-        stock_brand.id = /*:stockBrandId*/897
-  )
+,   (
+	    SELECT
+	        name
+	    FROM
+	        stock_brand
+	    WHERE
+	        stock_brand.id = /*:stockBrandId*/897
+    )
     || (
         SELECT
             name

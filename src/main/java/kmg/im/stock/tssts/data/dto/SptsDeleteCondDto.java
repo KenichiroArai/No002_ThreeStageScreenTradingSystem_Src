@@ -1,7 +1,7 @@
 package kmg.im.stock.tssts.data.dto;
 
 /**
- * 株価計算値削除条件ＤＴＯインタフェース<br>
+ * 株価時系列削除条件ＤＴＯインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
@@ -10,25 +10,25 @@ package kmg.im.stock.tssts.data.dto;
 public interface SptsDeleteCondDto {
 
     /**
-     * 株価銘柄コードを設定する<br>
+     * 株価銘柄ＩＤを設定する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param stockBrandCode
-     *                       株価銘柄コード
+     * @param stockBrandId
+     *                     株価銘柄ＩＤ
      */
-    void setStockBrandCode(long stockBrandCode);
+    void setStockBrandId(long stockBrandId);
 
     /**
-     * 株価銘柄コードを返す<br>
+     * 株価銘柄ＩＤを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価銘柄コード
+     * @return 株価銘柄ＩＤ
      */
-    long getStockBrandCode();
+    long getStockBrandId();
 
     /**
      * 期間の種類ＩＤを設定する<br>

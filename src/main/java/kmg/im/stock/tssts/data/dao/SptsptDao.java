@@ -13,10 +13,12 @@ import kmg.core.domain.model.SqlPathModel;
 import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.data.dto.SptsDeleteCondDto;
+import kmg.im.stock.tssts.data.dto.SptsptDeleteCondDto;
 import kmg.im.stock.tssts.data.dto.SptsptDto;
-import kmg.im.stock.tssts.data.dto.impl.SptsDeleteCondDtoImpl;
+import kmg.im.stock.tssts.data.dto.SptsptRegDto;
+import kmg.im.stock.tssts.data.dto.impl.SptsptDeleteCondDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.SptsptDtoImpl;
+import kmg.im.stock.tssts.data.dto.impl.SptsptRegDtoImpl;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
@@ -31,11 +33,11 @@ import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 public class SptsptDao {
 
     /** 私自身のクラス */
-    private static final Class<?> MYSELF_CLASS = StockPriceCalcValueDao.class;
+    private static final Class<?> MYSELF_CLASS = SptsptDao.class;
 
-    /** 株価銘柄コードと期間の種類の種類に該当するデータを削除するＳＱＬパス */
-    private static final SqlPathModel DELETE_BY_SB_CD_AND_PERIOD_TYPE_TYPES_SQL_PATH = new SqlPathModelImpl(
-        SptsptDao.MYSELF_CLASS, Paths.get("deleteBySbCdAndPeriodTypeTypes.sql"));
+    /** 株価銘柄ＩＤと期間の種類の種類に該当するデータを削除するＳＱＬパス */
+    private static final SqlPathModel DELETE_BY_SB_ID_AND_PERIOD_TYPE_TYPES_SQL_PATH = new SqlPathModelImpl(
+        SptsptDao.MYSELF_CLASS, Paths.get("deleteBySbIdAndPeriodTypeTypes.sql"));
 
     /** 識別番号を取得するＳＱＬパス */
     private static final SqlPathModel GET_ID_SQL_PATH = new SqlPathModelImpl(SptsptDao.MYSELF_CLASS,
@@ -43,7 +45,7 @@ public class SptsptDao {
 
     /** 株銘柄ＩＤと期間の種類の種類を基に挿入するＳＱＬパス */
     private static final SqlPathModel INSERT_BY_SB_ID_AND_PTT_SQL_PATH = new SqlPathModelImpl(SptsptDao.MYSELF_CLASS,
-        Paths.get("insert.sql"));
+        Paths.get("insertBySbIdAndPtt.sql"));
 
     /** データベース接続 */
     private final NamedParameterJdbcTemplate jdbc;
@@ -62,32 +64,32 @@ public class SptsptDao {
     }
 
     /**
-     * 株価銘柄コードと期間の種類の種類に該当するデータを削除する<br>
+     * 株価銘柄ＩＤと期間の種類の種類に該当するデータを削除する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sbCd
-     *                        株価銘柄コード
+     * @param sbId
+     *                        株価銘柄ＩＤ
      * @param periodTypeTypes
      *                        期間の種類の種類
      * @return 削除数
      * @throws KmgDomainException
      *                            ＫＭＧドメイン例外
      */
-    public long deleteBySbCdAndPeriodTypeTypes(final long sbCd, final PeriodTypeTypes periodTypeTypes)
+    public long deleteBySbIdAndPeriodTypeTypes(final long sbId, final PeriodTypeTypes periodTypeTypes)
         throws KmgDomainException {
 
         long result = 0L;
 
         /* パラメータを設定する */
-        final SptsDeleteCondDto sptsDeleteCondDto = new SptsDeleteCondDtoImpl();
-        sptsDeleteCondDto.setStockBrandCode(sbCd);
-        sptsDeleteCondDto.setPeriodTypeId(periodTypeTypes.get());
-        final SqlParameterSource param = new BeanPropertySqlParameterSource(sptsDeleteCondDto);
+        final SptsptDeleteCondDto sptsptDeleteCondDto = new SptsptDeleteCondDtoImpl();
+        sptsptDeleteCondDto.setStockBrandId(sbId);
+        sptsptDeleteCondDto.setPeriodTypeId(periodTypeTypes.get());
+        final SqlParameterSource param = new BeanPropertySqlParameterSource(sptsptDeleteCondDto);
 
         /* 削除する */
-        result = this.jdbc.update(SptsptDao.DELETE_BY_SB_CD_AND_PERIOD_TYPE_TYPES_SQL_PATH.toSql(), param);
+        result = this.jdbc.update(SptsptDao.DELETE_BY_SB_ID_AND_PERIOD_TYPE_TYPES_SQL_PATH.toSql(), param);
 
         return result;
     }
@@ -146,20 +148,20 @@ public class SptsptDao {
         long result = 0L;
 
         /* パラメータを設定する */
-        final SptsptDto sptsptDto = new SptsptDtoImpl();
-        sptsptDto.setStartDate(LocalDate.MIN);
-        sptsptDto.setEndDate(LocalDate.MAX);
-        sptsptDto.setLocaleId("ja"); // TODO KenichiroArai 2021/06/05 列挙型
-        sptsptDto.setCreator("TSSTS_MAIN_USER"); // TODO KenichiroArai 2021/06/05 後で考える
-        sptsptDto.setCreatedDate(LocalDateTime.now());
-        sptsptDto.setUpdater("TSSTS_MAIN_USER"); // TODO KenichiroArai 2021/06/05 後で考える
-        sptsptDto.setUpdateDate(LocalDateTime.now());
-        sptsptDto.setNote(KmgString.EMPTY);
-        sptsptDto.setStockBrandId(sbId);
-        sptsptDto.setPeriodTypeId(ptt.get());
+        final SptsptRegDto sptsptRegDto = new SptsptRegDtoImpl();
+        sptsptRegDto.setStartDate(LocalDate.MIN);
+        sptsptRegDto.setEndDate(LocalDate.MAX);
+        sptsptRegDto.setLocaleId("ja"); // TODO KenichiroArai 2021/06/05 列挙型
+        sptsptRegDto.setCreator("TSSTS_MAIN_USER"); // TODO KenichiroArai 2021/06/05 後で考える
+        sptsptRegDto.setCreatedDate(LocalDateTime.now());
+        sptsptRegDto.setUpdater("TSSTS_MAIN_USER"); // TODO KenichiroArai 2021/06/05 後で考える
+        sptsptRegDto.setUpdateDate(LocalDateTime.now());
+        sptsptRegDto.setNote(KmgString.EMPTY);
+        sptsptRegDto.setStockBrandId(sbId);
+        sptsptRegDto.setPeriodTypeId(ptt.get());
 
         /* DBを実行する */
-        final SqlParameterSource params = new BeanPropertySqlParameterSource(sptsptDto);
+        final SqlParameterSource params = new BeanPropertySqlParameterSource(sptsptRegDto);
         result = this.jdbc.update(SptsptDao.INSERT_BY_SB_ID_AND_PTT_SQL_PATH.toSql(), params);
 
         return result;

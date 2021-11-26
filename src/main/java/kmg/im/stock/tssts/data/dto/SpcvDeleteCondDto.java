@@ -1,21 +1,13 @@
-package kmg.im.stock.tssts.data.dto.impl;
-
-import kmg.im.stock.tssts.data.dto.SptsDeleteCondDto;
+package kmg.im.stock.tssts.data.dto;
 
 /**
- * 株価時系列削除条件ＤＴＯ<br>
+ * 株価計算値削除条件ＤＴＯインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public class SptsDeleteCondDtoImpl implements SptsDeleteCondDto {
-
-    /** 株価銘柄ＩＤ */
-    private long stockBrandId;
-
-    /** 期間の種類ＩＤ */
-    private long periodTypeId;
+public interface SpcvDeleteCondDto {
 
     /**
      * 株価銘柄ＩＤを設定する<br>
@@ -26,10 +18,7 @@ public class SptsDeleteCondDtoImpl implements SptsDeleteCondDto {
      * @param stockBrandId
      *                     株価銘柄ＩＤ
      */
-    @Override
-    public void setStockBrandId(final long stockBrandId) {
-        this.stockBrandId = stockBrandId;
-    }
+    void setStockBrandId(long stockBrandId);
 
     /**
      * 株価銘柄ＩＤを返す<br>
@@ -39,11 +28,7 @@ public class SptsDeleteCondDtoImpl implements SptsDeleteCondDto {
      * @version 1.0.0
      * @return 株価銘柄ＩＤ
      */
-    @Override
-    public long getStockBrandId() {
-        final long result = this.stockBrandId;
-        return result;
-    }
+    long getStockBrandId();
 
     /**
      * 期間の種類ＩＤを設定する<br>
@@ -54,10 +39,7 @@ public class SptsDeleteCondDtoImpl implements SptsDeleteCondDto {
      * @param periodTypeId
      *                     期間の種類ＩＤ
      */
-    @Override
-    public void setPeriodTypeId(final long periodTypeId) {
-        this.periodTypeId = periodTypeId;
-    }
+    void setPeriodTypeId(long periodTypeId);
 
     /**
      * 期間の種類ＩＤを返す<br>
@@ -67,10 +49,6 @@ public class SptsDeleteCondDtoImpl implements SptsDeleteCondDto {
      * @version 1.0.0
      * @return 期間の種類ＩＤ
      */
-    @Override
-    public long getPeriodTypeId() {
-        final long result = this.periodTypeId;
-        return result;
-    }
+    long getPeriodTypeId();
 
 }

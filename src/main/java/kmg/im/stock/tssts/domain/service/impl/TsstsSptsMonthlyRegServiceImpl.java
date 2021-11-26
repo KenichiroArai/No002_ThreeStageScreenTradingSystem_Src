@@ -1,6 +1,7 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,8 @@ import kmg.im.stock.tssts.domain.logic.StockPriceCalcValueLogic;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
 import kmg.im.stock.tssts.domain.model.SpDataRegMgtModel;
 import kmg.im.stock.tssts.domain.model.SpDataRegModel;
-import kmg.im.stock.tssts.domain.model.SptsMainDataModel;
-import kmg.im.stock.tssts.domain.model.StockBrandModel;
-import kmg.im.stock.tssts.domain.model.impl.SptsMainDataModelImpl;
+import kmg.im.stock.tssts.domain.model.SptsRegDataModel;
+import kmg.im.stock.tssts.domain.model.impl.SptsRegDataModelImpl;
 import kmg.im.stock.tssts.domain.service.AbstractTsstsSptsRegService;
 import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsMonthlyRegService;
@@ -33,6 +33,12 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
 
     /** 期間の種類の種類 */
     private static final PeriodTypeTypes PERIOD_TYPE_TYPES = PeriodTypeTypes.MONTHLY;
+
+    /** 株銘柄ＩＤ */
+    private long stockBrandId;
+
+    /** 株価時系列期間の種類ID */
+    private Long sptsptId;
 
     /** 株価データ登録管理モデル */
     private SpDataRegMgtModel spDataRegMgtModel;
@@ -79,12 +85,15 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param stockBrandId
+     *                          株銘柄ＩＤ
      * @param spDataRegMgtModel
      *                          株価データ登録管理モデル
      */
     @Override
     @SuppressWarnings("hiding")
-    public void initialize(final SpDataRegMgtModel spDataRegMgtModel) {
+    public void initialize(final long stockBrandId, final SpDataRegMgtModel spDataRegMgtModel) {
+        this.stockBrandId = stockBrandId;
         this.spDataRegMgtModel = spDataRegMgtModel;
     }
 
@@ -103,15 +112,15 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
         final long result = 0L;
 
         /* 株価計算値の削除 */
-        this.stockPriceCalcValueLogic.deleteBySbCdAndPeriodTypeTypes(this.spDataRegMgtModel.getStockBrandCode(),
+        this.stockPriceCalcValueLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
             TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
 
         /* 株価時系列の削除 */
-        this.stockPriceTimeSeriesLogic.deleteBySbCdAndPeriodTypeTypes(this.spDataRegMgtModel.getStockBrandCode(),
+        this.stockPriceTimeSeriesLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
             TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
 
         /* 株価時系列期間の種類の削除 */
-        this.sptsptLogic.deleteBySbCdAndPeriodTypeTypes(this.spDataRegMgtModel.getStockBrandCode(),
+        this.sptsptLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
             TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
 
         return result;
@@ -130,31 +139,34 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
     public void register() throws TsstsDomainException {
 
         /* 株価時系列期間の種類の登録 */
-        this.sptsptLogic.register(this.spDataRegMgtModel.getStockBrandCode(),
-            TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        this.sptsptLogic.register(this.stockBrandId, TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+
+        /* 株価時系列期間の種類ID */
+        this.sptsptId = this.sptsptLogic.getSptsptId(this.stockBrandId,
+            TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES, LocalDate.now());
 
         /* 株価時系列の登録 */
         // 詰め替え
-        final List<SptsMainDataModel> sptsMainDataModelList = this.toSptsMainDataModelList();
+        final List<SptsRegDataModel> sptsMainDataModelList = this.toSptsRegDataModelList();
         // 登録処理呼び出し
         this.stockPriceTimeSeriesLogic.register(TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES,
             sptsMainDataModelList);
     }
 
     /**
-     * 株価時系列メインデータモデルのリストにして返す<br>
+     * 株価時系列登録データモデルのリストにして返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列メインデータモデルのリスト
+     * @return 株価時系列登録データモデルのリスト
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public List<SptsMainDataModel> toSptsMainDataModelList() throws TsstsDomainException {
+    public List<SptsRegDataModel> toSptsRegDataModelList() throws TsstsDomainException {
 
-        final List<SptsMainDataModel> result = new ArrayList<>();
+        final List<SptsRegDataModel> result = new ArrayList<>();
 
         /* 事前チェック */
         // 株価データ登録管理モデルのデータリストが空か
@@ -169,10 +181,11 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
 
         /* 最初のデータを作成する */
         final SpDataRegModel firstSpDataRegModel = this.spDataRegMgtModel.getDataList().get(0);
-        SptsMainDataModel addSptsMainDataModel = new SptsMainDataModelImpl(); // 追加するデータ
-        addSptsMainDataModel.setNo(0L);
-        addSptsMainDataModel.setPeriodStartDate(firstSpDataRegModel.getDate());
-        addSptsMainDataModel.setOp(firstSpDataRegModel.getOp()); // 始値は最初のデータを設定する
+        SptsRegDataModel addSptsRegDataModel = new SptsRegDataModelImpl(); // 追加するデータ
+        addSptsRegDataModel.setSptsptId(this.sptsptId);
+        addSptsRegDataModel.setNo(0L);
+        addSptsRegDataModel.setPeriodStartDate(firstSpDataRegModel.getDate());
+        addSptsRegDataModel.setOp(firstSpDataRegModel.getOp()); // 始値は最初のデータを設定する
         BigDecimal lp = firstSpDataRegModel.getLp();
         BigDecimal hp = firstSpDataRegModel.getHp();
         long volume = firstSpDataRegModel.getVolume();
@@ -183,27 +196,28 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
             final SpDataRegModel spDataRegModel = this.spDataRegMgtModel.getDataList().get(i);
 
             // 月が異なるか
-            if (spDataRegModel.getDate().getMonthValue() != addSptsMainDataModel.getPeriodStartDate().getMonthValue()) {
+            if (spDataRegModel.getDate().getMonthValue() != addSptsRegDataModel.getPeriodStartDate().getMonthValue()) {
                 // 月が開始の月と異なる場合
 
                 // ひとつ前の情報を終値に設定する
                 final SpDataRegModel preSpDataRegModel = this.spDataRegMgtModel.getDataList().get(i - 1);
-                addSptsMainDataModel.setPeriodEndDate(preSpDataRegModel.getDate());
-                addSptsMainDataModel.setCp(preSpDataRegModel.getCp());
-                addSptsMainDataModel.setLp(lp);
-                addSptsMainDataModel.setHp(hp);
-                addSptsMainDataModel.setLp(lp);
-                addSptsMainDataModel.setVolume(volume);
+                addSptsRegDataModel.setPeriodEndDate(preSpDataRegModel.getDate());
+                addSptsRegDataModel.setCp(preSpDataRegModel.getCp());
+                addSptsRegDataModel.setLp(lp);
+                addSptsRegDataModel.setHp(hp);
+                addSptsRegDataModel.setLp(lp);
+                addSptsRegDataModel.setVolume(volume);
 
                 // 株価月足のリストに追加
-                result.add(addSptsMainDataModel);
+                result.add(addSptsRegDataModel);
 
-                // 現在の情報を追加する株価時系列メインデータモデルに設定する
-                addSptsMainDataModel = new SptsMainDataModelImpl();
-                addSptsMainDataModel.setNo(Integer.valueOf(i).longValue());
+                // 現在の情報を追加する株価時系列登録データモデルに設定する
+                addSptsRegDataModel = new SptsRegDataModelImpl();
+                addSptsRegDataModel.setSptsptId(this.sptsptId);
+                addSptsRegDataModel.setNo(Integer.valueOf(i).longValue());
                 // 期間の種類IDを設定する
-                addSptsMainDataModel.setPeriodStartDate(spDataRegModel.getDate());
-                addSptsMainDataModel.setOp(spDataRegModel.getOp());
+                addSptsRegDataModel.setPeriodStartDate(spDataRegModel.getDate());
+                addSptsRegDataModel.setOp(spDataRegModel.getOp());
                 lp = spDataRegModel.getLp();
                 hp = spDataRegModel.getHp();
                 volume = spDataRegModel.getVolume();
@@ -220,39 +234,15 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
         /* ひとつ前の情報を終値に設定し、追加する */
         final SpDataRegModel endSpDataRegModel = this.spDataRegMgtModel.getDataList()
             .get(this.spDataRegMgtModel.getDataList().size() - 1);
-        addSptsMainDataModel.setPeriodEndDate(endSpDataRegModel.getDate());
-        addSptsMainDataModel.setCp(endSpDataRegModel.getCp());
-        addSptsMainDataModel.setLp(lp);
-        addSptsMainDataModel.setHp(hp);
-        addSptsMainDataModel.setLp(lp);
-        addSptsMainDataModel.setVolume(volume);
+        addSptsRegDataModel.setPeriodEndDate(endSpDataRegModel.getDate());
+        addSptsRegDataModel.setCp(endSpDataRegModel.getCp());
+        addSptsRegDataModel.setLp(lp);
+        addSptsRegDataModel.setHp(hp);
+        addSptsRegDataModel.setLp(lp);
+        addSptsRegDataModel.setVolume(volume);
         // 株価月足のリストに追加
-        result.add(addSptsMainDataModel);
+        result.add(addSptsRegDataModel);
 
         return result;
-    }
-
-    /**
-     * 株価時系列管理モデルを検索する<br>
-     * <p>
-     * 株価時系列期間の種類IDに該当する株価時系列管理モデルを検索し、該当する株価時系列管理モデルを返す。<br>
-     * </p>
-     *
-     * @author KenichiroArai
-     * @sine 1.0.0
-     * @version 1.0.0
-     * @param sptsptId
-     *                 株価時系列期間の種類ID
-     * @return 株価時系列管理モデル
-     * @throws TsstsDomainException
-     *                              三段階スクリーン・トレーディング・システムドメイン例外
-     */
-    @Override
-    public StockBrandModel findBySptsptId(final long sptsptId) throws TsstsDomainException {
-
-        final StockBrandModel result = this.stockPriceTimeSeriesLogic.findBySptsptId(sptsptId,
-            TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
-        return result;
-
     }
 }

@@ -7,13 +7,34 @@ import java.util.function.Supplier;
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 
 /**
- * 株価時系列メインデータモデルインタフェース<br>
+ * 株価時系列登録データモデルインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
-public interface SptsMainDataModel extends Supplier<BigDecimal>, PowerIndexCalcModel {
+public interface SptsRegDataModel extends Supplier<BigDecimal>, PowerIndexCalcModel {
+
+    /**
+     * 株価時系列期間の種類IDを設定する<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @param sptsptId
+     *                 株価時系列期間の種類ID
+     */
+    void setSptsptId(long sptsptId);
+
+    /**
+     * 株価時系列期間の種類IDを返す<br>
+     *
+     * @author KenichiroArai
+     * @sine 1.0.0
+     * @version 1.0.0
+     * @return 株価時系列期間の種類ID
+     */
+    long getSptsptId();
 
     /**
      * 番号を設定する<br>
@@ -24,7 +45,7 @@ public interface SptsMainDataModel extends Supplier<BigDecimal>, PowerIndexCalcM
      * @param no
      *           番号
      */
-    void setNo(Long no);
+    void setNo(long no);
 
     /**
      * 番号を返す<br>
@@ -34,7 +55,7 @@ public interface SptsMainDataModel extends Supplier<BigDecimal>, PowerIndexCalcM
      * @version 1.0.0
      * @return 番号
      */
-    Long getNo();
+    long getNo();
 
     /**
      * 期間開始日を設定する<br>
@@ -172,7 +193,7 @@ public interface SptsMainDataModel extends Supplier<BigDecimal>, PowerIndexCalcM
      * @param volume
      *               出来高
      */
-    void setVolume(Long volume);
+    void setVolume(long volume);
 
     /**
      * 出来高を返す<br>
@@ -183,5 +204,5 @@ public interface SptsMainDataModel extends Supplier<BigDecimal>, PowerIndexCalcM
      * @return 出来高
      */
     @Override
-    Long getVolume();
+    long getVolume();
 }

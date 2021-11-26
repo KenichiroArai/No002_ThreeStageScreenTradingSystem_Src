@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
 import kmg.im.stock.tssts.domain.model.SptsMainDataMgtModel;
-import kmg.im.stock.tssts.domain.model.SptsMainDataModel;
+import kmg.im.stock.tssts.domain.model.SptsRegDataModel;
 
 /**
- * 株価時系列メインデータ管理モデル<br>
+ * 株価時系列登録データ管理モデル<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
@@ -20,8 +20,8 @@ import kmg.im.stock.tssts.domain.model.SptsMainDataModel;
  */
 public class SptsMainDataMgtModelImpl implements SptsMainDataMgtModel {
 
-    /** 株価時系列メインデータ管理モデルのリスト */
-    private final List<SptsMainDataModel> dataList;
+    /** 株価時系列登録データ管理モデルのリスト */
+    private final List<SptsRegDataModel> dataList;
 
     /**
      * デフォルトコンストラクタ<br>
@@ -35,7 +35,7 @@ public class SptsMainDataMgtModelImpl implements SptsMainDataMgtModel {
     }
 
     /**
-     * 株価時系列メインデータ管理モデルのリストをクリアする<br>
+     * 株価時系列登録データ管理モデルのリストをクリアする<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -47,7 +47,7 @@ public class SptsMainDataMgtModelImpl implements SptsMainDataMgtModel {
     }
 
     /**
-     * 株価時系列メインデータ管理モデルのリストが空か<br>
+     * 株価時系列登録データ管理モデルのリストが空か<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -67,7 +67,7 @@ public class SptsMainDataMgtModelImpl implements SptsMainDataMgtModel {
     }
 
     /**
-     * 株価時系列メインデータ管理モデルのリストが空ではないか<br>
+     * 株価時系列登録データ管理モデルのリストが空ではないか<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
@@ -81,30 +81,30 @@ public class SptsMainDataMgtModelImpl implements SptsMainDataMgtModel {
     }
 
     /**
-     * 株価時系列メインデータ管理モデルを追加する<br>
+     * 株価時系列登録データ管理モデルを追加する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param data
-     *             株価時系列メインデータ管理モデル
+     *             株価時系列登録データ管理モデル
      */
     @Override
-    public void addData(final SptsMainDataModel data) {
+    public void addData(final SptsRegDataModel data) {
         this.dataList.add(data);
     }
 
     /**
-     * 株価時系列メインデータ管理モデルのリストを全て追加する<br>
+     * 株価時系列登録データ管理モデルのリストを全て追加する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param addData
-     *                追加株価時系列メインデータ管理モデルのリスト
+     *                追加株価時系列登録データ管理モデルのリスト
      */
     @Override
-    public void addAllData(final List<SptsMainDataModel> addData) {
+    public void addAllData(final List<SptsRegDataModel> addData) {
         if (ListUtils.isEmpty(addData)) {
             return;
         }
@@ -113,16 +113,16 @@ public class SptsMainDataMgtModelImpl implements SptsMainDataMgtModel {
     }
 
     /**
-     * 株価時系列メインデータ管理モデルのリストを返す<br>
+     * 株価時系列登録データ管理モデルのリストを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列メインデータ管理モデルのリスト
+     * @return 株価時系列登録データ管理モデルのリスト
      */
     @Override
-    public List<SptsMainDataModel> getDataList() {
-        final List<SptsMainDataModel> result = this.dataList;
+    public List<SptsRegDataModel> getDataList() {
+        final List<SptsRegDataModel> result = this.dataList;
         return result;
     }
 

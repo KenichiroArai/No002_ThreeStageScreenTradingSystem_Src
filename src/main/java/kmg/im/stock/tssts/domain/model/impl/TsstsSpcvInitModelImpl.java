@@ -16,7 +16,7 @@ import kmg.im.stock.tssts.domain.model.TsstsSpcvInitModel;
 public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
 
     /** 識別番号 */
-    private Long id;
+    private long id;
 
     /** 開始日 */
     private LocalDate startDate;
@@ -46,10 +46,10 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
     private String name;
 
     /** 株価時系列期間の種類ID */
-    private Long sptsptId;
+    private long sptsptId;
 
     /** 番号 */
-    private Long no;
+    private long no;
 
     /** 期間開始日 */
     private LocalDate periodStartDate;
@@ -70,7 +70,7 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
     private BigDecimal cp;
 
     /** 出来高 */
-    private Long volume;
+    private long volume;
 
     /**
      * 識別番号を設定する<br>
@@ -82,7 +82,7 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      *           識別番号
      */
     @Override
-    public void setId(final Long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -95,8 +95,8 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      * @return 識別番号
      */
     @Override
-    public Long getId() {
-        final Long result = this.id;
+    public long getId() {
+        final long result = this.id;
         return result;
     }
 
@@ -362,7 +362,7 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      *                 株価時系列期間の種類ID
      */
     @Override
-    public void setSptsptId(final Long sptsptId) {
+    public void setSptsptId(final long sptsptId) {
         this.sptsptId = sptsptId;
     }
 
@@ -375,8 +375,8 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      * @return 株価時系列期間の種類ID
      */
     @Override
-    public Long getSptsptId() {
-        final Long result = this.sptsptId;
+    public long getSptsptId() {
+        final long result = this.sptsptId;
         return result;
     }
 
@@ -390,7 +390,7 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      *           番号
      */
     @Override
-    public void setNo(final Long no) {
+    public void setNo(final long no) {
         this.no = no;
     }
 
@@ -403,8 +403,8 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      * @return 番号
      */
     @Override
-    public Long getNo() {
-        final Long result = this.no;
+    public long getNo() {
+        final long result = this.no;
         return result;
     }
 
@@ -586,7 +586,7 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      *               出来高
      */
     @Override
-    public void setVolume(final Long volume) {
+    public void setVolume(final long volume) {
         this.volume = volume;
     }
 
@@ -599,8 +599,8 @@ public class TsstsSpcvInitModelImpl implements TsstsSpcvInitModel {
      * @return 出来高
      */
     @Override
-    public Long getVolume() {
-        final Long result = this.volume;
+    public long getVolume() {
+        final long result = this.volume;
         return result;
     }
 

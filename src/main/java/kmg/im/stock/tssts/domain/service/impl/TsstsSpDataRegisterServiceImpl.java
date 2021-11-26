@@ -21,6 +21,7 @@ import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
 import kmg.im.stock.tssts.domain.model.impl.SpDataRegMgtModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.SpDataRegModelImpl;
 import kmg.im.stock.tssts.domain.model.impl.TsstsSpcvInitMgtModelImpl;
+import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesService;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsDailyRegService;
@@ -51,6 +52,9 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
     /** 三段階スクリーン・トレーディング・システム株価生データ読み込みロジック */
     private final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic;
 
+    /** 株銘柄サービス */
+    private final StockBrandService stockBrandService;
+
     /** 株価時系列サービス */
     private final StockPriceTimeSeriesService stockPriceTimeSeriesService;
 
@@ -66,15 +70,18 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
      *                                    ログメッセージリソルバ
      * @param tsstsSpRawDataLoadLogic
      *                                    三段階スクリーン・トレーディング・システム株価生データ読み込みロジック
+     * @param stockBrandService
+     *                                    株銘柄サービス
      * @param stockPriceTimeSeriesService
      *                                    株価時系列サービス
      */
     public TsstsSpDataRegisterServiceImpl(final ApplicationContext context, final LogMessageResolver logMessageResolver,
-        final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic,
+        final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic, final StockBrandService stockBrandService,
         final StockPriceTimeSeriesService stockPriceTimeSeriesService) {
         this.context = context;
         this.logMessageResolver = logMessageResolver;
         this.tsstsSpRawDataLoadLogic = tsstsSpRawDataLoadLogic;
+        this.stockBrandService = stockBrandService;
         this.stockPriceTimeSeriesService = stockPriceTimeSeriesService;
     }
 
@@ -189,17 +196,20 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
     private void registerSpDataMgtModel(final SpDataRegMgtModel spDataRegMgtModel) throws TsstsDomainException {
 
         /* 株価時系列日足 */
+        /* 株銘柄ＩＤの取得 */
+        final long dailyStockBrandId = this.stockBrandService.getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+        // 株価時系列日足登録サービスの生成
         final TsstsSptsDailyRegService tsstsSptsDailyRegService = this.context
             .getBean(TsstsSptsDailyRegServiceImpl.class);
-        // 初期化
-        tsstsSptsDailyRegService.initialize(spDataRegMgtModel);
-        // 削除する
+        // 株価時系列日足登録サービスの初期化
+        tsstsSptsDailyRegService.initialize(dailyStockBrandId, spDataRegMgtModel);
+        // 株価時系列日足登録サービスの削除する
         tsstsSptsDailyRegService.delete();
-        // 登録する
+        // 株価時系列日足登録サービスの登録する
         tsstsSptsDailyRegService.register();
         // 登録データを取得する
         final SimpleSptsMgtModel simpleSptsMgtDailyModel = this.stockPriceTimeSeriesService
-            .findSimpleBySbcAndPti(spDataRegMgtModel.getStockBrandCode(), PeriodTypeTypes.DAILY);
+            .findSimpleBySbIdAndPti(dailyStockBrandId, PeriodTypeTypes.DAILY);
         // 株価計算値を登録する
         final TsstsSpcvInitMgtModel tsstsSpcvInitMgtDailyModel = new TsstsSpcvInitMgtModelImpl();
         tsstsSpcvInitMgtDailyModel.from(simpleSptsMgtDailyModel);
@@ -209,17 +219,20 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         calcVlueDailyService.register();
 
         /* 株価時系列週足 */
+        /* 株銘柄ＩＤの取得 */
+        final long weeklyStockBrandId = this.stockBrandService.getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+        // 株価時系列週足登録サービスの生成
         final TsstsSptsWeeklyRegService tsstsSptsWeeklyRegService = this.context
             .getBean(TsstsSptsWeeklyRegServiceImpl.class);
-        // 初期化
-        tsstsSptsWeeklyRegService.initialize(spDataRegMgtModel);
-        // 削除する
+        // 株価時系列週足登録サービの初期化
+        tsstsSptsWeeklyRegService.initialize(weeklyStockBrandId, spDataRegMgtModel);
+        // 株価時系列週足登録サービの削除する
         tsstsSptsWeeklyRegService.delete();
-        // 登録する
+        // 株価時系列週足登録サービの登録する
         tsstsSptsWeeklyRegService.register();
         // 登録データを取得する
         final SimpleSptsMgtModel simpleSptsMgtWeeklyModel = this.stockPriceTimeSeriesService
-            .findSimpleBySbcAndPti(spDataRegMgtModel.getStockBrandCode(), PeriodTypeTypes.DAILY);
+            .findSimpleBySbIdAndPti(dailyStockBrandId, PeriodTypeTypes.WEEKLY);
         // 株価計算値を登録する
         final TsstsSpcvInitMgtModel tsstsSpcvInitMgtWeeklyModel = new TsstsSpcvInitMgtModelImpl();
         tsstsSpcvInitMgtWeeklyModel.from(simpleSptsMgtWeeklyModel);
@@ -229,17 +242,20 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         calcVlueWeeklyService.register();
 
         /* 株価時系列月足 */
+        /* 株銘柄ＩＤの取得 */
+        final long monthlyStockBrandId = this.stockBrandService.getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+        // 株価時系列月足登録サービスの生成
         final TsstsSptsMonthlyRegService tsstsSptsMonthlyRegService = this.context
             .getBean(TsstsSptsMonthlyRegServiceImpl.class);
-        // 初期化
-        tsstsSptsMonthlyRegService.initialize(spDataRegMgtModel);
-        // 削除する
+        // 株価時系列月足登録サービスの初期化
+        tsstsSptsMonthlyRegService.initialize(monthlyStockBrandId, spDataRegMgtModel);
+        // 株価時系列月足登録サービスの削除する
         tsstsSptsMonthlyRegService.delete();
-        // 登録する
+        // 株価時系列月足登録サービスの登録する
         tsstsSptsMonthlyRegService.register();
         // 登録データを取得する
         final SimpleSptsMgtModel simpleSptsMgtMonthlyModel = this.stockPriceTimeSeriesService
-            .findSimpleBySbcAndPti(spDataRegMgtModel.getStockBrandCode(), PeriodTypeTypes.DAILY);
+            .findSimpleBySbIdAndPti(dailyStockBrandId, PeriodTypeTypes.MONTHLY);
         // 株価計算値を登録する
         final TsstsSpcvInitMgtModel tsstsSpcvInitMgtMonthlyModel = new TsstsSpcvInitMgtModelImpl();
         tsstsSpcvInitMgtMonthlyModel.from(simpleSptsMgtMonthlyModel);

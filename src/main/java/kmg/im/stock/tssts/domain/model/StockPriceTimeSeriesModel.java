@@ -27,7 +27,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @param id
      *           識別番号
      */
-    void setId(Long id);
+    void setId(long id);
 
     /**
      * 識別番号を返す<br>
@@ -37,7 +37,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @version 1.0.0
      * @return 識別番号
      */
-    Long getId();
+    long getId();
 
     /**
      * 開始日を設定する<br>
@@ -237,7 +237,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @param no
      *           番号
      */
-    void setNo(Long no);
+    void setNo(long no);
 
     /**
      * 番号を返す<br>
@@ -247,7 +247,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @version 1.0.0
      * @return 番号
      */
-    Long getNo();
+    long getNo();
 
     /**
      * 期間開始日を設定する<br>
@@ -385,7 +385,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @param volume
      *               出来高
      */
-    void setVolume(Long volume);
+    void setVolume(long volume);
 
     /**
      * 出来高を返す<br>
@@ -396,7 +396,7 @@ public interface StockPriceTimeSeriesModel extends Supplier<BigDecimal>, PowerIn
      * @return 出来高
      */
     @Override
-    Long getVolume();
+    long getVolume();
 
     /**
      * 終値を返す<br>

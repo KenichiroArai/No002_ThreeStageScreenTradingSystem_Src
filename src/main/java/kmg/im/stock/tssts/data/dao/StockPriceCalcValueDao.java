@@ -13,9 +13,9 @@ import kmg.core.domain.model.SqlPathModel;
 import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.data.dto.SptsDeleteCondDto;
+import kmg.im.stock.tssts.data.dto.SpcvDeleteCondDto;
 import kmg.im.stock.tssts.data.dto.StockPriceCalcValueDto;
-import kmg.im.stock.tssts.data.dto.impl.SptsDeleteCondDtoImpl;
+import kmg.im.stock.tssts.data.dto.impl.SpcvDeleteCondDtoImpl;
 import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
@@ -32,9 +32,9 @@ public class StockPriceCalcValueDao {
     /** 私自身のクラス */
     private static final Class<?> MYSELF_CLASS = StockPriceCalcValueDao.class;
 
-    /** 株価銘柄コードと期間の種類の種類に該当するデータを削除するＳＱＬパス */
-    private static final SqlPathModel DELETE_BY_SB_CD_AND_PERIOD_TYPE_TYPES_SQL_PATH = new SqlPathModelImpl(
-        StockPriceCalcValueDao.MYSELF_CLASS, Paths.get("deleteBySbCdAndPeriodTypeTypes.sql"));
+    /** 株価銘柄ＩＤと期間の種類の種類に該当するデータを削除するＳＱＬパス */
+    private static final SqlPathModel DELETE_BY_SB_ID_AND_PERIOD_TYPE_TYPES_SQL_PATH = new SqlPathModelImpl(
+        StockPriceCalcValueDao.MYSELF_CLASS, Paths.get("deleteBySbIdAndPeriodTypeTypes.sql"));
 
     /** 株価計算値を挿入するＳＱＬパス */
     private static final SqlPathModel INSERT_SQL_PATH = new SqlPathModelImpl(StockPriceCalcValueDao.MYSELF_CLASS,
@@ -57,32 +57,35 @@ public class StockPriceCalcValueDao {
     }
 
     /**
-     * 株価銘柄コードと期間の種類の種類に該当するデータを削除する<br>
+     * 株価銘柄ＩＤと期間の種類の種類に該当するデータを削除する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param sbCd
-     *                        株価銘柄コード
+     * @param sbId
+     *                        株価銘柄ＩＤ
      * @param periodTypeTypes
      *                        期間の種類の種類
      * @return 削除数
      * @throws KmgDomainException
      *                            ＫＭＧドメイン例外
      */
-    public long deleteBySbCdAndPeriodTypeTypes(final long sbCd, final PeriodTypeTypes periodTypeTypes)
+    public long deleteByIdCdAndPeriodTypeTypes(final long sbId, final PeriodTypeTypes periodTypeTypes)
         throws KmgDomainException {
 
         long result = 0L;
 
         /* パラメータを設定する */
-        final SptsDeleteCondDto sptsDeleteCondDto = new SptsDeleteCondDtoImpl();
-        sptsDeleteCondDto.setStockBrandCode(sbCd);
-        sptsDeleteCondDto.setPeriodTypeId(periodTypeTypes.get());
-        final SqlParameterSource param = new BeanPropertySqlParameterSource(sptsDeleteCondDto);
+        final SpcvDeleteCondDto spcvDeleteCondDto = new SpcvDeleteCondDtoImpl();
+        spcvDeleteCondDto.setStockBrandId(sbId);
+        spcvDeleteCondDto.setPeriodTypeId(periodTypeTypes.get());
+        final SqlParameterSource param = new BeanPropertySqlParameterSource(spcvDeleteCondDto);
+
+        /* SQLを作成する */
+        final String sql = StockPriceCalcValueDao.DELETE_BY_SB_ID_AND_PERIOD_TYPE_TYPES_SQL_PATH.toSql();
 
         /* 削除する */
-        result = this.jdbc.update(StockPriceCalcValueDao.DELETE_BY_SB_CD_AND_PERIOD_TYPE_TYPES_SQL_PATH.toSql(), param);
+        result = this.jdbc.update(sql, param);
 
         return result;
     }
