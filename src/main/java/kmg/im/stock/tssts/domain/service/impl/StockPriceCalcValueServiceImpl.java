@@ -2,8 +2,8 @@ package kmg.im.stock.tssts.domain.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.logic.StockPriceCalcValueLogic;
-import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.service.StockPriceCalcValueService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 

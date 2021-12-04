@@ -7,11 +7,11 @@ import java.util.function.Supplier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.core.domain.service.LowestPriceInPastService;
 import kmg.im.stock.core.domain.service.MacdService;
 import kmg.im.stock.core.domain.service.PowerIndexService;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
-import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceCalcValueMgtModelImpl;
 import kmg.im.stock.tssts.domain.service.StockPriceCalcValueService;

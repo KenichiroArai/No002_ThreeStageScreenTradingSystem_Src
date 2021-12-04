@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.core.domain.model.SptsptModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.domain.logic.SptsptLogic;
-import kmg.im.stock.tssts.domain.model.SptsptModel;
 import kmg.im.stock.tssts.domain.service.SptsptService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列期間の種類サービス<br>

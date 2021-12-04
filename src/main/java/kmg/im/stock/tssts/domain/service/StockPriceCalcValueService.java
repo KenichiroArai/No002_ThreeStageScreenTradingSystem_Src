@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.domain.service;
 
-import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
+import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**

@@ -1,10 +1,10 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
+import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.domain.logic.TsstsSpDataTsRegisterLogic;
-import kmg.im.stock.tssts.domain.model.SpDataRegMgtModel;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataTsDailyRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価データ時系列日足登録サービスインタフェース<br>

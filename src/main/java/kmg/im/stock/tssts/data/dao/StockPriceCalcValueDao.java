@@ -13,10 +13,10 @@ import kmg.core.domain.model.SqlPathModel;
 import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.type.KmgString;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dto.SpcvDeleteCondDto;
 import kmg.im.stock.tssts.data.dto.StockPriceCalcValueDto;
 import kmg.im.stock.tssts.data.dto.impl.SpcvDeleteCondDtoImpl;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価計算値ＤＡＯ<br>

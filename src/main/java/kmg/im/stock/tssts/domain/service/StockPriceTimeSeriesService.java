@@ -1,8 +1,8 @@
 package kmg.im.stock.tssts.domain.service;
 
-import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列サービスインタフェース<br>

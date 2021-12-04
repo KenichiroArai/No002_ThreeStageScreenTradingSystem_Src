@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列ＤＡＯテスト<br>

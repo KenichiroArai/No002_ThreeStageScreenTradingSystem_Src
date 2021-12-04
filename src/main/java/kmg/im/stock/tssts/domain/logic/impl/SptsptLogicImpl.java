@@ -7,12 +7,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
+import kmg.im.stock.core.domain.model.SptsptModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dao.SptsptDao;
 import kmg.im.stock.tssts.domain.logic.SptsptLogic;
-import kmg.im.stock.tssts.domain.model.SptsptModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列期間の種類ロジックインタフェース<br>

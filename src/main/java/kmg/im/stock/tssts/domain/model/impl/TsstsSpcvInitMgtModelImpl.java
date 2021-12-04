@@ -10,8 +10,8 @@ import org.springframework.beans.BeanUtils;
 
 import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
-import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
-import kmg.im.stock.tssts.domain.model.SimpleSptsModel;
+import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.core.domain.model.SimpleSptsModel;
 import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
 import kmg.im.stock.tssts.domain.model.TsstsSpcvInitModel;
 

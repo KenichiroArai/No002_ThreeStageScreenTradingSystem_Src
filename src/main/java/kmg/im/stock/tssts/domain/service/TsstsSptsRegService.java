@@ -2,8 +2,8 @@ package kmg.im.stock.tssts.domain.service;
 
 import java.util.List;
 
-import kmg.im.stock.tssts.domain.model.SpDataRegMgtModel;
-import kmg.im.stock.tssts.domain.model.SptsRegDataModel;
+import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
+import kmg.im.stock.core.domain.model.SptsRegDataModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**

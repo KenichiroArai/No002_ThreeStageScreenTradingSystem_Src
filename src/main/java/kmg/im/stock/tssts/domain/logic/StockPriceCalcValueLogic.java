@@ -1,8 +1,8 @@
 package kmg.im.stock.tssts.domain.logic;
 
-import kmg.im.stock.tssts.domain.model.StockPriceCalcValueMgtModel;
+import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価計算値ロジックインタフェース<br>

@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-import kmg.im.stock.tssts.domain.model.SpRawDataAcqMgtModel;
-import kmg.im.stock.tssts.domain.model.SpRawDataAcqModel;
+import kmg.im.stock.core.domain.model.SpRawDataAcqMgtModel;
+import kmg.im.stock.core.domain.model.SpRawDataAcqModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**

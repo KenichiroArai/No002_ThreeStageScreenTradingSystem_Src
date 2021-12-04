@@ -2,10 +2,10 @@ package kmg.im.stock.tssts.domain.logic;
 
 import java.util.List;
 
-import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
-import kmg.im.stock.tssts.domain.model.SptsRegDataModel;
+import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.core.domain.model.SptsRegDataModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列ロジックインタフェース<br>

@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.utils.ListUtils;
+import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.core.domain.model.SimpleSptsModel;
+import kmg.im.stock.core.domain.model.SptsRegDataModel;
+import kmg.im.stock.core.domain.model.impl.SimpleSptsMgtModelImpl;
+import kmg.im.stock.core.domain.model.impl.SimpleSptsModelImpl;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
 import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
-import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
-import kmg.im.stock.tssts.domain.model.SimpleSptsModel;
-import kmg.im.stock.tssts.domain.model.SptsRegDataModel;
-import kmg.im.stock.tssts.domain.model.impl.SimpleSptsMgtModelImpl;
-import kmg.im.stock.tssts.domain.model.impl.SimpleSptsModelImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列ロジック<br>

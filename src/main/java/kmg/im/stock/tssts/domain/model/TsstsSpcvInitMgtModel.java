@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import kmg.im.stock.core.domain.model.PowerIndexCalcModel;
+import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価計算値初期化管理モデルインタフェース<br>

@@ -2,11 +2,11 @@ package kmg.im.stock.tssts.domain.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
-import kmg.im.stock.tssts.domain.model.SimpleSptsMgtModel;
 import kmg.im.stock.tssts.domain.service.StockPriceTimeSeriesService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列サービス<br>

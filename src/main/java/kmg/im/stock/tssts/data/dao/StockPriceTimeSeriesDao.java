@@ -16,6 +16,7 @@ import kmg.core.domain.model.SqlPathModel;
 import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.type.KmgString;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dto.SimpleSptsSearchConditionDto;
 import kmg.im.stock.tssts.data.dto.SptsDeleteCondDto;
 import kmg.im.stock.tssts.data.dto.SptsptDto;
@@ -24,7 +25,6 @@ import kmg.im.stock.tssts.data.dto.impl.SimpleSptsSearchConditionDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.SptsDeleteCondDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.SptsptDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列ＤＡＯ<br>

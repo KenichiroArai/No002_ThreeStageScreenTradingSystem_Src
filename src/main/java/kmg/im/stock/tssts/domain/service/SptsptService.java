@@ -3,9 +3,9 @@ package kmg.im.stock.tssts.domain.service;
 import java.time.LocalDate;
 import java.util.Map;
 
-import kmg.im.stock.tssts.domain.model.SptsptModel;
+import kmg.im.stock.core.domain.model.SptsptModel;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列期間の種類サービスインタフェース<br>

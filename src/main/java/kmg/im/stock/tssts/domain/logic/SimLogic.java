@@ -1,7 +1,7 @@
 package kmg.im.stock.tssts.domain.logic;
 
-import kmg.im.stock.tssts.domain.model.StockBrandModel;
-import kmg.im.stock.tssts.domain.model.StockPriceTimeSeriesModel;
+import kmg.im.stock.core.domain.model.StockBrandModel;
+import kmg.im.stock.core.domain.model.StockPriceTimeSeriesModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**

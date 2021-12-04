@@ -1,11 +1,11 @@
 package kmg.im.stock.tssts.domain.logic.impl;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dao.TsstsSpDataTsDao;
 import kmg.im.stock.tssts.domain.logic.TsstsSpDataTsRegisterLogic;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価データ時系列登録ロジック<br>

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import kmg.core.domain.model.SqlPathModel;
 import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dto.SptsptDto;
 import kmg.im.stock.tssts.data.dto.impl.SptsptDtoImpl;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価データ時系列ＤＡＯ<br>

@@ -13,13 +13,13 @@ import kmg.core.domain.model.SqlPathModel;
 import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.type.KmgString;
+import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dto.SptsptDeleteCondDto;
 import kmg.im.stock.tssts.data.dto.SptsptDto;
 import kmg.im.stock.tssts.data.dto.SptsptRegDto;
 import kmg.im.stock.tssts.data.dto.impl.SptsptDeleteCondDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.SptsptDtoImpl;
 import kmg.im.stock.tssts.data.dto.impl.SptsptRegDtoImpl;
-import kmg.im.stock.tssts.infrastructure.types.PeriodTypeTypes;
 
 /**
  * 株価時系列期間の種類ＤＡＯ<br>
