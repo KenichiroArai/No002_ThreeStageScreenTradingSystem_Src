@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.utils.ListUtils;
+import kmg.im.stock.core.data.dao.SimDao;
+import kmg.im.stock.core.data.dto.SimDto;
 import kmg.im.stock.core.domain.model.StockBrandModel;
 import kmg.im.stock.core.domain.model.StockPriceCalcValueModel;
 import kmg.im.stock.core.domain.model.StockPriceTimeSeriesModel;
@@ -15,11 +17,9 @@ import kmg.im.stock.core.domain.model.impl.StockBrandModelImpl;
 import kmg.im.stock.core.domain.model.impl.StockPriceCalcValueModelImpl;
 import kmg.im.stock.core.domain.model.impl.StockPriceTimeSeriesModelImpl;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
-import kmg.im.stock.tssts.data.dao.SimDao;
-import kmg.im.stock.tssts.data.dto.SimDto;
 import kmg.im.stock.tssts.domain.logic.SimLogic;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * シミュレーションロジック<br>
@@ -70,7 +70,7 @@ public class SimLogicImpl implements SimLogic {
         } catch (final KmgDomainException e) {
             // TODO KenichiroArai 2021/06/11 例外処理
             final String errMsg = "";
-            final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
+            final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
             final Object[] logMsgArg = {};
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
         }

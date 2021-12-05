@@ -7,17 +7,17 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
 
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
- * ログメッセージリゾルバ<br>
+ * 三段階スクリーン・トレーディング・システムログメッセージリゾルバ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class LogMessageResolver {
+public class TsstsLogMessageResolver {
 
     /** ログメッセージソース */
     private final MessageSource logMessageSource;
@@ -31,7 +31,7 @@ public class LogMessageResolver {
      * @param logMessageSource
      *                         ログメッセージソース
      */
-    public LogMessageResolver(final MessageSource logMessageSource) {
+    public TsstsLogMessageResolver(final MessageSource logMessageSource) {
         this.logMessageSource = logMessageSource;
     }
 
@@ -48,7 +48,7 @@ public class LogMessageResolver {
      * @return メッセージ
      */
     @SuppressWarnings("nls")
-    public String getMessage(final LogMessageTypes code, final Object... args) {
+    public String getMessage(final TsstsLogMessageTypes code, final Object... args) {
 
         String result = null;
 
@@ -62,7 +62,7 @@ public class LogMessageResolver {
             return result;
         }
 
-        if (code == LogMessageTypes.NONE) {
+        if (code == TsstsLogMessageTypes.NONE) {
             result = KmgString.EMPTY;
             return result;
         }

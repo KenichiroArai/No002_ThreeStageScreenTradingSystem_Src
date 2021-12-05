@@ -6,14 +6,14 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 /**
- * メッセージ定義<br>
+ * 三段階スクリーン・トレーディング・システムメッセージ定義<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class MessageConfig {
+public class TsstsMessageConfig {
 
     /**
      * メッセージの定義<br>

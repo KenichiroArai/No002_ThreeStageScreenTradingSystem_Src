@@ -15,14 +15,14 @@ import javafx.stage.Stage;
 import kmg.KmgApplication;
 
 /**
- * 制御画面ＧＵＩ<br>
+ * 三段階スクリーン・トレーディング・システム制御画面ＧＵＩ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SpringBootApplication
-public class ControlScreenGui extends Application {
+public class TsstsControlScreenGui extends Application {
 
     /** コンテキスト */
     private static ConfigurableApplicationContext context;
@@ -38,7 +38,7 @@ public class ControlScreenGui extends Application {
      */
     public static void main(final String[] args) {
 
-        ControlScreenGui.context = SpringApplication.run(KmgApplication.class);
+        TsstsControlScreenGui.context = SpringApplication.run(KmgApplication.class);
         Application.launch(args);
     }
 
@@ -56,9 +56,9 @@ public class ControlScreenGui extends Application {
 
         stage.setTitle("制御画面");
         try {
-            final URL url = this.getClass().getResource("ControlScreenGui.fxml");
+            final URL url = this.getClass().getResource("TsstsControlScreenGui.fxml");
             final FXMLLoader fxml = new FXMLLoader(url);
-            fxml.setControllerFactory(ControlScreenGui.context::getBean);
+            fxml.setControllerFactory(TsstsControlScreenGui.context::getBean);
             final AnchorPane root = fxml.load();
             final Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -78,7 +78,7 @@ public class ControlScreenGui extends Application {
      */
     @Override
     public void stop() {
-        ControlScreenGui.context.close();
+        TsstsControlScreenGui.context.close();
     }
 
 }

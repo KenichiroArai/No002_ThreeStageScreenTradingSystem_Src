@@ -17,8 +17,8 @@ import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.logic.SimLogic;
 import kmg.im.stock.tssts.domain.service.SimulationService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * シミュレーションサービス<br>
@@ -33,8 +33,8 @@ public class SimulationServiceImpl implements SimulationService {
     /** ポジションマップ */
     private final Map<Long, PosModel> posMap;
 
-    /** ログメッセージリソルバ */
-    private final LogMessageResolver logMessageResolver;
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
     /** シミュレーションロジック */
     private final SimLogic simLogic;
@@ -45,14 +45,14 @@ public class SimulationServiceImpl implements SimulationService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param logMessageResolver
-     *                           ログメッセージリソルバ
+     * @param tsstsLogMessageResolver
+     *                                三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      * @param simLogic
-     *                           シミュレーションロジック
+     *                                シミュレーションロジック
      */
-    public SimulationServiceImpl(final LogMessageResolver logMessageResolver, final SimLogic simLogic) {
+    public SimulationServiceImpl(final TsstsLogMessageResolver tsstsLogMessageResolver, final SimLogic simLogic) {
         this.posMap = new HashMap<>();
-        this.logMessageResolver = logMessageResolver;
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.simLogic = simLogic;
     }
 
@@ -94,8 +94,8 @@ public class SimulationServiceImpl implements SimulationService {
         if (stockBrandModel == null) {
 
             // TODO KenichiroArai 2021/08/04 エラー対応
-            final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            throw new TsstsDomainException(errMsg, LogMessageTypes.NONE);
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE);
         }
         // TODO KenichiroArai 2021/09/07 株銘柄へのモデル変更対応の一時的エラー回避株銘柄
 //        final List<StockPriceTimeSeriesModel> stockPriceTimeSeriesModelList = stockBrandModel.toAllDataList();

@@ -15,13 +15,13 @@ import kmg.core.infrastructure.type.KmgString;
 import kmg.core.infrastructure.types.CharsetTypes;
 import kmg.core.infrastructure.types.DelimiterTypes;
 import kmg.core.infrastructure.utils.LocalDateUtils;
-import kmg.im.stock.tssts.data.dto.SpRawDataAcqDto;
-import kmg.im.stock.tssts.data.dto.SpRawDataAcqMgtDto;
-import kmg.im.stock.tssts.data.dto.impl.SpRawDataAcqDtoImpl;
-import kmg.im.stock.tssts.data.dto.impl.SpRawDataAcqMgtDtoImpl;
+import kmg.im.stock.core.data.dto.SpRawDataAcqDto;
+import kmg.im.stock.core.data.dto.SpRawDataAcqMgtDto;
+import kmg.im.stock.core.data.dto.impl.SpRawDataAcqDtoImpl;
+import kmg.im.stock.core.data.dto.impl.SpRawDataAcqMgtDtoImpl;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 株価生データＤＡＯ<br>
@@ -40,8 +40,8 @@ public class SpRawDataDao {
     @Value("${import.path.stockpricestockstoragepath}")
     private Path stockPriceStockStoragePath;
 
-    /** ログメッセージリソルバ */
-    private final LogMessageResolver logMessageResolver;
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
     /**
      * コンストラクタ<br>
@@ -49,11 +49,11 @@ public class SpRawDataDao {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param logMessageResolver
-     *                           ログメッセージリソルバ
+     * @param tsstsLogMessageResolver
+     *                                三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      */
-    public SpRawDataDao(final LogMessageResolver logMessageResolver) {
-        this.logMessageResolver = logMessageResolver;
+    public SpRawDataDao(final TsstsLogMessageResolver tsstsLogMessageResolver) {
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
     }
 
     /**
@@ -76,8 +76,8 @@ public class SpRawDataDao {
         } catch (final IOException e) {
 
             // TODO KenichiroArai 2021/05/23 例外処理
-            final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            throw new TsstsDomainException(errMsg, LogMessageTypes.NONE, e);
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
         }
 
         return result;
@@ -162,8 +162,8 @@ public class SpRawDataDao {
         } catch (final IOException e) {
 
             // TODO KenichiroArai 2021/05/23 例外処理
-            final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            throw new TsstsDomainException(errMsg, LogMessageTypes.NONE, e);
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
         }
 
         return result;

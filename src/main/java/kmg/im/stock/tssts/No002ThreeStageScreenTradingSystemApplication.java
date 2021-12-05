@@ -8,8 +8,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import kmg.im.stock.tssts.application.controller.TsstsController;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム<br>
@@ -27,8 +27,8 @@ public class No002ThreeStageScreenTradingSystemApplication {
     /** 構成可能なアプリケーションコンテキスト */
     private final ConfigurableApplicationContext context;
 
-    /** ログメッセージリゾルバ */
-    private final LogMessageResolver logMessageResolver;
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
     /**
      * コンストラクタ<br>
@@ -37,14 +37,14 @@ public class No002ThreeStageScreenTradingSystemApplication {
      * @sine 1.0.0
      * @version 1.0.0
      * @param context
-     *                           構成可能なアプリケーションコンテキスト
-     * @param logMessageResolver
-     *                           ログメッセージリゾルバ
+     *                                構成可能なアプリケーションコンテキスト
+     * @param tsstsLogMessageResolver
+     *                                三段階スクリーン・トレーディング・システムログメッセージリゾルバ
      */
     public No002ThreeStageScreenTradingSystemApplication(final ConfigurableApplicationContext context,
-        final LogMessageResolver logMessageResolver) {
+        final TsstsLogMessageResolver tsstsLogMessageResolver) {
         this.context = context;
-        this.logMessageResolver = logMessageResolver;
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
     }
 
     /**
@@ -83,7 +83,7 @@ public class No002ThreeStageScreenTradingSystemApplication {
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             No002ThreeStageScreenTradingSystemApplication.LOGGER.error(logMsg, e);
         }
     }

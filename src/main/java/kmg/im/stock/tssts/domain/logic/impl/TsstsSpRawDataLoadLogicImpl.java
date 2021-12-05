@@ -10,17 +10,17 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.utils.PathUtils;
+import kmg.im.stock.core.data.dto.SpRawDataAcqDto;
+import kmg.im.stock.core.data.dto.SpRawDataAcqMgtDto;
 import kmg.im.stock.core.domain.model.SpRawDataAcqMgtModel;
 import kmg.im.stock.core.domain.model.SpRawDataAcqModel;
 import kmg.im.stock.core.domain.model.impl.SpRawDataAcqMgtModelImpl;
 import kmg.im.stock.core.domain.model.impl.SpRawDataAcqModelImpl;
 import kmg.im.stock.tssts.data.dao.SpRawDataDao;
-import kmg.im.stock.tssts.data.dto.SpRawDataAcqDto;
-import kmg.im.stock.tssts.data.dto.SpRawDataAcqMgtDto;
 import kmg.im.stock.tssts.domain.logic.TsstsSpRawDataLoadLogic;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価生データ読み込みロジック<br>
@@ -32,8 +32,8 @@ import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
 @Service
 public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
 
-    /** ログメッセージリソルバ */
-    private final LogMessageResolver logMessageResolver;
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
     /** 株価生データＤＡＯ */
     private final SpRawDataDao spRawDataDao;
@@ -44,13 +44,14 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param logMessageResolver
-     *                           ログメッセージリソルバ
+     * @param tsstsLogMessageResolver
+     *                                三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      * @param spRawDataDao
-     *                           株価生データＤＡＯ
+     *                                株価生データＤＡＯ
      */
-    public TsstsSpRawDataLoadLogicImpl(final LogMessageResolver logMessageResolver, final SpRawDataDao spRawDataDao) {
-        this.logMessageResolver = logMessageResolver;
+    public TsstsSpRawDataLoadLogicImpl(final TsstsLogMessageResolver tsstsLogMessageResolver,
+        final SpRawDataDao spRawDataDao) {
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.spRawDataDao = spRawDataDao;
     }
 
@@ -139,8 +140,8 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
         } catch (final NumberFormatException e) {
 
             // TODO KenichiroArai 2021/05/21 例外処理
-            final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            throw new TsstsDomainException(errMsg, LogMessageTypes.NONE, e);
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
         }
 
         return result;

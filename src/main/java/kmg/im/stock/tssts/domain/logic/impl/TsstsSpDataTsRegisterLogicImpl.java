@@ -5,7 +5,7 @@ import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
 import kmg.im.stock.tssts.data.dao.TsstsSpDataTsDao;
 import kmg.im.stock.tssts.domain.logic.TsstsSpDataTsRegisterLogic;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価データ時系列登録ロジック<br>
@@ -43,7 +43,7 @@ public class TsstsSpDataTsRegisterLogicImpl implements TsstsSpDataTsRegisterLogi
         } catch (final KmgDomainException e) {
             // TODO KenichiroArai 2021/06/09 例外処理
             final String errMsg = "";
-            final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
+            final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
             final Object[] logMsgArg = {};
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
         }

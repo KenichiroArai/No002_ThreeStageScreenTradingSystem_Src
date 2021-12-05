@@ -6,14 +6,14 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 /**
- * 名称定義<br>
+ * 三段階スクリーン・トレーディング・システム名称定義<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class NameConfig {
+public class TsstsNameConfig {
 
     /**
      * 名称の定義<br>

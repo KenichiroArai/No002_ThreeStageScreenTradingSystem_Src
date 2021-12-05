@@ -5,28 +5,34 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * メッセージの種類<br>
+ * 三段階スクリーン・トレーディング・システム名称の種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum MessageTypes implements Supplier<String> {
+public enum TsstsNameTypes implements Supplier<String> {
 
     /* 定義：開始 */
 
     /** 指定無し */
     NONE("指定無し", null),
 
-    /** 存在するディレクトリではありません。存在するディレクトリを指定してください。 */
-    KMG_IM_STOCK_TSSTS_MSG_NO10001("存在するディレクトリではありません。存在するディレクトリを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10001"),
+    /** ディレクトリ選択 */
+    KMG_IM_STOCK_TSSTS_NAME10001("ディレクトリ選択", "KMG_IM_STOCK_TSSTS_NAME10001"),
 
-    /** 存在するファイルではありません。存在するファイルを指定してください。 */
-    KMG_IM_STOCK_TSSTS_MSG_NO10002("存在するファイルではありません。存在するファイルを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10002"),
+    /** エラー */
+    KMG_IM_STOCK_TSSTS_NAME10002("エラー", "KMG_IM_STOCK_TSSTS_NAME10002"),
 
-    /** ディレクトリは指定できません。ファイルを指定してください。 */
-    KMG_IM_STOCK_TSSTS_MSG_NO10003("ディレクトリは指定できません。ファイルを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10003"),
+    /** ファイル選択 */
+    KMG_IM_STOCK_TSSTS_NAME10003("ファイル選択", "KMG_IM_STOCK_TSSTS_NAME10003"),
+
+    /** エラー */
+    KMG_IM_STOCK_TSSTS_NAME10004("エラー", "KMG_IM_STOCK_TSSTS_NAME10004"),
+
+    /** エラー */
+    KMG_IM_STOCK_TSSTS_NAME10005("エラー", "KMG_IM_STOCK_TSSTS_NAME10005"),
 
     /* 定義：終了 */
     ;
@@ -38,13 +44,13 @@ public enum MessageTypes implements Supplier<String> {
     private String value;
 
     /** 種類のマップ */
-    private static final Map<String, MessageTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<String, TsstsNameTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final MessageTypes type : MessageTypes.values()) {
-            MessageTypes.VALUES_MAP.put(type.get(), type);
+        for (final TsstsNameTypes type : TsstsNameTypes.values()) {
+            TsstsNameTypes.VALUES_MAP.put(type.get(), type);
         }
     }
 
@@ -59,7 +65,7 @@ public enum MessageTypes implements Supplier<String> {
      * @param value
      *              値
      */
-    MessageTypes(final String name, final String value) {
+    TsstsNameTypes(final String name, final String value) {
 
         this.name = name;
         this.value = value;
@@ -79,9 +85,9 @@ public enum MessageTypes implements Supplier<String> {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static MessageTypes getEnum(final String value) {
+    public static TsstsNameTypes getEnum(final String value) {
 
-        MessageTypes result = MessageTypes.VALUES_MAP.get(value);
+        TsstsNameTypes result = TsstsNameTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -97,9 +103,9 @@ public enum MessageTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 初期値
      */
-    public static MessageTypes getInitValue() {
+    public static TsstsNameTypes getInitValue() {
 
-        final MessageTypes result = NONE;
+        final TsstsNameTypes result = NONE;
         return result;
 
     }
@@ -112,9 +118,9 @@ public enum MessageTypes implements Supplier<String> {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static MessageTypes getDefault() {
+    public static TsstsNameTypes getDefault() {
 
-        final MessageTypes result = NONE;
+        final TsstsNameTypes result = NONE;
         return result;
     }
 

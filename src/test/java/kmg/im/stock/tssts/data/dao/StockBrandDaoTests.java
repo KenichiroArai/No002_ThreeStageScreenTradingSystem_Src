@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import kmg.im.stock.core.data.dao.StockBrandDao;
+
 /**
  * 株銘柄ＤＡＯテスト<br>
  *

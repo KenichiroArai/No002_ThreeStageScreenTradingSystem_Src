@@ -5,34 +5,23 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * 名称の種類<br>
+ * 三段階スクリーン・トレーディング・システムログメッセージの種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum NameTypes implements Supplier<String> {
+public enum TsstsLogMessageTypes implements Supplier<String> {
 
     /* 定義：開始 */
 
     /** 指定無し */
     NONE("指定無し", null),
 
-    /** ディレクトリ選択 */
-    KMG_IM_STOCK_TSSTS_NAME10001("ディレクトリ選択", "KMG_IM_STOCK_TSSTS_NAME10001"),
-
-    /** エラー */
-    KMG_IM_STOCK_TSSTS_NAME10002("エラー", "KMG_IM_STOCK_TSSTS_NAME10002"),
-
-    /** ファイル選択 */
-    KMG_IM_STOCK_TSSTS_NAME10003("ファイル選択", "KMG_IM_STOCK_TSSTS_NAME10003"),
-
-    /** エラー */
-    KMG_IM_STOCK_TSSTS_NAME10004("エラー", "KMG_IM_STOCK_TSSTS_NAME10004"),
-
-    /** エラー */
-    KMG_IM_STOCK_TSSTS_NAME10005("エラー", "KMG_IM_STOCK_TSSTS_NAME10005"),
+    // TODO 2021/04/25 不要なので削除する
+    /** 三段階スクリーン・トレーディング・システムＤＡＯ */
+    I00001("三段階スクリーン・トレーディング・システムＤＡＯ", "I00001"),
 
     /* 定義：終了 */
     ;
@@ -44,13 +33,13 @@ public enum NameTypes implements Supplier<String> {
     private String value;
 
     /** 種類のマップ */
-    private static final Map<String, NameTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<String, TsstsLogMessageTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final NameTypes type : NameTypes.values()) {
-            NameTypes.VALUES_MAP.put(type.get(), type);
+        for (final TsstsLogMessageTypes type : TsstsLogMessageTypes.values()) {
+            TsstsLogMessageTypes.VALUES_MAP.put(type.get(), type);
         }
     }
 
@@ -65,7 +54,7 @@ public enum NameTypes implements Supplier<String> {
      * @param value
      *              値
      */
-    NameTypes(final String name, final String value) {
+    TsstsLogMessageTypes(final String name, final String value) {
 
         this.name = name;
         this.value = value;
@@ -85,9 +74,9 @@ public enum NameTypes implements Supplier<String> {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static NameTypes getEnum(final String value) {
+    public static TsstsLogMessageTypes getEnum(final String value) {
 
-        NameTypes result = NameTypes.VALUES_MAP.get(value);
+        TsstsLogMessageTypes result = TsstsLogMessageTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -103,9 +92,9 @@ public enum NameTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 初期値
      */
-    public static NameTypes getInitValue() {
+    public static TsstsLogMessageTypes getInitValue() {
 
-        final NameTypes result = NONE;
+        final TsstsLogMessageTypes result = NONE;
         return result;
 
     }
@@ -118,9 +107,9 @@ public enum NameTypes implements Supplier<String> {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static NameTypes getDefault() {
+    public static TsstsLogMessageTypes getDefault() {
 
-        final NameTypes result = NONE;
+        final TsstsLogMessageTypes result = NONE;
         return result;
     }
 

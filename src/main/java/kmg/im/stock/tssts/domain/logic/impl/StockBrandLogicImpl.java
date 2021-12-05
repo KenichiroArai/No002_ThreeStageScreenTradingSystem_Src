@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
-import kmg.im.stock.tssts.data.dao.StockBrandDao;
+import kmg.im.stock.core.data.dao.StockBrandDao;
 import kmg.im.stock.tssts.domain.logic.StockBrandLogic;
 
 /**

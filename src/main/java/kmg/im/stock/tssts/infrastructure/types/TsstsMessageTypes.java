@@ -5,23 +5,28 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * ログメッセージの種類<br>
+ * 三段階スクリーン・トレーディング・システムメッセージの種類<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @SuppressWarnings("nls")
-public enum LogMessageTypes implements Supplier<String> {
+public enum TsstsMessageTypes implements Supplier<String> {
 
     /* 定義：開始 */
 
     /** 指定無し */
     NONE("指定無し", null),
 
-    // TODO 2021/04/25 不要なので削除する
-    /** 三段階スクリーン・トレーディング・システムＤＡＯ */
-    I00001("三段階スクリーン・トレーディング・システムＤＡＯ", "I00001"),
+    /** 存在するディレクトリではありません。存在するディレクトリを指定してください。 */
+    KMG_IM_STOCK_TSSTS_MSG_NO10001("存在するディレクトリではありません。存在するディレクトリを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10001"),
+
+    /** 存在するファイルではありません。存在するファイルを指定してください。 */
+    KMG_IM_STOCK_TSSTS_MSG_NO10002("存在するファイルではありません。存在するファイルを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10002"),
+
+    /** ディレクトリは指定できません。ファイルを指定してください。 */
+    KMG_IM_STOCK_TSSTS_MSG_NO10003("ディレクトリは指定できません。ファイルを指定してください。", "KMG_IM_STOCK_TSSTS_MSG_NO10003"),
 
     /* 定義：終了 */
     ;
@@ -33,13 +38,13 @@ public enum LogMessageTypes implements Supplier<String> {
     private String value;
 
     /** 種類のマップ */
-    private static final Map<String, LogMessageTypes> VALUES_MAP = new HashMap<>();
+    private static final Map<String, TsstsMessageTypes> VALUES_MAP = new HashMap<>();
 
     static {
 
         /* 種類のマップにプット */
-        for (final LogMessageTypes type : LogMessageTypes.values()) {
-            LogMessageTypes.VALUES_MAP.put(type.get(), type);
+        for (final TsstsMessageTypes type : TsstsMessageTypes.values()) {
+            TsstsMessageTypes.VALUES_MAP.put(type.get(), type);
         }
     }
 
@@ -54,7 +59,7 @@ public enum LogMessageTypes implements Supplier<String> {
      * @param value
      *              値
      */
-    LogMessageTypes(final String name, final String value) {
+    TsstsMessageTypes(final String name, final String value) {
 
         this.name = name;
         this.value = value;
@@ -74,9 +79,9 @@ public enum LogMessageTypes implements Supplier<String> {
      *              値
      * @return 種類。指定無し（NONE）：値が存在しない場合。
      */
-    public static LogMessageTypes getEnum(final String value) {
+    public static TsstsMessageTypes getEnum(final String value) {
 
-        LogMessageTypes result = LogMessageTypes.VALUES_MAP.get(value);
+        TsstsMessageTypes result = TsstsMessageTypes.VALUES_MAP.get(value);
         if (result == null) {
             result = NONE;
             return result;
@@ -92,9 +97,9 @@ public enum LogMessageTypes implements Supplier<String> {
      * @version 1.0.0
      * @return 初期値
      */
-    public static LogMessageTypes getInitValue() {
+    public static TsstsMessageTypes getInitValue() {
 
-        final LogMessageTypes result = NONE;
+        final TsstsMessageTypes result = NONE;
         return result;
 
     }
@@ -107,9 +112,9 @@ public enum LogMessageTypes implements Supplier<String> {
      * @version 1.0.0
      * @return デフォルト値
      */
-    public static LogMessageTypes getDefault() {
+    public static TsstsMessageTypes getDefault() {
 
-        final LogMessageTypes result = NONE;
+        final TsstsMessageTypes result = NONE;
         return result;
     }
 

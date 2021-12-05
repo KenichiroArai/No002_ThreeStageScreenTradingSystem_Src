@@ -6,20 +6,20 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
 
-import kmg.im.stock.tssts.infrastructure.types.NameTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsMessageTypes;
 
 /**
- * 名称リゾルバ<br>
+ * 三段階スクリーン・トレーディング・システムメッセージリゾルバ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class NameResolver {
+public class TsstsMessageResolver {
 
-    /** 名称ソース */
-    private final MessageSource nameSource;
+    /** メッセージソース */
+    private final MessageSource messageSource;
 
     /**
      * コンストラクタ<br>
@@ -27,26 +27,26 @@ public class NameResolver {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param nameSource
-     *                   名称ソース
+     * @param messageSource
+     *                      メッセージソース
      */
-    public NameResolver(final MessageSource nameSource) {
-        this.nameSource = nameSource;
+    public TsstsMessageResolver(final MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 
     /**
-     * 名称を返す<br>
+     * メッセージを返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param code
-     *             名称コード
+     *             メッセージコード
      * @param args
      *             メッセージ引数
      * @return メッセージ
      */
-    public String getName(final NameTypes code, final Object... args) {
+    public String getMessage(final TsstsMessageTypes code, final Object... args) {
 
         String result = null;
 
@@ -56,11 +56,12 @@ public class NameResolver {
         }
 
         try {
-            result = this.nameSource.getMessage(code.get(), argsArrays, Locale.getDefault());
+            result = this.messageSource.getMessage(code.get(), argsArrays, Locale.getDefault());
         } catch (final NoSuchMessageException e) {
-            // 例外処理
+            // TODO KenichiroArai 2021/05/13 例外処理
             System.err.println(code.get());
             e.printStackTrace();
+            result = code.get();
             return result;
         }
 

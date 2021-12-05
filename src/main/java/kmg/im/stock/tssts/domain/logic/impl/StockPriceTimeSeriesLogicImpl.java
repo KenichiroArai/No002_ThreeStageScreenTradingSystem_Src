@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.core.infrastructure.utils.ListUtils;
+import kmg.im.stock.core.data.dao.StockPriceTimeSeriesDao;
+import kmg.im.stock.core.data.dto.StockPriceTimeSeriesDto;
+import kmg.im.stock.core.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
 import kmg.im.stock.core.domain.model.SimpleSptsModel;
 import kmg.im.stock.core.domain.model.SptsRegDataModel;
 import kmg.im.stock.core.domain.model.impl.SimpleSptsMgtModelImpl;
 import kmg.im.stock.core.domain.model.impl.SimpleSptsModelImpl;
 import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
-import kmg.im.stock.tssts.data.dao.StockPriceTimeSeriesDao;
-import kmg.im.stock.tssts.data.dto.StockPriceTimeSeriesDto;
-import kmg.im.stock.tssts.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 株価時系列ロジック<br>
@@ -70,7 +70,7 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
         } catch (final KmgDomainException e) {
             // TODO KenichiroArai 2021/06/11 例外処理
             final String errMsg = "";
-            final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
+            final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
             final Object[] logMsgArg = {};
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
         }
@@ -109,7 +109,7 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
             } catch (final KmgDomainException e) {
                 // TODO KenichiroArai 2021/06/12 例外処理
                 final String errMsg = "";
-                final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
+                final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
                 final Object[] logMsgArg = {};
                 throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
             }
@@ -142,7 +142,7 @@ public class StockPriceTimeSeriesLogicImpl implements StockPriceTimeSeriesLogic 
         } catch (final KmgDomainException e) {
             // TODO KenichiroArai 2021/11/24 例外処理
             final String errMsg = "";
-            final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
+            final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
             final Object[] logMsgArg = {};
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
         }

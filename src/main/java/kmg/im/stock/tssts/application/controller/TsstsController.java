@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 
 import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システムコントローラ<br>
@@ -22,8 +22,8 @@ public class TsstsController {
     /** ロガー */
     private static final Logger LOGGER = LoggerFactory.getLogger(TsstsController.class);
 
-    /** ログメッセージリゾルバ */
-    private final LogMessageResolver logMessageResolver;
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリゾルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
     /** 三段階スクリーン・トレーディング・システム株価データ登録サービス */
     private final TsstsSpDataRegisterService tsstsSpDataRegisterService;
@@ -34,14 +34,14 @@ public class TsstsController {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param logMessageResolver
-     *                                   ログメッセージリゾルバ
+     * @param tsstsLogMessageResolver
+     *                                   三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリゾルバ
      * @param tsstsSpDataRegisterService
      *                                   三段階スクリーン・トレーディング・システム株価データ登録サービス
      */
-    public TsstsController(final LogMessageResolver logMessageResolver,
+    public TsstsController(final TsstsLogMessageResolver tsstsLogMessageResolver,
         final TsstsSpDataRegisterService tsstsSpDataRegisterService) {
-        this.logMessageResolver = logMessageResolver;
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.tsstsSpDataRegisterService = tsstsSpDataRegisterService;
     }
 
@@ -61,7 +61,7 @@ public class TsstsController {
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             TsstsController.LOGGER.error(logMsg, e);
         }
 

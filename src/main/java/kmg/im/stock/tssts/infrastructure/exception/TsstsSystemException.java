@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.infrastructure.exception;
 
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システムシステム例外<br>
@@ -27,7 +27,7 @@ public class TsstsSystemException extends TsstsException {
      * @param logMsgArgs
      *                    ログメッセージの引数
      */
-    public TsstsSystemException(final String errMsg, final LogMessageTypes logMsgTypes, final Object[] logMsgArgs) {
+    public TsstsSystemException(final String errMsg, final TsstsLogMessageTypes logMsgTypes, final Object[] logMsgArgs) {
         super(errMsg, logMsgTypes, logMsgArgs);
     }
 
@@ -46,7 +46,7 @@ public class TsstsSystemException extends TsstsException {
      * @param cause
      *                    原因
      */
-    public TsstsSystemException(final String errMsg, final LogMessageTypes logMsgTypes, final Object[] logMsgArgs,
+    public TsstsSystemException(final String errMsg, final TsstsLogMessageTypes logMsgTypes, final Object[] logMsgArgs,
         final Throwable cause) {
         super(errMsg, logMsgTypes, logMsgArgs, cause);
     }

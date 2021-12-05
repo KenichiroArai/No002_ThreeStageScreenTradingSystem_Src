@@ -26,25 +26,25 @@ import kmg.im.stock.tssts.domain.service.SigChkService;
 import kmg.im.stock.tssts.domain.service.SimulationService;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.resolver.MessageResolver;
-import kmg.im.stock.tssts.infrastructure.resolver.NameResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
-import kmg.im.stock.tssts.infrastructure.types.MessageTypes;
-import kmg.im.stock.tssts.infrastructure.types.NameTypes;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsMessageResolver;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsNameResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsNameTypes;
 
 /**
- * 制御画面コントローラ<br>
+ * 三段階スクリーン・トレーディング・システム制御画面コントローラ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class ControlScreenController {
+public class TsstsControlScreenController {
 
     /** ロガー */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ControlScreenController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TsstsControlScreenController.class);
 
     /** 株価銘柄格納パス */
     @Value("${import.path.stockpricestockstoragepath}")
@@ -106,14 +106,14 @@ public class ControlScreenController {
     @FXML
     private Label lblProcTimeUnit;
 
-    /** 名称リゾルバ */
-    private final NameResolver nameResolver;
+    /** 三段階スクリーン・トレーディング・システム名称リゾルバ名称リゾルバ */
+    private final TsstsNameResolver tsstsNameResolver;
 
-    /** メッセージリゾルバ */
-    private final MessageResolver messageResolver;
+    /** 三段階スクリーン・トレーディング・システムメッセージリゾルバメッセージリゾルバ */
+    private final TsstsMessageResolver tsstsMessageResolver;
 
-    /** ログメッセージリゾルバ */
-    private final LogMessageResolver logMessageResolver;
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリゾルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
     /** 三段階スクリーン・トレーディング・システム株価データ登録サービス */
     private final TsstsSpDataRegisterService tsstsSpDataRegisterService;
@@ -130,12 +130,12 @@ public class ControlScreenController {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param nameResolver
-     *                                   名称リゾルバ
-     * @param messageResolver
-     *                                   メッセージリゾルバ
-     * @param logMessageResolver
-     *                                   ログメッセージリゾルバ
+     * @param tsstsNameResolver
+     *                                   三段階スクリーン・トレーディング・システム名称リゾルバ名称リゾルバ
+     * @param tsstsMessageResolver
+     *                                   三段階スクリーン・トレーディング・システムメッセージリゾルバメッセージリゾルバ
+     * @param tsstsLogMessageResolver
+     *                                   三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリゾルバ
      * @param tsstsSpDataRegisterService
      *                                   三段階スクリーン・トレーディング・システム株価データ登録サービス
      * @param simulationService
@@ -143,12 +143,13 @@ public class ControlScreenController {
      * @param sigChkService
      *                                   シグナル確認サービス
      */
-    public ControlScreenController(final NameResolver nameResolver, final MessageResolver messageResolver,
-        final LogMessageResolver logMessageResolver, final TsstsSpDataRegisterService tsstsSpDataRegisterService,
-        final SimulationService simulationService, final SigChkService sigChkService) {
-        this.nameResolver = nameResolver;
-        this.messageResolver = messageResolver;
-        this.logMessageResolver = logMessageResolver;
+    public TsstsControlScreenController(final TsstsNameResolver tsstsNameResolver,
+        final TsstsMessageResolver tsstsMessageResolver, final TsstsLogMessageResolver tsstsLogMessageResolver,
+        final TsstsSpDataRegisterService tsstsSpDataRegisterService, final SimulationService simulationService,
+        final SigChkService sigChkService) {
+        this.tsstsNameResolver = tsstsNameResolver;
+        this.tsstsMessageResolver = tsstsMessageResolver;
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.tsstsSpDataRegisterService = tsstsSpDataRegisterService;
         this.simulationService = simulationService;
         this.sigChkService = sigChkService;
@@ -193,7 +194,7 @@ public class ControlScreenController {
     private void openDirectoryOfStorageDirectory(final ActionEvent event) {
 
         final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10001));
+        directoryChooser.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10001));
         String defaultDirectoryPath = this.txtStorageDirectory.getText();
         if (KmgString.isEmpty(defaultDirectoryPath)) {
             // 格納ディレクトリテキストボックスに株価格納パスを設定する
@@ -233,9 +234,9 @@ public class ControlScreenController {
             final Path importPath = Paths.get(this.txtStorageDirectory.getText());
             if (!Files.isDirectory(importPath)) {
                 final Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10002));
+                alert.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10002));
                 alert.setHeaderText(null);
-                alert.setContentText(this.messageResolver.getMessage(MessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10001));
+                alert.setContentText(this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10001));
                 alert.showAndWait();
                 return;
             }
@@ -245,13 +246,13 @@ public class ControlScreenController {
         } catch (final TsstsDomainException e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            ControlScreenController.LOGGER.error(logMsg, e);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            TsstsControlScreenController.LOGGER.error(logMsg, e);
         } catch (final Exception e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            ControlScreenController.LOGGER.error(logMsg, e);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            TsstsControlScreenController.LOGGER.error(logMsg, e);
         } finally {
             pfaMeas.end();
             this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
@@ -272,7 +273,7 @@ public class ControlScreenController {
     private void openFileOfBrandFile(final ActionEvent event) {
 
         final FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10003));
+        fileChooser.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10003));
         String defaultFilePath = this.txtBrandFile.getText();
         if ((defaultFilePath == null) || defaultFilePath.isEmpty()) {
             // 格納ディレクトリテキストボックスに株価格納パスを設定する
@@ -309,17 +310,17 @@ public class ControlScreenController {
             final Path importPath = Paths.get(this.txtBrandFile.getText());
             if (!Files.exists(importPath)) {
                 final Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10004));
+                alert.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10004));
                 alert.setHeaderText(null);
-                alert.setContentText(this.messageResolver.getMessage(MessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10002));
+                alert.setContentText(this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10002));
                 alert.showAndWait();
                 return;
             }
             if (Files.isDirectory(importPath)) {
                 final Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle(this.nameResolver.getName(NameTypes.KMG_IM_STOCK_TSSTS_NAME10005));
+                alert.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10005));
                 alert.setHeaderText(null);
-                alert.setContentText(this.messageResolver.getMessage(MessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10003));
+                alert.setContentText(this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10003));
                 alert.showAndWait();
                 return;
             }
@@ -330,14 +331,14 @@ public class ControlScreenController {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
             // TODO KenichiroArai 2021/08/4 メッセージ
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            ControlScreenController.LOGGER.error(logMsg, e);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            TsstsControlScreenController.LOGGER.error(logMsg, e);
         } catch (final Exception e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
             // TODO KenichiroArai 2021/08/4 メッセージ
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            ControlScreenController.LOGGER.error(logMsg, e);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            TsstsControlScreenController.LOGGER.error(logMsg, e);
         } finally {
             pfaMeas.end();
             this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
@@ -381,14 +382,14 @@ public class ControlScreenController {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
             // TODO KenichiroArai 2021/08/4 メッセージ
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            ControlScreenController.LOGGER.error(logMsg, e);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            TsstsControlScreenController.LOGGER.error(logMsg, e);
         } catch (final Exception e) {
             // 三段階スクリーン・トレーディング・システムドメイン例外
 
             // TODO KenichiroArai 2021/08/4 メッセージ
-            final String logMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            ControlScreenController.LOGGER.error(logMsg, e);
+            final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            TsstsControlScreenController.LOGGER.error(logMsg, e);
         } finally {
             pfaMeas.end();
             this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));

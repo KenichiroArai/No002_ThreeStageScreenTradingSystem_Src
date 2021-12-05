@@ -4,15 +4,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
+import kmg.im.stock.core.data.dao.StockPriceCalcValueDao;
+import kmg.im.stock.core.data.dto.StockPriceCalcValueDto;
+import kmg.im.stock.core.data.dto.impl.StockPriceCalcValueDtoImpl;
 import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.core.domain.model.StockPriceCalcValueModel;
 import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
-import kmg.im.stock.tssts.data.dao.StockPriceCalcValueDao;
-import kmg.im.stock.tssts.data.dto.StockPriceCalcValueDto;
-import kmg.im.stock.tssts.data.dto.impl.StockPriceCalcValueDtoImpl;
 import kmg.im.stock.tssts.domain.logic.StockPriceCalcValueLogic;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 株価計算値ロジック<br>
@@ -63,7 +63,7 @@ public class StockPriceCalcValueLogicImpl implements StockPriceCalcValueLogic {
         } catch (final KmgDomainException e) {
             // TODO KenichiroArai 2021/06/11 例外処理
             final String errMsg = "";
-            final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
+            final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
             final Object[] logMsgArg = {};
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
         }
@@ -96,7 +96,7 @@ public class StockPriceCalcValueLogicImpl implements StockPriceCalcValueLogic {
         } catch (final KmgDomainException e) {
             // TODO KenichiroArai 2021/06/27 例外処理
             final String errMsg = "";
-            final LogMessageTypes logMsgTypes = LogMessageTypes.NONE;
+            final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
             final Object[] logMsgArg = {};
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
         }

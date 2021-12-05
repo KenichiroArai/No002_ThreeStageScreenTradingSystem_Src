@@ -6,20 +6,20 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
 
-import kmg.im.stock.tssts.infrastructure.types.MessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsNameTypes;
 
 /**
- * メッセージリゾルバ<br>
+ * 三段階スクリーン・トレーディング・システム名称リゾルバ<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
  * @version 1.0.0
  */
 @Component
-public class MessageResolver {
+public class TsstsNameResolver {
 
-    /** メッセージソース */
-    private final MessageSource messageSource;
+    /** 名称ソース */
+    private final MessageSource nameSource;
 
     /**
      * コンストラクタ<br>
@@ -27,26 +27,26 @@ public class MessageResolver {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param messageSource
-     *                      メッセージソース
+     * @param nameSource
+     *                   名称ソース
      */
-    public MessageResolver(final MessageSource messageSource) {
-        this.messageSource = messageSource;
+    public TsstsNameResolver(final MessageSource nameSource) {
+        this.nameSource = nameSource;
     }
 
     /**
-     * メッセージを返す<br>
+     * 名称を返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
      * @param code
-     *             メッセージコード
+     *             名称コード
      * @param args
      *             メッセージ引数
      * @return メッセージ
      */
-    public String getMessage(final MessageTypes code, final Object... args) {
+    public String getName(final TsstsNameTypes code, final Object... args) {
 
         String result = null;
 
@@ -56,12 +56,11 @@ public class MessageResolver {
         }
 
         try {
-            result = this.messageSource.getMessage(code.get(), argsArrays, Locale.getDefault());
+            result = this.nameSource.getMessage(code.get(), argsArrays, Locale.getDefault());
         } catch (final NoSuchMessageException e) {
-            // TODO KenichiroArai 2021/05/13 例外処理
+            // 例外処理
             System.err.println(code.get());
             e.printStackTrace();
-            result = code.get();
             return result;
         }
 

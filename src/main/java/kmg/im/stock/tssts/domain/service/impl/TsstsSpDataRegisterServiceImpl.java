@@ -30,8 +30,8 @@ import kmg.im.stock.tssts.domain.service.TsstsSptsMonthlyRegService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsWeeklyRegService;
 import kmg.im.stock.tssts.domain.service.TsstsStockPriceCalcValueService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
-import kmg.im.stock.tssts.infrastructure.resolver.LogMessageResolver;
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価データ登録サービスインタフェース<br>
@@ -46,8 +46,8 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
     /** アプリケーションコンテキスト */
     private final ApplicationContext context;
 
-    /** ログメッセージリソルバ */
-    private final LogMessageResolver logMessageResolver;
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
     /** 三段階スクリーン・トレーディング・システム株価生データ読み込みロジック */
     private final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic;
@@ -66,8 +66,8 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
      * @version 1.0.0
      * @param context
      *                                    アプリケーションコンテキスト
-     * @param logMessageResolver
-     *                                    ログメッセージリソルバ
+     * @param tsstsLogMessageResolver
+     *                                    三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      * @param tsstsSpRawDataLoadLogic
      *                                    三段階スクリーン・トレーディング・システム株価生データ読み込みロジック
      * @param stockBrandService
@@ -75,11 +75,11 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
      * @param stockPriceTimeSeriesService
      *                                    株価時系列サービス
      */
-    public TsstsSpDataRegisterServiceImpl(final ApplicationContext context, final LogMessageResolver logMessageResolver,
-        final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic, final StockBrandService stockBrandService,
-        final StockPriceTimeSeriesService stockPriceTimeSeriesService) {
+    public TsstsSpDataRegisterServiceImpl(final ApplicationContext context,
+        final TsstsLogMessageResolver tsstsLogMessageResolver, final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic,
+        final StockBrandService stockBrandService, final StockPriceTimeSeriesService stockPriceTimeSeriesService) {
         this.context = context;
-        this.logMessageResolver = logMessageResolver;
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.tsstsSpRawDataLoadLogic = tsstsSpRawDataLoadLogic;
         this.stockBrandService = stockBrandService;
         this.stockPriceTimeSeriesService = stockPriceTimeSeriesService;
@@ -143,8 +143,8 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
             }
         } catch (final IOException e) {
             // TODO KenichiroArai 2021/05/29 例外処理
-            final String errMsg = this.logMessageResolver.getMessage(LogMessageTypes.NONE);
-            throw new TsstsDomainException(errMsg, LogMessageTypes.NONE, e);
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
         }
     }
 

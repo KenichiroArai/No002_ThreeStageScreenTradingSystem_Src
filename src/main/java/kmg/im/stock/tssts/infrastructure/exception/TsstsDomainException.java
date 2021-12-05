@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.infrastructure.exception;
 
-import kmg.im.stock.tssts.infrastructure.types.LogMessageTypes;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システムドメイン例外<br>
@@ -27,7 +27,7 @@ public class TsstsDomainException extends TsstsException {
      * @param logMsgArgs
      *                    ログメッセージの引数
      */
-    public TsstsDomainException(final String errMsg, final LogMessageTypes logMsgTypes, final Object[] logMsgArgs) {
+    public TsstsDomainException(final String errMsg, final TsstsLogMessageTypes logMsgTypes, final Object[] logMsgArgs) {
         super(errMsg, logMsgTypes, logMsgArgs);
     }
 
@@ -42,7 +42,7 @@ public class TsstsDomainException extends TsstsException {
      * @param logMsgTypes
      *                    ログメッセージの種類
      */
-    public TsstsDomainException(final String errMsg, final LogMessageTypes logMsgTypes) {
+    public TsstsDomainException(final String errMsg, final TsstsLogMessageTypes logMsgTypes) {
         super(errMsg, logMsgTypes);
     }
 
@@ -59,7 +59,7 @@ public class TsstsDomainException extends TsstsException {
      * @param cause
      *                    原因
      */
-    public TsstsDomainException(final String errMsg, final LogMessageTypes logMsgTypes, final Throwable cause) {
+    public TsstsDomainException(final String errMsg, final TsstsLogMessageTypes logMsgTypes, final Throwable cause) {
         super(errMsg, logMsgTypes, cause);
     }
 
@@ -78,7 +78,7 @@ public class TsstsDomainException extends TsstsException {
      * @param cause
      *                    原因
      */
-    public TsstsDomainException(final String errMsg, final LogMessageTypes logMsgTypes, final Object[] logMsgArgs,
+    public TsstsDomainException(final String errMsg, final TsstsLogMessageTypes logMsgTypes, final Object[] logMsgArgs,
         final Throwable cause) {
         super(errMsg, logMsgTypes, logMsgArgs, cause);
     }
