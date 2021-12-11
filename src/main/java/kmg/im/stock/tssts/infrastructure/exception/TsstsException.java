@@ -14,7 +14,7 @@ public class TsstsException extends Exception {
     /** デフォルトシリアルバージョンＵＩＤ */
     private static final long serialVersionUID = 1L;
 
-    /** ログメッセージの種類 */
+    /** 三段階スクリーン・トレーディング・システムログメッセージの種類 */
     private final TsstsLogMessageTypes logMsgTypes;
 
     /** ログメッセージの引数 */
@@ -29,7 +29,7 @@ public class TsstsException extends Exception {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param logMsgArgs
      *                    ログメッセージの引数
      */
@@ -48,7 +48,7 @@ public class TsstsException extends Exception {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      */
     public TsstsException(final String errMsg, final TsstsLogMessageTypes logMsgTypes) {
         this(errMsg, logMsgTypes, (Object[]) null);
@@ -63,7 +63,7 @@ public class TsstsException extends Exception {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param cause
      *                    原因
      */
@@ -82,7 +82,7 @@ public class TsstsException extends Exception {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param logMsgArgs
      *                    ログメッセージの引数
      * @param cause
@@ -101,7 +101,7 @@ public class TsstsException extends Exception {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return ログメッセージの種類
+     * @return 三段階スクリーン・トレーディング・システムログメッセージの種類
      */
     public TsstsLogMessageTypes getLogMsgTypes() {
         final TsstsLogMessageTypes result = this.logMsgTypes;

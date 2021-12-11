@@ -8,18 +8,21 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.utils.ListUtils;
+import kmg.im.stock.core.domain.logic.SptsptLogic;
+import kmg.im.stock.core.domain.logic.StockPriceCalcValueLogic;
+import kmg.im.stock.core.domain.logic.StockPriceTimeSeriesLogic;
 import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
 import kmg.im.stock.core.domain.model.SpDataRegModel;
 import kmg.im.stock.core.domain.model.SptsRegDataModel;
 import kmg.im.stock.core.domain.model.impl.SptsRegDataModelImpl;
+import kmg.im.stock.core.domain.service.StockBrandService;
+import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
-import kmg.im.stock.tssts.domain.logic.SptsptLogic;
-import kmg.im.stock.tssts.domain.logic.StockPriceCalcValueLogic;
-import kmg.im.stock.tssts.domain.logic.StockPriceTimeSeriesLogic;
 import kmg.im.stock.tssts.domain.service.AbstractTsstsSptsRegService;
-import kmg.im.stock.tssts.domain.service.StockBrandService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsMonthlyRegService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価時系列月足登録サービス<br>
@@ -43,6 +46,9 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
     /** 株価データ登録管理モデル */
     private SpDataRegMgtModel spDataRegMgtModel;
 
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
+
     /** 株価時系列期間の種類ロジック */
     private final SptsptLogic sptsptLogic;
 
@@ -61,6 +67,8 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
+     * @param tsstsLogMessageResolver
+     *                                  三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      * @param sptsptLogic
      *                                  株価時系列期間の種類ロジック
      * @param stockPriceTimeSeriesLogic
@@ -70,9 +78,10 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
      * @param stockBrandService
      *                                  株銘柄サービス
      */
-    public TsstsSptsMonthlyRegServiceImpl(final SptsptLogic sptsptLogic,
-        final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
+    public TsstsSptsMonthlyRegServiceImpl(final TsstsLogMessageResolver tsstsLogMessageResolver,
+        final SptsptLogic sptsptLogic, final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
         final StockPriceCalcValueLogic stockPriceCalcValueLogic, final StockBrandService stockBrandService) {
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.sptsptLogic = sptsptLogic;
         this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
         this.stockPriceCalcValueLogic = stockPriceCalcValueLogic;
@@ -112,16 +121,34 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
         final long result = 0L;
 
         /* 株価計算値の削除 */
-        this.stockPriceCalcValueLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
-            TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        try {
+            this.stockPriceCalcValueLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
+                TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
         /* 株価時系列の削除 */
-        this.stockPriceTimeSeriesLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
-            TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        try {
+            this.stockPriceTimeSeriesLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
+                TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
         /* 株価時系列期間の種類の削除 */
-        this.sptsptLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
-            TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        try {
+            this.sptsptLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
+                TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
         return result;
     }
@@ -139,18 +166,36 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
     public void register() throws TsstsDomainException {
 
         /* 株価時系列期間の種類の登録 */
-        this.sptsptLogic.register(this.stockBrandId, TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        try {
+            this.sptsptLogic.register(this.stockBrandId, TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
         /* 株価時系列期間の種類ID */
-        this.sptsptId = this.sptsptLogic.getSptsptId(this.stockBrandId,
-            TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES, LocalDate.now());
+        try {
+            this.sptsptId = this.sptsptLogic.getSptsptId(this.stockBrandId,
+                TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES, LocalDate.now());
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
         /* 株価時系列の登録 */
         // 詰め替え
         final List<SptsRegDataModel> sptsMainDataModelList = this.toSptsRegDataModelList();
         // 登録処理呼び出し
-        this.stockPriceTimeSeriesLogic.register(TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES,
-            sptsMainDataModelList);
+        try {
+            this.stockPriceTimeSeriesLogic.register(TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES,
+                sptsMainDataModelList);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
     }
 
     /**

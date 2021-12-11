@@ -10,13 +10,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.utils.PathUtils;
+import kmg.im.stock.core.data.dao.SpRawDataDao;
 import kmg.im.stock.core.data.dto.SpRawDataAcqDto;
 import kmg.im.stock.core.data.dto.SpRawDataAcqMgtDto;
 import kmg.im.stock.core.domain.model.SpRawDataAcqMgtModel;
 import kmg.im.stock.core.domain.model.SpRawDataAcqModel;
 import kmg.im.stock.core.domain.model.impl.SpRawDataAcqMgtModelImpl;
 import kmg.im.stock.core.domain.model.impl.SpRawDataAcqModelImpl;
-import kmg.im.stock.tssts.data.dao.SpRawDataDao;
+import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.tssts.domain.logic.TsstsSpRawDataLoadLogic;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
@@ -71,7 +72,14 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
         final Map<Long, SpRawDataAcqMgtModel> result = new HashMap<>();
 
         /* 銘柄ごとの株価データのファイルパスを取得する */
-        final List<Path> stockPriceStockStoragePathList = this.spRawDataDao.findOfSpsStoragePath();
+        List<Path> stockPriceStockStoragePathList;
+        try {
+            stockPriceStockStoragePathList = this.spRawDataDao.findOfSpsStoragePath();
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/08 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
         /* 株価生データモデル取得管理モデルのマップに追加する */
         for (final Path path : stockPriceStockStoragePathList) {
@@ -168,7 +176,14 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
         final List<SpRawDataAcqModel> result = new ArrayList<>();
 
         /* 株価生データ取得のリストを検索する */
-        final SpRawDataAcqMgtDto spRawDataAcqMgtDto = this.spRawDataDao.findAll(filePath);
+        SpRawDataAcqMgtDto spRawDataAcqMgtDto = null;
+        try {
+            spRawDataAcqMgtDto = this.spRawDataDao.findAll(filePath);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/08 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
         /* 株価生データ取得リストに追加する */
         for (final SpRawDataAcqDto dto : spRawDataAcqMgtDto.getDataList()) {

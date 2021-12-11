@@ -23,11 +23,12 @@ public class TsstsSystemException extends TsstsException {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param logMsgArgs
      *                    ログメッセージの引数
      */
-    public TsstsSystemException(final String errMsg, final TsstsLogMessageTypes logMsgTypes, final Object[] logMsgArgs) {
+    public TsstsSystemException(final String errMsg, final TsstsLogMessageTypes logMsgTypes,
+        final Object[] logMsgArgs) {
         super(errMsg, logMsgTypes, logMsgArgs);
     }
 
@@ -40,7 +41,7 @@ public class TsstsSystemException extends TsstsException {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param logMsgArgs
      *                    ログメッセージの引数
      * @param cause

@@ -11,12 +11,15 @@ import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
 import kmg.im.stock.core.domain.service.LowestPriceInPastService;
 import kmg.im.stock.core.domain.service.MacdService;
 import kmg.im.stock.core.domain.service.PowerIndexService;
+import kmg.im.stock.core.domain.service.StockPriceCalcValueService;
+import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
 import kmg.im.stock.tssts.domain.model.impl.StockPriceCalcValueMgtModelImpl;
-import kmg.im.stock.tssts.domain.service.StockPriceCalcValueService;
 import kmg.im.stock.tssts.domain.service.TsstsStockPriceCalcValueService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
+import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
+import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価計算値サービスインタフェース<br>
@@ -34,6 +37,9 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
     /** 三段階スクリーン・トレーディング・システム株価計算値初期化管理モデル */
     private TsstsSpcvInitMgtModel tsstsSpcvInitMgtModel;
 
+    /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
+    private final TsstsLogMessageResolver tsstsLogMessageResolver;
+
     /** 株価計算値サービス */
     private final StockPriceCalcValueService stockPriceCalcValueService;
 
@@ -45,12 +51,16 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
      * @version 1.0.0
      * @param context
      *                                   アプリケーションコンテキスト
+     * @param tsstsLogMessageResolver
+     *                                   三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      * @param stockPriceCalcValueService
      *                                   株価計算値サービス
      */
     public TsstsStockPriceCalcValueServiceImpl(final ApplicationContext context,
+        final TsstsLogMessageResolver tsstsLogMessageResolver,
         final StockPriceCalcValueService stockPriceCalcValueService) {
         this.context = context;
+        this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.stockPriceCalcValueService = stockPriceCalcValueService;
     }
 
@@ -126,19 +136,61 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
 
         /* 登録する */
         // ＭＣＡＤライン
-        this.stockPriceCalcValueService.register(spcvMgtMacdlModel);
+        try {
+            this.stockPriceCalcValueService.register(spcvMgtMacdlModel);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
         // ＭＣＡＤシグナル
-        this.stockPriceCalcValueService.register(spcvMgtMacdsModel);
+        try {
+            this.stockPriceCalcValueService.register(spcvMgtMacdsModel);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
         // ＭＣＡＤヒストグラム
-        this.stockPriceCalcValueService.register(spcvMgtMacdhModel);
+        try {
+            this.stockPriceCalcValueService.register(spcvMgtMacdhModel);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
         // 勢力指数
-        this.stockPriceCalcValueService.register(spcvMgtPiModel);
+        try {
+            this.stockPriceCalcValueService.register(spcvMgtPiModel);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
         // 勢力指数２ＥＭＡ
-        this.stockPriceCalcValueService.register(spcvMgtPi2EmaModel);
+        try {
+            this.stockPriceCalcValueService.register(spcvMgtPi2EmaModel);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
         // 勢力指数１３ＥＭＡ
-        this.stockPriceCalcValueService.register(spcvMgtPi13EmaModel);
+        try {
+            this.stockPriceCalcValueService.register(spcvMgtPi13EmaModel);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
         // 過去３期間の最安値
-        this.stockPriceCalcValueService.register(spcvMgtLpl3pPModel);
+        try {
+            this.stockPriceCalcValueService.register(spcvMgtLpl3pPModel);
+        } catch (final ImStkDomainException e) {
+            // TODO KenichiroArai 2021/12/11 例外処理
+            final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
+            throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
+        }
 
     }
 

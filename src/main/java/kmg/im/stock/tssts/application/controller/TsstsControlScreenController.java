@@ -22,8 +22,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.tssts.domain.service.SigChkService;
-import kmg.im.stock.tssts.domain.service.SimulationService;
+import kmg.im.stock.core.domain.service.SigChkService;
+import kmg.im.stock.core.domain.service.SimulationService;
+import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
@@ -236,7 +237,8 @@ public class TsstsControlScreenController {
                 final Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10002));
                 alert.setHeaderText(null);
-                alert.setContentText(this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10001));
+                alert.setContentText(
+                    this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10001));
                 alert.showAndWait();
                 return;
             }
@@ -312,7 +314,8 @@ public class TsstsControlScreenController {
                 final Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10004));
                 alert.setHeaderText(null);
-                alert.setContentText(this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10002));
+                alert.setContentText(
+                    this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10002));
                 alert.showAndWait();
                 return;
             }
@@ -320,7 +323,8 @@ public class TsstsControlScreenController {
                 final Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle(this.tsstsNameResolver.getName(TsstsNameTypes.KMG_IM_STOCK_TSSTS_NAME10005));
                 alert.setHeaderText(null);
-                alert.setContentText(this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10003));
+                alert.setContentText(
+                    this.tsstsMessageResolver.getMessage(TsstsMessageTypes.KMG_IM_STOCK_TSSTS_MSG_NO10003));
                 alert.showAndWait();
                 return;
             }
@@ -378,14 +382,14 @@ public class TsstsControlScreenController {
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
                 this.simulationService.simulate(code);
             }
-        } catch (final TsstsDomainException e) {
-            // 三段階スクリーン・トレーディング・システムドメイン例外
+        } catch (final ImStkDomainException e) {
+            // 投資株式ドメイン例外
 
             // TODO KenichiroArai 2021/08/4 メッセージ
             final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             TsstsControlScreenController.LOGGER.error(logMsg, e);
         } catch (final Exception e) {
-            // 三段階スクリーン・トレーディング・システムドメイン例外
+            // 例外
 
             // TODO KenichiroArai 2021/08/4 メッセージ
             final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);

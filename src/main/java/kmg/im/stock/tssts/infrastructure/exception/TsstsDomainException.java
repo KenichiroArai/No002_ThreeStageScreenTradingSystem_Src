@@ -23,11 +23,12 @@ public class TsstsDomainException extends TsstsException {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param logMsgArgs
      *                    ログメッセージの引数
      */
-    public TsstsDomainException(final String errMsg, final TsstsLogMessageTypes logMsgTypes, final Object[] logMsgArgs) {
+    public TsstsDomainException(final String errMsg, final TsstsLogMessageTypes logMsgTypes,
+        final Object[] logMsgArgs) {
         super(errMsg, logMsgTypes, logMsgArgs);
     }
 
@@ -40,7 +41,7 @@ public class TsstsDomainException extends TsstsException {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      */
     public TsstsDomainException(final String errMsg, final TsstsLogMessageTypes logMsgTypes) {
         super(errMsg, logMsgTypes);
@@ -55,7 +56,7 @@ public class TsstsDomainException extends TsstsException {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param cause
      *                    原因
      */
@@ -72,7 +73,7 @@ public class TsstsDomainException extends TsstsException {
      * @param errMsg
      *                    エラーメッセージ
      * @param logMsgTypes
-     *                    ログメッセージの種類
+     *                    三段階スクリーン・トレーディング・システムログメッセージの種類
      * @param logMsgArgs
      *                    ログメッセージの引数
      * @param cause
