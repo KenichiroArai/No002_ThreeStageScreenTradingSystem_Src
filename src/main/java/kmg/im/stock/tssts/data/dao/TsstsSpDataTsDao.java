@@ -12,7 +12,7 @@ import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.im.stock.core.data.dto.SptsptDto;
 import kmg.im.stock.core.data.dto.impl.SptsptDtoImpl;
-import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
+import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 
 /**
  * 三段階スクリーン・トレーディング・システム株価データ時系列ＤＡＯ<br>
@@ -54,19 +54,20 @@ public class TsstsSpDataTsDao {
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandId
-     *                        株銘柄ID
-     * @param periodTypeTypes
-     *                        期間の種類の種類
+     *                             株銘柄ID
+     * @param imStkPeriodTypeTypes
+     *                             投資株式期間の種類の種類
      * @return 削除数
      * @throws KmgDomainException
      *                            ＫＭＧドメイン例外
      */
-    public long delete(final long stockBrandId, final PeriodTypeTypes periodTypeTypes) throws KmgDomainException {
+    public long delete(final long stockBrandId, final ImStkPeriodTypeTypes imStkPeriodTypeTypes)
+        throws KmgDomainException {
 
         long result = 0L;
 
         final SptsptDto sptsptDto = new SptsptDtoImpl();
-        sptsptDto.setPeriodTypeId(periodTypeTypes.get());
+        sptsptDto.setPeriodTypeId(imStkPeriodTypeTypes.get());
 
         final SqlParameterSource param = new BeanPropertySqlParameterSource(sptsptDto);
         result = this.jdbc.update(TsstsSpDataTsDao.DELETE_SQL_PATH.toSql(), param);

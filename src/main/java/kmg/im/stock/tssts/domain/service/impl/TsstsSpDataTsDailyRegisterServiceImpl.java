@@ -1,7 +1,7 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
 import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
-import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
+import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.logic.TsstsSpDataTsRegisterLogic;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataTsDailyRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -15,8 +15,8 @@ import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
  */
 public class TsstsSpDataTsDailyRegisterServiceImpl implements TsstsSpDataTsDailyRegisterService {
 
-    /** 期間の種類の種類 */
-    private static final PeriodTypeTypes PERIOD_TYPE_TYPES = PeriodTypeTypes.DAILY;
+    /** 投資株式期間の種類の種類 */
+    private static final ImStkPeriodTypeTypes PERIOD_TYPE_TYPES = ImStkPeriodTypeTypes.DAILY;
 
     /** 株価データ登録管理モデル */
     private SpDataRegMgtModel spDataRegMgtModel;

@@ -15,7 +15,7 @@ import kmg.im.stock.core.domain.model.SpDataRegModel;
 import kmg.im.stock.core.domain.model.SptsRegDataModel;
 import kmg.im.stock.core.domain.model.impl.SptsRegDataModelImpl;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
-import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
+import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.service.AbstractTsstsSptsRegService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsDailyRegService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -32,8 +32,8 @@ import kmg.im.stock.tssts.infrastructure.types.TsstsLogMessageTypes;
 @Service
 public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService implements TsstsSptsDailyRegService {
 
-    /** 期間の種類の種類 */
-    private static final PeriodTypeTypes PERIOD_TYPE_TYPES = PeriodTypeTypes.DAILY;
+    /** 投資株式期間の種類の種類 */
+    private static final ImStkPeriodTypeTypes PERIOD_TYPE_TYPES = ImStkPeriodTypeTypes.DAILY;
 
     /** 株銘柄ＩＤ */
     private long stockBrandId;
@@ -114,7 +114,7 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
 
         /* 株価計算値の削除 */
         try {
-            this.stockPriceCalcValueLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
+            this.stockPriceCalcValueLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
                 TsstsSptsDailyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -124,7 +124,7 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
 
         /* 株価時系列の削除 */
         try {
-            this.stockPriceTimeSeriesLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
+            this.stockPriceTimeSeriesLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
                 TsstsSptsDailyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -134,7 +134,7 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
 
         /* 株価時系列期間の種類の削除 */
         try {
-            this.sptsptLogic.deleteBySbIdAndPeriodTypeTypes(this.stockBrandId,
+            this.sptsptLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
                 TsstsSptsDailyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理

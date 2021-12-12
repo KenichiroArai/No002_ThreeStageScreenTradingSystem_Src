@@ -1,10 +1,10 @@
 package kmg.im.stock.tssts.domain.service;
 
-import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpcvInitMgtModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
- * 三段階スクリーン・トレーディング・システム株価計算値サービスインタフェース<br>
+ * 投資株式株価計算値サービスインタフェース<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
@@ -18,10 +18,10 @@ public interface TsstsStockPriceCalcValueService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param tsstsSpcvInitMgtModel
+     * @param imStkSpcvInitMgtModel
      *                              株価時系列メインデータ管理モデル
      */
-    void initialize(final TsstsSpcvInitMgtModel tsstsSpcvInitMgtModel);
+    void initialize(final ImStkSpcvInitMgtModel imStkSpcvInitMgtModel);
 
     /**
      * 登録する<br>

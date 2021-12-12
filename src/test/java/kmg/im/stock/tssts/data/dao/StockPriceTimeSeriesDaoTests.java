@@ -13,7 +13,7 @@ import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.im.stock.core.data.dao.StockPriceTimeSeriesDao;
 import kmg.im.stock.core.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.core.data.dto.impl.StockPriceTimeSeriesDtoImpl;
-import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
+import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 
 /**
  * 株価時系列ＤＡＯテスト<br>
@@ -59,7 +59,7 @@ public class StockPriceTimeSeriesDaoTests {
         /* テスト対象を呼び出す */
         final long actual = 0;
         try {
-            this.testTarget.insertByPttAndSptsDto(PeriodTypeTypes.DAILY, stockPriceTimeSeriesDto);
+            this.testTarget.insertByPttAndSptsDto(ImStkPeriodTypeTypes.DAILY, stockPriceTimeSeriesDto);
         } catch (final KmgDomainException e) {
             e.printStackTrace();
             /* 期待値と比較 */

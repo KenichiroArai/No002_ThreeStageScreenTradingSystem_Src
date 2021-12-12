@@ -11,20 +11,20 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.core.domain.model.ImStkSpcvInitMgtModel;
 import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
 import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
 import kmg.im.stock.core.domain.model.SpDataRegModel;
 import kmg.im.stock.core.domain.model.SpRawDataAcqMgtModel;
 import kmg.im.stock.core.domain.model.SpRawDataAcqModel;
+import kmg.im.stock.core.domain.model.impl.ImStkSpcvInitMgtModelImpl;
 import kmg.im.stock.core.domain.model.impl.SpDataRegMgtModelImpl;
 import kmg.im.stock.core.domain.model.impl.SpDataRegModelImpl;
 import kmg.im.stock.core.domain.service.StockBrandService;
 import kmg.im.stock.core.domain.service.StockPriceTimeSeriesService;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
-import kmg.im.stock.core.infrastructure.types.PeriodTypeTypes;
+import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.logic.TsstsSpRawDataLoadLogic;
-import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
-import kmg.im.stock.tssts.domain.model.impl.TsstsSpcvInitMgtModelImpl;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsDailyRegService;
 import kmg.im.stock.tssts.domain.service.TsstsSptsMonthlyRegService;
@@ -212,18 +212,18 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         SimpleSptsMgtModel simpleSptsMgtDailyModel = null;
         try {
             simpleSptsMgtDailyModel = this.stockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
-                PeriodTypeTypes.DAILY);
+                ImStkPeriodTypeTypes.DAILY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
         }
         // 株価計算値を登録する
-        final TsstsSpcvInitMgtModel tsstsSpcvInitMgtDailyModel = new TsstsSpcvInitMgtModelImpl();
-        tsstsSpcvInitMgtDailyModel.from(simpleSptsMgtDailyModel);
+        final ImStkSpcvInitMgtModel imStkSpcvInitMgtDailyModel = new ImStkSpcvInitMgtModelImpl();
+        imStkSpcvInitMgtDailyModel.from(simpleSptsMgtDailyModel);
         final TsstsStockPriceCalcValueService calcVlueDailyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
-        calcVlueDailyService.initialize(tsstsSpcvInitMgtDailyModel);
+        calcVlueDailyService.initialize(imStkSpcvInitMgtDailyModel);
         calcVlueDailyService.register();
 
         /* 株価時系列週足 */
@@ -242,14 +242,14 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         SimpleSptsMgtModel simpleSptsMgtWeeklyModel = null;
         try {
             simpleSptsMgtWeeklyModel = this.stockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
-                PeriodTypeTypes.WEEKLY);
+                ImStkPeriodTypeTypes.WEEKLY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
         }
         // 株価計算値を登録する
-        final TsstsSpcvInitMgtModel tsstsSpcvInitMgtWeeklyModel = new TsstsSpcvInitMgtModelImpl();
+        final ImStkSpcvInitMgtModel tsstsSpcvInitMgtWeeklyModel = new ImStkSpcvInitMgtModelImpl();
         tsstsSpcvInitMgtWeeklyModel.from(simpleSptsMgtWeeklyModel);
         final TsstsStockPriceCalcValueService calcVlueWeeklyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
@@ -272,14 +272,14 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         SimpleSptsMgtModel simpleSptsMgtMonthlyModel = null;
         try {
             simpleSptsMgtMonthlyModel = this.stockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
-                PeriodTypeTypes.MONTHLY);
+                ImStkPeriodTypeTypes.MONTHLY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             throw new TsstsDomainException(errMsg, TsstsLogMessageTypes.NONE, e);
         }
         // 株価計算値を登録する
-        final TsstsSpcvInitMgtModel tsstsSpcvInitMgtMonthlyModel = new TsstsSpcvInitMgtModelImpl();
+        final ImStkSpcvInitMgtModel tsstsSpcvInitMgtMonthlyModel = new ImStkSpcvInitMgtModelImpl();
         tsstsSpcvInitMgtMonthlyModel.from(simpleSptsMgtMonthlyModel);
         final TsstsStockPriceCalcValueService calcVlueMonthlyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);

@@ -7,15 +7,15 @@ import java.util.function.Supplier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.core.domain.model.ImStkSpcvInitMgtModel;
 import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
+import kmg.im.stock.core.domain.model.impl.StockPriceCalcValueMgtModelImpl;
 import kmg.im.stock.core.domain.service.LowestPriceInPastService;
 import kmg.im.stock.core.domain.service.MacdService;
 import kmg.im.stock.core.domain.service.PowerIndexService;
 import kmg.im.stock.core.domain.service.StockPriceCalcValueService;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
-import kmg.im.stock.core.infrastructure.types.StockPriceCalcValueTypeTypes;
-import kmg.im.stock.tssts.domain.model.TsstsSpcvInitMgtModel;
-import kmg.im.stock.tssts.domain.model.impl.StockPriceCalcValueMgtModelImpl;
+import kmg.im.stock.core.infrastructure.types.ImStkStockPriceCalcValueTypeTypes;
 import kmg.im.stock.tssts.domain.service.TsstsStockPriceCalcValueService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 import kmg.im.stock.tssts.infrastructure.resolver.TsstsLogMessageResolver;
@@ -34,8 +34,8 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
     /** アプリケーションコンテキスト */
     private final ApplicationContext context;
 
-    /** 三段階スクリーン・トレーディング・システム株価計算値初期化管理モデル */
-    private TsstsSpcvInitMgtModel tsstsSpcvInitMgtModel;
+    /** 投資株式株価計算値初期化管理モデル */
+    private ImStkSpcvInitMgtModel tsstsSpcvInitMgtModel;
 
     /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
     private final TsstsLogMessageResolver tsstsLogMessageResolver;
@@ -75,7 +75,7 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
      */
     @Override
     @SuppressWarnings("hiding")
-    public void initialize(final TsstsSpcvInitMgtModel tsstsSpcvInitMgtModel) {
+    public void initialize(final ImStkSpcvInitMgtModel tsstsSpcvInitMgtModel) {
         this.tsstsSpcvInitMgtModel = tsstsSpcvInitMgtModel;
     }
 
@@ -99,30 +99,30 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
         // ＭＣＡＤライン
         macdService.clacLine();
         final StockPriceCalcValueMgtModel spcvMgtMacdlModel = new StockPriceCalcValueMgtModelImpl(
-            this.tsstsSpcvInitMgtModel, StockPriceCalcValueTypeTypes.MCADL, macdService.getLineList());
+            this.tsstsSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.MCADL, macdService.getLineList());
         // ＭＣＡＤシグナル
         macdService.clacSignal();
         final StockPriceCalcValueMgtModel spcvMgtMacdsModel = new StockPriceCalcValueMgtModelImpl(
-            this.tsstsSpcvInitMgtModel, StockPriceCalcValueTypeTypes.MCADS, macdService.getSignalList());
+            this.tsstsSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.MCADS, macdService.getSignalList());
         // ＭＣＡＤヒストグラム
         macdService.clacHistogram();
         final StockPriceCalcValueMgtModel spcvMgtMacdhModel = new StockPriceCalcValueMgtModelImpl(
-            this.tsstsSpcvInitMgtModel, StockPriceCalcValueTypeTypes.MCADH, macdService.getHistogramList());
+            this.tsstsSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.MCADH, macdService.getHistogramList());
 
         // 勢力指数
         final PowerIndexService piService = this.context.getBean(PowerIndexService.class);
         piService.initialize(this.tsstsSpcvInitMgtModel.toPowerIndexCalcModelList());
         piService.calc();
         final StockPriceCalcValueMgtModel spcvMgtPiModel = new StockPriceCalcValueMgtModelImpl(
-            this.tsstsSpcvInitMgtModel, StockPriceCalcValueTypeTypes.PI, piService.getCalcResultList());
+            this.tsstsSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.PI, piService.getCalcResultList());
         // 勢力指数２ＥＭＡ
         piService.defaultStSmoothing();
         final StockPriceCalcValueMgtModel spcvMgtPi2EmaModel = new StockPriceCalcValueMgtModelImpl(
-            this.tsstsSpcvInitMgtModel, StockPriceCalcValueTypeTypes.PI2EMA, piService.getSmoothingList());
+            this.tsstsSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.PI2EMA, piService.getSmoothingList());
         // 勢力指数１３ＥＭＡ
         piService.defaultLtSmoothing();
         final StockPriceCalcValueMgtModel spcvMgtPi13EmaModel = new StockPriceCalcValueMgtModelImpl(
-            this.tsstsSpcvInitMgtModel, StockPriceCalcValueTypeTypes.PI13EMA, piService.getSmoothingList());
+            this.tsstsSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.PI13EMA, piService.getSmoothingList());
 
         // 過去３期間の最安値
         final LowestPriceInPastService lowestPriceInPastService = this.context.getBean(LowestPriceInPastService.class);
@@ -131,7 +131,7 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
         lowestPriceInPastService.initialize(lowestPriceInPastCalcResultList, 3);
         lowestPriceInPastService.calc();
         final StockPriceCalcValueMgtModel spcvMgtLpl3pPModel = new StockPriceCalcValueMgtModelImpl(
-            this.tsstsSpcvInitMgtModel, StockPriceCalcValueTypeTypes.LOWEST_PRICE_IN_LAST3_PERIODS,
+            this.tsstsSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.LOWEST_PRICE_IN_LAST3_PERIODS,
             lowestPriceInPastService.getClacResultList());
 
         /* 登録する */
