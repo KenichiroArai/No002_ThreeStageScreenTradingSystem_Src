@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
-import kmg.im.stock.core.data.dao.StockPriceTimeSeriesDao;
+import kmg.im.stock.core.data.dao.ImStkStockPriceTimeSeriesDao;
 import kmg.im.stock.core.data.dto.StockPriceTimeSeriesDto;
 import kmg.im.stock.core.data.dto.impl.StockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
@@ -24,11 +24,11 @@ import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
  */
 @SpringBootTest
 @Transactional
-public class StockPriceTimeSeriesDaoTests {
+public class ImStkStockPriceTimeSeriesDaoTests {
 
     /** テスト対象 */
     @Autowired
-    private StockPriceTimeSeriesDao testTarget;
+    private ImStkStockPriceTimeSeriesDao testTarget;
 
     /**
      * 株価時系列を挿入するをテストする<br>

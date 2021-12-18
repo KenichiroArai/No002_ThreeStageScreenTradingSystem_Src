@@ -8,14 +8,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.utils.ListUtils;
-import kmg.im.stock.core.domain.logic.SptsptLogic;
-import kmg.im.stock.core.domain.logic.StockPriceCalcValueLogic;
-import kmg.im.stock.core.domain.logic.StockPriceTimeSeriesLogic;
+import kmg.im.stock.core.domain.logic.ImStkSptsptLogic;
+import kmg.im.stock.core.domain.logic.ImStkStockPriceCalcValueLogic;
+import kmg.im.stock.core.domain.logic.ImStkStockPriceTimeSeriesLogic;
 import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
 import kmg.im.stock.core.domain.model.SpDataRegModel;
 import kmg.im.stock.core.domain.model.SptsRegDataModel;
 import kmg.im.stock.core.domain.model.impl.SptsRegDataModelImpl;
-import kmg.im.stock.core.domain.service.StockBrandService;
+import kmg.im.stock.core.domain.service.ImStkStockBrandService;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.service.AbstractTsstsSptsRegService;
@@ -49,17 +49,17 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
     /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
     private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
-    /** 株価時系列期間の種類ロジック */
-    private final SptsptLogic sptsptLogic;
+    /** 投資株式株価時系列期間の種類ロジック */
+    private final ImStkSptsptLogic imStkSptsptLogic;
 
-    /** 株価時系列ロジック */
-    private final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic;
+    /** 投資株式株価時系列ロジック */
+    private final ImStkStockPriceTimeSeriesLogic imStkStockPriceTimeSeriesLogic;
 
-    /** 株価計算値ロジック */
-    private final StockPriceCalcValueLogic stockPriceCalcValueLogic;
+    /** 投資株式株価計算値ロジック */
+    private final ImStkStockPriceCalcValueLogic imStkStockPriceCalcValueLogic;
 
-    /** 株銘柄サービス */
-    private final StockBrandService stockBrandService;
+    /** 投資株式株銘柄サービス */
+    private final ImStkStockBrandService imStkStockBrandService;
 
     /**
      * コンストラクタ<br>
@@ -68,24 +68,25 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
      * @sine 1.0.0
      * @version 1.0.0
      * @param tsstsLogMessageResolver
-     *                                  三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
-     * @param sptsptLogic
-     *                                  株価時系列期間の種類ロジック
-     * @param stockPriceTimeSeriesLogic
-     *                                  株価時系列ロジック
-     * @param stockPriceCalcValueLogic
-     *                                  株価計算値ロジック
-     * @param stockBrandService
-     *                                  株銘柄サービス
+     *                                       三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
+     * @param imStkSptsptLogic
+     *                                       投資株式株価時系列期間の種類ロジック
+     * @param imStkStockPriceTimeSeriesLogic
+     *                                       投資株式株価時系列ロジック
+     * @param imStkStockPriceCalcValueLogic
+     *                                       投資株式株価計算値ロジック
+     * @param imStkStockBrandService
+     *                                       投資株式株銘柄サービス
      */
     public TsstsSptsMonthlyRegServiceImpl(final TsstsLogMessageResolver tsstsLogMessageResolver,
-        final SptsptLogic sptsptLogic, final StockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
-        final StockPriceCalcValueLogic stockPriceCalcValueLogic, final StockBrandService stockBrandService) {
+        final ImStkSptsptLogic imStkSptsptLogic, final ImStkStockPriceTimeSeriesLogic imStkStockPriceTimeSeriesLogic,
+        final ImStkStockPriceCalcValueLogic imStkStockPriceCalcValueLogic,
+        final ImStkStockBrandService imStkStockBrandService) {
         this.tsstsLogMessageResolver = tsstsLogMessageResolver;
-        this.sptsptLogic = sptsptLogic;
-        this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
-        this.stockPriceCalcValueLogic = stockPriceCalcValueLogic;
-        this.stockBrandService = stockBrandService;
+        this.imStkSptsptLogic = imStkSptsptLogic;
+        this.imStkStockPriceTimeSeriesLogic = imStkStockPriceTimeSeriesLogic;
+        this.imStkStockPriceCalcValueLogic = imStkStockPriceCalcValueLogic;
+        this.imStkStockBrandService = imStkStockBrandService;
     }
 
     /**
@@ -122,7 +123,7 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
 
         /* 株価計算値の削除 */
         try {
-            this.stockPriceCalcValueLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
+            this.imStkStockPriceCalcValueLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
                 TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -132,7 +133,7 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
 
         /* 株価時系列の削除 */
         try {
-            this.stockPriceTimeSeriesLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
+            this.imStkStockPriceTimeSeriesLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
                 TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -142,7 +143,7 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
 
         /* 株価時系列期間の種類の削除 */
         try {
-            this.sptsptLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
+            this.imStkSptsptLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
                 TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -167,7 +168,7 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
 
         /* 株価時系列期間の種類の登録 */
         try {
-            this.sptsptLogic.register(this.stockBrandId, TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
+            this.imStkSptsptLogic.register(this.stockBrandId, TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
@@ -176,7 +177,7 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
 
         /* 株価時系列期間の種類ID */
         try {
-            this.sptsptId = this.sptsptLogic.getSptsptId(this.stockBrandId,
+            this.sptsptId = this.imStkSptsptLogic.getSptsptId(this.stockBrandId,
                 TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES, LocalDate.now());
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -189,7 +190,7 @@ public class TsstsSptsMonthlyRegServiceImpl extends AbstractTsstsSptsRegService 
         final List<SptsRegDataModel> sptsMainDataModelList = this.toSptsRegDataModelList();
         // 登録処理呼び出し
         try {
-            this.stockPriceTimeSeriesLogic.register(TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES,
+            this.imStkStockPriceTimeSeriesLogic.register(TsstsSptsMonthlyRegServiceImpl.PERIOD_TYPE_TYPES,
                 sptsMainDataModelList);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理

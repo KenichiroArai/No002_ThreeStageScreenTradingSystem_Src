@@ -22,8 +22,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import kmg.core.domain.model.PfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
-import kmg.im.stock.core.domain.service.SigChkService;
-import kmg.im.stock.core.domain.service.SimulationService;
+import kmg.im.stock.core.domain.service.ImStkSigChkService;
+import kmg.im.stock.core.domain.service.ImStkSimulationService;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataRegisterService;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
@@ -119,11 +119,11 @@ public class TsstsControlScreenController {
     /** 三段階スクリーン・トレーディング・システム株価データ登録サービス */
     private final TsstsSpDataRegisterService tsstsSpDataRegisterService;
 
-    /** シミュレーションサービス */
-    private final SimulationService simulationService;
+    /** 投資株式シミュレーションサービス */
+    private final ImStkSimulationService imStkSimulationService;
 
-    /** シグナル確認サービス */
-    private final SigChkService sigChkService;
+    /** 投資株式シグナル確認サービス */
+    private final ImStkSigChkService imStkSigChkService;
 
     /**
      * コンストラクタ<br>
@@ -139,21 +139,21 @@ public class TsstsControlScreenController {
      *                                   三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリゾルバ
      * @param tsstsSpDataRegisterService
      *                                   三段階スクリーン・トレーディング・システム株価データ登録サービス
-     * @param simulationService
-     *                                   シミュレーションサービス
-     * @param sigChkService
-     *                                   シグナル確認サービス
+     * @param imStkSimulationService
+     *                                   投資株式シミュレーションサービス
+     * @param imStkSigChkService
+     *                                   投資株式シグナル確認サービス
      */
     public TsstsControlScreenController(final TsstsNameResolver tsstsNameResolver,
         final TsstsMessageResolver tsstsMessageResolver, final TsstsLogMessageResolver tsstsLogMessageResolver,
-        final TsstsSpDataRegisterService tsstsSpDataRegisterService, final SimulationService simulationService,
-        final SigChkService sigChkService) {
+        final TsstsSpDataRegisterService tsstsSpDataRegisterService,
+        final ImStkSimulationService imStkSimulationService, final ImStkSigChkService imStkSigChkService) {
         this.tsstsNameResolver = tsstsNameResolver;
         this.tsstsMessageResolver = tsstsMessageResolver;
         this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.tsstsSpDataRegisterService = tsstsSpDataRegisterService;
-        this.simulationService = simulationService;
-        this.sigChkService = sigChkService;
+        this.imStkSimulationService = imStkSimulationService;
+        this.imStkSigChkService = imStkSigChkService;
     }
 
     /**
@@ -374,13 +374,13 @@ public class TsstsControlScreenController {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする
-                this.simulationService.simulate();
+                this.imStkSimulationService.simulate();
             } else {
                 // すべて以外の場合
 
                 // 指定した株コードのシミュレーションする
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
-                this.simulationService.simulate(code);
+                this.imStkSimulationService.simulate(code);
             }
         } catch (final ImStkDomainException e) {
             // 投資株式ドメイン例外
@@ -425,13 +425,13 @@ public class TsstsControlScreenController {
                 // すべての場合
 
                 // 全ての銘柄をシミュレーションする
-                this.sigChkService.chkSig();
+                this.imStkSigChkService.chkSig();
             } else {
                 // すべて以外の場合
 
                 // 指定した株コードのシミュレーションする
                 final long code = Long.parseLong(this.cbSim.getSelectionModel().getSelectedItem());
-                this.sigChkService.chkSig(code);
+                this.imStkSigChkService.chkSig(code);
             }
         } finally {
             pfaMeas.end();

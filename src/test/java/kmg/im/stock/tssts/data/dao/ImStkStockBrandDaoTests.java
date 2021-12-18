@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import kmg.im.stock.core.data.dao.StockBrandDao;
+import kmg.im.stock.core.data.dao.ImStkStockBrandDao;
 
 /**
  * 株銘柄ＤＡＯテスト<br>
@@ -22,11 +22,11 @@ import kmg.im.stock.core.data.dao.StockBrandDao;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.DisplayName.class)
 @Transactional
-public class StockBrandDaoTests {
+public class ImStkStockBrandDaoTests {
 
     /** テスト対象 */
     @Autowired
-    private StockBrandDao testTarget;
+    private ImStkStockBrandDao testTarget;
 
     /**
      * テスト００１_識別番号を取得する０１_正常００１_１件<br>

@@ -10,7 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import kmg.core.infrastructure.utils.PathUtils;
-import kmg.im.stock.core.data.dao.SpRawDataDao;
+import kmg.im.stock.core.data.dao.ImStkSpRawDataDao;
 import kmg.im.stock.core.data.dto.SpRawDataAcqDto;
 import kmg.im.stock.core.data.dto.SpRawDataAcqMgtDto;
 import kmg.im.stock.core.domain.model.SpRawDataAcqMgtModel;
@@ -36,8 +36,8 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
     /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
     private final TsstsLogMessageResolver tsstsLogMessageResolver;
 
-    /** 株価生データＤＡＯ */
-    private final SpRawDataDao spRawDataDao;
+    /** 投資株式株価生データＤＡＯ */
+    private final ImStkSpRawDataDao imStkSpRawDataDao;
 
     /**
      * コンストラクタ<br>
@@ -47,13 +47,13 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
      * @version 1.0.0
      * @param tsstsLogMessageResolver
      *                                三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
-     * @param spRawDataDao
-     *                                株価生データＤＡＯ
+     * @param imStkSpRawDataDao
+     *                                投資株式株価生データＤＡＯ
      */
     public TsstsSpRawDataLoadLogicImpl(final TsstsLogMessageResolver tsstsLogMessageResolver,
-        final SpRawDataDao spRawDataDao) {
+        final ImStkSpRawDataDao imStkSpRawDataDao) {
         this.tsstsLogMessageResolver = tsstsLogMessageResolver;
-        this.spRawDataDao = spRawDataDao;
+        this.imStkSpRawDataDao = imStkSpRawDataDao;
     }
 
     /**
@@ -74,7 +74,7 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
         /* 銘柄ごとの株価データのファイルパスを取得する */
         List<Path> stockPriceStockStoragePathList;
         try {
-            stockPriceStockStoragePathList = this.spRawDataDao.findOfSpsStoragePath();
+            stockPriceStockStoragePathList = this.imStkSpRawDataDao.findOfSpsStoragePath();
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/08 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
@@ -178,7 +178,7 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
         /* 株価生データ取得のリストを検索する */
         SpRawDataAcqMgtDto spRawDataAcqMgtDto = null;
         try {
-            spRawDataAcqMgtDto = this.spRawDataDao.findAll(filePath);
+            spRawDataAcqMgtDto = this.imStkSpRawDataDao.findAll(filePath);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/08 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);

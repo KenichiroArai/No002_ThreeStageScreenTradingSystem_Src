@@ -20,8 +20,8 @@ import kmg.im.stock.core.domain.model.SpRawDataAcqModel;
 import kmg.im.stock.core.domain.model.impl.ImStkSpcvInitMgtModelImpl;
 import kmg.im.stock.core.domain.model.impl.SpDataRegMgtModelImpl;
 import kmg.im.stock.core.domain.model.impl.SpDataRegModelImpl;
-import kmg.im.stock.core.domain.service.StockBrandService;
-import kmg.im.stock.core.domain.service.StockPriceTimeSeriesService;
+import kmg.im.stock.core.domain.service.ImStkStockBrandService;
+import kmg.im.stock.core.domain.service.ImStkStockPriceTimeSeriesService;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.logic.TsstsSpRawDataLoadLogic;
@@ -53,11 +53,11 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
     /** 三段階スクリーン・トレーディング・システム株価生データ読み込みロジック */
     private final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic;
 
-    /** 株銘柄サービス */
-    private final StockBrandService stockBrandService;
+    /** 投資株式株銘柄サービス */
+    private final ImStkStockBrandService imStkStockBrandService;
 
-    /** 株価時系列サービス */
-    private final StockPriceTimeSeriesService stockPriceTimeSeriesService;
+    /** 投資株式株価時系列サービス */
+    private final ImStkStockPriceTimeSeriesService imStkStockPriceTimeSeriesService;
 
     /**
      * コンストラクタ<br>
@@ -66,24 +66,25 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
      * @sine 1.0.0
      * @version 1.0.0
      * @param context
-     *                                    アプリケーションコンテキスト
+     *                                         アプリケーションコンテキスト
      * @param tsstsLogMessageResolver
-     *                                    三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
+     *                                         三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      * @param tsstsSpRawDataLoadLogic
-     *                                    三段階スクリーン・トレーディング・システム株価生データ読み込みロジック
-     * @param stockBrandService
-     *                                    株銘柄サービス
-     * @param stockPriceTimeSeriesService
-     *                                    株価時系列サービス
+     *                                         三段階スクリーン・トレーディング・システム株価生データ読み込みロジック
+     * @param imStkStockBrandService
+     *                                         投資株式株銘柄サービス
+     * @param imStkStockPriceTimeSeriesService
+     *                                         投資株式株価時系列サービス
      */
     public TsstsSpDataRegisterServiceImpl(final ApplicationContext context,
         final TsstsLogMessageResolver tsstsLogMessageResolver, final TsstsSpRawDataLoadLogic tsstsSpRawDataLoadLogic,
-        final StockBrandService stockBrandService, final StockPriceTimeSeriesService stockPriceTimeSeriesService) {
+        final ImStkStockBrandService imStkStockBrandService,
+        final ImStkStockPriceTimeSeriesService imStkStockPriceTimeSeriesService) {
         this.context = context;
         this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.tsstsSpRawDataLoadLogic = tsstsSpRawDataLoadLogic;
-        this.stockBrandService = stockBrandService;
-        this.stockPriceTimeSeriesService = stockPriceTimeSeriesService;
+        this.imStkStockBrandService = imStkStockBrandService;
+        this.imStkStockPriceTimeSeriesService = imStkStockPriceTimeSeriesService;
     }
 
     /**
@@ -198,7 +199,8 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
 
         /* 株価時系列日足 */
         /* 株銘柄ＩＤの取得 */
-        final long dailyStockBrandId = this.stockBrandService.getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+        final long dailyStockBrandId = this.imStkStockBrandService
+            .getStockBrandId(spDataRegMgtModel.getStockBrandCode());
         // 株価時系列日足登録サービスの生成
         final TsstsSptsDailyRegService tsstsSptsDailyRegService = this.context
             .getBean(TsstsSptsDailyRegServiceImpl.class);
@@ -211,7 +213,7 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         // 登録データを取得する
         SimpleSptsMgtModel simpleSptsMgtDailyModel = null;
         try {
-            simpleSptsMgtDailyModel = this.stockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
+            simpleSptsMgtDailyModel = this.imStkStockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
                 ImStkPeriodTypeTypes.DAILY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -228,7 +230,8 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
 
         /* 株価時系列週足 */
         /* 株銘柄ＩＤの取得 */
-        final long weeklyStockBrandId = this.stockBrandService.getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+        final long weeklyStockBrandId = this.imStkStockBrandService
+            .getStockBrandId(spDataRegMgtModel.getStockBrandCode());
         // 株価時系列週足登録サービスの生成
         final TsstsSptsWeeklyRegService tsstsSptsWeeklyRegService = this.context
             .getBean(TsstsSptsWeeklyRegServiceImpl.class);
@@ -241,7 +244,7 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         // 登録データを取得する
         SimpleSptsMgtModel simpleSptsMgtWeeklyModel = null;
         try {
-            simpleSptsMgtWeeklyModel = this.stockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
+            simpleSptsMgtWeeklyModel = this.imStkStockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
                 ImStkPeriodTypeTypes.WEEKLY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -258,7 +261,8 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
 
         /* 株価時系列月足 */
         /* 株銘柄ＩＤの取得 */
-        final long monthlyStockBrandId = this.stockBrandService.getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+        final long monthlyStockBrandId = this.imStkStockBrandService
+            .getStockBrandId(spDataRegMgtModel.getStockBrandCode());
         // 株価時系列月足登録サービスの生成
         final TsstsSptsMonthlyRegService tsstsSptsMonthlyRegService = this.context
             .getBean(TsstsSptsMonthlyRegServiceImpl.class);
@@ -271,7 +275,7 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         // 登録データを取得する
         SimpleSptsMgtModel simpleSptsMgtMonthlyModel = null;
         try {
-            simpleSptsMgtMonthlyModel = this.stockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
+            simpleSptsMgtMonthlyModel = this.imStkStockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
                 ImStkPeriodTypeTypes.MONTHLY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
