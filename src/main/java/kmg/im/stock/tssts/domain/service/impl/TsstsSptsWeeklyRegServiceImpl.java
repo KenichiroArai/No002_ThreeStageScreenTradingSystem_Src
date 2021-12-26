@@ -11,10 +11,10 @@ import kmg.core.infrastructure.utils.ListUtils;
 import kmg.im.stock.core.domain.logic.ImStkSptsptLogic;
 import kmg.im.stock.core.domain.logic.ImStkStockPriceCalcValueLogic;
 import kmg.im.stock.core.domain.logic.ImStkStockPriceTimeSeriesLogic;
-import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
-import kmg.im.stock.core.domain.model.SpDataRegModel;
-import kmg.im.stock.core.domain.model.SptsRegDataModel;
-import kmg.im.stock.core.domain.model.impl.SptsRegDataModelImpl;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegModel;
+import kmg.im.stock.core.domain.model.ImStkSptsRegDataModel;
+import kmg.im.stock.core.domain.model.impl.ImStkSptsRegDataModelImpl;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.service.AbstractTsstsSptsRegService;
@@ -42,8 +42,8 @@ public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService i
     /** 株価時系列期間の種類ID */
     private Long sptsptId;
 
-    /** 株価データ登録管理モデル */
-    private SpDataRegMgtModel spDataRegMgtModel;
+    /** 投資株式株価データ登録管理モデル */
+    private ImStkSpDataRegMgtModel imStkkSpDataRegMgtModel;
 
     /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
     private final TsstsLogMessageResolver tsstsLogMessageResolver;
@@ -88,15 +88,15 @@ public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService i
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandId
-     *                          株銘柄ＩＤ
-     * @param spDataRegMgtModel
-     *                          株価データ登録管理モデル
+     *                                株銘柄ＩＤ
+     * @param imStkkSpDataRegMgtModel
+     *                                投資株式株価データ登録管理モデル
      */
     @Override
     @SuppressWarnings("hiding")
-    public void initialize(final long stockBrandId, final SpDataRegMgtModel spDataRegMgtModel) {
+    public void initialize(final long stockBrandId, final ImStkSpDataRegMgtModel imStkkSpDataRegMgtModel) {
         this.stockBrandId = stockBrandId;
-        this.spDataRegMgtModel = spDataRegMgtModel;
+        this.imStkkSpDataRegMgtModel = imStkkSpDataRegMgtModel;
     }
 
     /**
@@ -180,7 +180,7 @@ public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService i
 
         /* 株価時系列の登録 */
         // 詰め替え
-        final List<SptsRegDataModel> sptsMainDataModelList = this.toSptsRegDataModelList();
+        final List<ImStkSptsRegDataModel> sptsMainDataModelList = this.toImStkSptsRegDataModelList();
         // 登録処理呼び出し
         try {
             this.imStkStockPriceTimeSeriesLogic.register(TsstsSptsWeeklyRegServiceImpl.PERIOD_TYPE_TYPES,
@@ -193,23 +193,23 @@ public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService i
     }
 
     /**
-     * 株価時系列登録データモデルのリストにして返す<br>
+     * 投資株式株価時系列登録データモデルのリストにして返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列登録データモデルのリスト
+     * @return 投資株式株価時系列登録データモデルのリスト
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public List<SptsRegDataModel> toSptsRegDataModelList() throws TsstsDomainException {
+    public List<ImStkSptsRegDataModel> toImStkSptsRegDataModelList() throws TsstsDomainException {
 
-        final List<SptsRegDataModel> result = new ArrayList<>();
+        final List<ImStkSptsRegDataModel> result = new ArrayList<>();
 
         /* 事前チェック */
-        // 株価データ登録管理モデルのデータリストが空か
-        if (ListUtils.isEmpty(this.spDataRegMgtModel.getDataList())) {
+        // 投資株式株価データ登録管理モデルのデータリストが空か
+        if (ListUtils.isEmpty(this.imStkkSpDataRegMgtModel.getDataList())) {
             // 空の場合
 
             // 後続処理なし
@@ -219,75 +219,78 @@ public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService i
         // TODO KenichiroArai 2021/05/16 SQLとの作成とどちらが早いか試す
 
         /* 最初のデータを作成する */
-        final SpDataRegModel firstSpDataRegModel = this.spDataRegMgtModel.getDataList().get(0);
-        SptsRegDataModel addSptsRegDataModel = new SptsRegDataModelImpl(); // 追加するデータ
-        addSptsRegDataModel.setSptsptId(this.sptsptId);
-        addSptsRegDataModel.setNo(0L);
-        addSptsRegDataModel.setPeriodStartDate(firstSpDataRegModel.getDate());
-        addSptsRegDataModel.setOp(firstSpDataRegModel.getOp()); // 始値は最初のデータを設定する
-        BigDecimal lp = firstSpDataRegModel.getLp();
-        BigDecimal hp = firstSpDataRegModel.getHp();
-        long volume = firstSpDataRegModel.getVolume();
+        final ImStkSpDataRegModel firstImStkSpDataRegModel = this.imStkkSpDataRegMgtModel.getDataList().get(0);
+        ImStkSptsRegDataModel addImStkSptsRegDataModel = new ImStkSptsRegDataModelImpl(); // 追加するデータ
+        addImStkSptsRegDataModel.setSptsptId(this.sptsptId);
+        addImStkSptsRegDataModel.setNo(0L);
+        addImStkSptsRegDataModel.setPeriodStartDate(firstImStkSpDataRegModel.getDate());
+        addImStkSptsRegDataModel.setOp(firstImStkSpDataRegModel.getOp()); // 始値は最初のデータを設定する
+        BigDecimal lp = firstImStkSpDataRegModel.getLp();
+        BigDecimal hp = firstImStkSpDataRegModel.getHp();
+        long volume = firstImStkSpDataRegModel.getVolume();
 
         /* 週足のデータを作成する */
-        for (int i = 1; i < this.spDataRegMgtModel.getDataList().size(); i++) {
+        for (int i = 1; i < this.imStkkSpDataRegMgtModel.getDataList().size(); i++) {
 
-            final SpDataRegModel spDataRegModel = this.spDataRegMgtModel.getDataList().get(i);
+            final ImStkSpDataRegModel spDataRegModel = this.imStkkSpDataRegMgtModel.getDataList().get(i);
 
             // 週が異なるか
             if ((spDataRegModel.getDate().getDayOfWeek()
-                .compareTo(addSptsRegDataModel.getPeriodStartDate().getDayOfWeek()) <= 0)) {
+                .compareTo(addImStkSptsRegDataModel.getPeriodStartDate().getDayOfWeek()) <= 0)) {
                 // 曜日が開始の曜日よりも同じまたは前の場合
 
                 // ひとつ前の情報を終値に設定する
-                final SpDataRegModel preSpDataRegModel = this.spDataRegMgtModel.getDataList().get(i - 1);
-                addSptsRegDataModel.setPeriodEndDate(preSpDataRegModel.getDate());
-                addSptsRegDataModel.setCp(preSpDataRegModel.getCp());
-                addSptsRegDataModel.setLp(lp);
-                addSptsRegDataModel.setHp(hp);
-                addSptsRegDataModel.setLp(lp);
-                addSptsRegDataModel.setVolume(volume);
+                final ImStkSpDataRegModel preImStkSpDataRegModel = this.imStkkSpDataRegMgtModel.getDataList()
+                    .get(i - 1);
+                addImStkSptsRegDataModel.setPeriodEndDate(preImStkSpDataRegModel.getDate());
+                addImStkSptsRegDataModel.setCp(preImStkSpDataRegModel.getCp());
+                addImStkSptsRegDataModel.setLp(lp);
+                addImStkSptsRegDataModel.setHp(hp);
+                addImStkSptsRegDataModel.setLp(lp);
+                addImStkSptsRegDataModel.setVolume(volume);
 
                 // 株価週足のリストに追加
-                result.add(addSptsRegDataModel);
+                result.add(addImStkSptsRegDataModel);
 
-                // 現在の情報を追加する株価時系列登録データモデルに設定する
-                addSptsRegDataModel = new SptsRegDataModelImpl();
-                addSptsRegDataModel.setSptsptId(this.sptsptId);
-                addSptsRegDataModel.setNo(Integer.valueOf(i).longValue());
+                // 現在の情報を追加する投資株式株価時系列登録データモデルに設定する
+                addImStkSptsRegDataModel = new ImStkSptsRegDataModelImpl();
+                addImStkSptsRegDataModel.setSptsptId(this.sptsptId);
+                addImStkSptsRegDataModel.setNo(Integer.valueOf(i).longValue());
                 // 期間の種類IDを設定する
-                addSptsRegDataModel.setPeriodStartDate(spDataRegModel.getDate());
-                addSptsRegDataModel.setOp(spDataRegModel.getOp());
+                addImStkSptsRegDataModel.setPeriodStartDate(spDataRegModel.getDate());
+                addImStkSptsRegDataModel.setOp(spDataRegModel.getOp());
                 lp = spDataRegModel.getLp();
                 hp = spDataRegModel.getHp();
                 volume = spDataRegModel.getVolume();
 
                 continue;
 
-            } else if (spDataRegModel.getDate().compareTo(addSptsRegDataModel.getPeriodStartDate().plusDays(7)) >= 0) {
+            } else if (spDataRegModel.getDate()
+                .compareTo(addImStkSptsRegDataModel.getPeriodStartDate().plusDays(7)) >= 0) {
                 // 開始の7日以降の場合
 
                 // TODO KenichiroArai 2021/05/16 曜日の判定と処理が同じなので、まとめる
 
                 // ひとつ前の情報を終値に設定する
-                final SpDataRegModel preSpDataRegModel = this.spDataRegMgtModel.getDataList().get(i - 1);
-                addSptsRegDataModel.setPeriodEndDate(preSpDataRegModel.getDate());
-                addSptsRegDataModel.setCp(preSpDataRegModel.getCp());
-                addSptsRegDataModel.setLp(lp);
-                addSptsRegDataModel.setHp(hp);
-                addSptsRegDataModel.setLp(lp);
-                addSptsRegDataModel.setVolume(volume);
+                final ImStkSpDataRegModel preImStkSpDataRegModel = this.imStkkSpDataRegMgtModel.getDataList()
+                    .get(i - 1);
+                addImStkSptsRegDataModel.setPeriodEndDate(preImStkSpDataRegModel.getDate());
+                addImStkSptsRegDataModel.setCp(preImStkSpDataRegModel.getCp());
+                addImStkSptsRegDataModel.setLp(lp);
+                addImStkSptsRegDataModel.setHp(hp);
+                addImStkSptsRegDataModel.setLp(lp);
+                addImStkSptsRegDataModel.setVolume(volume);
 
                 // 株価週足のリストに追加
-                result.add(addSptsRegDataModel);
+                result.add(addImStkSptsRegDataModel);
 
                 // 現在の情報を追加する株価週足ＤＴＯに設定する
-                addSptsRegDataModel = new SptsRegDataModelImpl();
-                addSptsRegDataModel.setSptsptId(this.sptsptId);
-                addSptsRegDataModel.setNo(Integer.valueOf(i).longValue());
+                addImStkSptsRegDataModel = new ImStkSptsRegDataModelImpl();
+                addImStkSptsRegDataModel.setSptsptId(this.sptsptId);
+                addImStkSptsRegDataModel.setNo(Integer.valueOf(i).longValue());
                 // 期間の種類IDを設定する
-                addSptsRegDataModel.setPeriodStartDate(spDataRegModel.getDate());
-                addSptsRegDataModel.setOp(spDataRegModel.getOp());
+                addImStkSptsRegDataModel.setPeriodStartDate(spDataRegModel.getDate());
+                addImStkSptsRegDataModel.setOp(spDataRegModel.getOp());
                 lp = spDataRegModel.getLp();
                 hp = spDataRegModel.getHp();
                 volume = spDataRegModel.getVolume();
@@ -302,16 +305,16 @@ public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService i
         }
 
         /* ひとつ前の情報を終値に設定し、追加する */
-        final SpDataRegModel endSpDataRegModel = this.spDataRegMgtModel.getDataList()
-            .get(this.spDataRegMgtModel.getDataList().size() - 1);
-        addSptsRegDataModel.setPeriodEndDate(endSpDataRegModel.getDate());
-        addSptsRegDataModel.setCp(endSpDataRegModel.getCp());
-        addSptsRegDataModel.setLp(lp);
-        addSptsRegDataModel.setHp(hp);
-        addSptsRegDataModel.setLp(lp);
-        addSptsRegDataModel.setVolume(volume);
+        final ImStkSpDataRegModel endImStkSpDataRegModel = this.imStkkSpDataRegMgtModel.getDataList()
+            .get(this.imStkkSpDataRegMgtModel.getDataList().size() - 1);
+        addImStkSptsRegDataModel.setPeriodEndDate(endImStkSpDataRegModel.getDate());
+        addImStkSptsRegDataModel.setCp(endImStkSpDataRegModel.getCp());
+        addImStkSptsRegDataModel.setLp(lp);
+        addImStkSptsRegDataModel.setHp(hp);
+        addImStkSptsRegDataModel.setLp(lp);
+        addImStkSptsRegDataModel.setVolume(volume);
         // 株価週足のリストに追加
-        result.add(addSptsRegDataModel);
+        result.add(addImStkSptsRegDataModel);
 
         return result;
     }

@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.im.stock.core.data.dao.ImStkStockPriceTimeSeriesDao;
-import kmg.im.stock.core.data.dto.StockPriceTimeSeriesDto;
-import kmg.im.stock.core.data.dto.impl.StockPriceTimeSeriesDtoImpl;
+import kmg.im.stock.core.data.dto.ImStkStockPriceTimeSeriesDto;
+import kmg.im.stock.core.data.dto.impl.ImStkStockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 
 /**
@@ -45,21 +45,21 @@ public class ImStkStockPriceTimeSeriesDaoTests {
 
         /* 準備 */
         // 株価時系列ＤＴＯの作成
-        final StockPriceTimeSeriesDto stockPriceTimeSeriesDto = new StockPriceTimeSeriesDtoImpl();
-        stockPriceTimeSeriesDto.setSptsptId(1);
-        stockPriceTimeSeriesDto.setNo(1L);
-        stockPriceTimeSeriesDto.setPeriodStartDate(LocalDate.now());
-        stockPriceTimeSeriesDto.setPeriodEndDate(LocalDate.now());
-        stockPriceTimeSeriesDto.setOp(BigDecimal.valueOf(100.0));
-        stockPriceTimeSeriesDto.setHp(BigDecimal.valueOf(150.0));
-        stockPriceTimeSeriesDto.setLp(BigDecimal.valueOf(50.0));
-        stockPriceTimeSeriesDto.setCp(BigDecimal.valueOf(120.0));
-        stockPriceTimeSeriesDto.setVolume(999L);
+        final ImStkStockPriceTimeSeriesDto imStkStockPriceTimeSeriesDto = new ImStkStockPriceTimeSeriesDtoImpl();
+        imStkStockPriceTimeSeriesDto.setSptsptId(1);
+        imStkStockPriceTimeSeriesDto.setNo(1L);
+        imStkStockPriceTimeSeriesDto.setPeriodStartDate(LocalDate.now());
+        imStkStockPriceTimeSeriesDto.setPeriodEndDate(LocalDate.now());
+        imStkStockPriceTimeSeriesDto.setOp(BigDecimal.valueOf(100.0));
+        imStkStockPriceTimeSeriesDto.setHp(BigDecimal.valueOf(150.0));
+        imStkStockPriceTimeSeriesDto.setLp(BigDecimal.valueOf(50.0));
+        imStkStockPriceTimeSeriesDto.setCp(BigDecimal.valueOf(120.0));
+        imStkStockPriceTimeSeriesDto.setVolume(999L);
 
         /* テスト対象を呼び出す */
         final long actual = 0;
         try {
-            this.testTarget.insertByPttAndSptsDto(ImStkPeriodTypeTypes.DAILY, stockPriceTimeSeriesDto);
+            this.testTarget.insertByPttAndSptsDto(ImStkPeriodTypeTypes.DAILY, imStkStockPriceTimeSeriesDto);
         } catch (final KmgDomainException e) {
             e.printStackTrace();
             /* 期待値と比較 */

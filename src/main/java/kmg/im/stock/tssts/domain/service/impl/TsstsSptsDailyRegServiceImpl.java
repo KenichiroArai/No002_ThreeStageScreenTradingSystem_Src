@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import kmg.im.stock.core.domain.logic.ImStkSptsptLogic;
 import kmg.im.stock.core.domain.logic.ImStkStockPriceCalcValueLogic;
 import kmg.im.stock.core.domain.logic.ImStkStockPriceTimeSeriesLogic;
-import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
-import kmg.im.stock.core.domain.model.SpDataRegModel;
-import kmg.im.stock.core.domain.model.SptsRegDataModel;
-import kmg.im.stock.core.domain.model.impl.SptsRegDataModelImpl;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegModel;
+import kmg.im.stock.core.domain.model.ImStkSptsRegDataModel;
+import kmg.im.stock.core.domain.model.impl.ImStkSptsRegDataModelImpl;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.service.AbstractTsstsSptsRegService;
@@ -41,8 +41,8 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
     /** 株価時系列期間の種類ID */
     private Long sptsptId;
 
-    /** 株価データ登録管理モデル */
-    private SpDataRegMgtModel spDataRegMgtModel;
+    /** 投資株式株株価データ登録管理モデル */
+    private ImStkSpDataRegMgtModel imStkSpDataRegMgtModel;
 
     /** 三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ */
     private final TsstsLogMessageResolver tsstsLogMessageResolver;
@@ -51,7 +51,7 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
     private final ImStkSptsptLogic imStkSptsptLogic;
 
     /** 投資株式株価時系列ロジック */
-    private final ImStkStockPriceTimeSeriesLogic stockPriceTimeSeriesLogic;
+    private final ImStkStockPriceTimeSeriesLogic imStkStockPriceTimeSeriesLogic;
 
     /** 投資株式株価計算値ロジック */
     private final ImStkStockPriceCalcValueLogic imStkStockPriceCalcValueLogic;
@@ -63,20 +63,20 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
      * @sine 1.0.0
      * @version 1.0.0
      * @param tsstsLogMessageResolver
-     *                                      三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
+     *                                       三段階スクリーン・トレーディング・システムログメッセージリゾルバログメッセージリソルバ
      * @param imStkSptsptLogic
-     *                                      投資株式株価時系列期間の種類ロジック
-     * @param stockPriceTimeSeriesLogic
-     *                                      投資株式株価時系列ロジック
+     *                                       投資株式株価時系列期間の種類ロジック
+     * @param imStkStockPriceTimeSeriesLogic
+     *                                       投資株式株価時系列ロジック
      * @param imStkStockPriceCalcValueLogic
-     *                                      投資株式株価計算値ロジック
+     *                                       投資株式株価計算値ロジック
      */
     public TsstsSptsDailyRegServiceImpl(final TsstsLogMessageResolver tsstsLogMessageResolver,
-        final ImStkSptsptLogic imStkSptsptLogic, final ImStkStockPriceTimeSeriesLogic stockPriceTimeSeriesLogic,
+        final ImStkSptsptLogic imStkSptsptLogic, final ImStkStockPriceTimeSeriesLogic imStkStockPriceTimeSeriesLogic,
         final ImStkStockPriceCalcValueLogic imStkStockPriceCalcValueLogic) {
         this.tsstsLogMessageResolver = tsstsLogMessageResolver;
         this.imStkSptsptLogic = imStkSptsptLogic;
-        this.stockPriceTimeSeriesLogic = stockPriceTimeSeriesLogic;
+        this.imStkStockPriceTimeSeriesLogic = imStkStockPriceTimeSeriesLogic;
         this.imStkStockPriceCalcValueLogic = imStkStockPriceCalcValueLogic;
     }
 
@@ -87,15 +87,15 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
      * @sine 1.0.0
      * @version 1.0.0
      * @param stockBrandId
-     *                          株銘柄ＩＤ
-     * @param spDataRegMgtModel
-     *                          株価データ登録管理モデル
+     *                               株銘柄ＩＤ
+     * @param imStkSpDataRegMgtModel
+     *                               投資株式株株価データ登録管理モデル
      */
     @Override
     @SuppressWarnings("hiding")
-    public void initialize(final long stockBrandId, final SpDataRegMgtModel spDataRegMgtModel) {
+    public void initialize(final long stockBrandId, final ImStkSpDataRegMgtModel imStkSpDataRegMgtModel) {
         this.stockBrandId = stockBrandId;
-        this.spDataRegMgtModel = spDataRegMgtModel;
+        this.imStkSpDataRegMgtModel = imStkSpDataRegMgtModel;
     }
 
     /**
@@ -124,7 +124,7 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
 
         /* 株価時系列の削除 */
         try {
-            this.stockPriceTimeSeriesLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
+            this.imStkStockPriceTimeSeriesLogic.deleteBySbIdAndImStkPeriodTypeTypes(this.stockBrandId,
                 TsstsSptsDailyRegServiceImpl.PERIOD_TYPE_TYPES);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -178,10 +178,10 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
 
         /* 株価時系列の登録 */
         // 詰め替え
-        final List<SptsRegDataModel> sptsMainDataModelList = this.toSptsRegDataModelList();
+        final List<ImStkSptsRegDataModel> sptsMainDataModelList = this.toImStkSptsRegDataModelList();
         // 登録処理呼び出し
         try {
-            this.stockPriceTimeSeriesLogic.register(TsstsSptsDailyRegServiceImpl.PERIOD_TYPE_TYPES,
+            this.imStkStockPriceTimeSeriesLogic.register(TsstsSptsDailyRegServiceImpl.PERIOD_TYPE_TYPES,
                 sptsMainDataModelList);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
@@ -191,20 +191,20 @@ public class TsstsSptsDailyRegServiceImpl extends AbstractTsstsSptsRegService im
     }
 
     /**
-     * 株価時系列登録データモデルのリストにして返す<br>
+     * 投資株式株価時系列登録データモデルのリストにして返す<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @return 株価時系列登録データモデルのリスト
+     * @return 投資株式株価時系列登録データモデルのリスト
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
     @Override
-    public List<SptsRegDataModel> toSptsRegDataModelList() throws TsstsDomainException {
-        final List<SptsRegDataModel> result = new ArrayList<>();
-        for (final SpDataRegModel spDataRegModel : this.spDataRegMgtModel.getDataList()) {
-            final SptsRegDataModel sptsMainDataModel = new SptsRegDataModelImpl();
+    public List<ImStkSptsRegDataModel> toImStkSptsRegDataModelList() throws TsstsDomainException {
+        final List<ImStkSptsRegDataModel> result = new ArrayList<>();
+        for (final ImStkSpDataRegModel spDataRegModel : this.imStkSpDataRegMgtModel.getDataList()) {
+            final ImStkSptsRegDataModel sptsMainDataModel = new ImStkSptsRegDataModelImpl();
             BeanUtils.copyProperties(spDataRegModel, sptsMainDataModel);
             sptsMainDataModel.setSptsptId(this.sptsptId);
             sptsMainDataModel.setPeriodStartDate(spDataRegModel.getDate()); // 期間開始日に日付を設定

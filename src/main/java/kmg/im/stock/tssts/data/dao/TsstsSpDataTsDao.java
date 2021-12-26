@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import kmg.core.domain.model.SqlPathModel;
 import kmg.core.domain.model.impl.SqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
-import kmg.im.stock.core.data.dto.SptsptDto;
-import kmg.im.stock.core.data.dto.impl.SptsptDtoImpl;
+import kmg.im.stock.core.data.dto.ImStkSptsptDto;
+import kmg.im.stock.core.data.dto.impl.ImStkSptsptDtoImpl;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 
 /**
@@ -66,10 +66,10 @@ public class TsstsSpDataTsDao {
 
         long result = 0L;
 
-        final SptsptDto sptsptDto = new SptsptDtoImpl();
-        sptsptDto.setPeriodTypeId(imStkPeriodTypeTypes.get());
+        final ImStkSptsptDto imStkSptsptDto = new ImStkSptsptDtoImpl();
+        imStkSptsptDto.setPeriodTypeId(imStkPeriodTypeTypes.get());
 
-        final SqlParameterSource param = new BeanPropertySqlParameterSource(sptsptDto);
+        final SqlParameterSource param = new BeanPropertySqlParameterSource(imStkSptsptDto);
         result = this.jdbc.update(TsstsSpDataTsDao.DELETE_SQL_PATH.toSql(), param);
 
         return result;

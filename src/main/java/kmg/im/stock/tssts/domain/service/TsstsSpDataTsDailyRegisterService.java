@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.domain.service;
 
-import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegMgtModel;
 import kmg.im.stock.tssts.infrastructure.exception.TsstsDomainException;
 
 /**
@@ -18,10 +18,10 @@ public interface TsstsSpDataTsDailyRegisterService {
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param spDataRegMgtModel
-     *                          株価データ登録管理モデル
+     * @param imStkSpDataRegMgtModel
+     *                               投資株式株価データ登録管理モデル
      */
-    void initialize(SpDataRegMgtModel spDataRegMgtModel);
+    void initialize(ImStkSpDataRegMgtModel imStkSpDataRegMgtModel);
 
     /**
      * 削除する<br>

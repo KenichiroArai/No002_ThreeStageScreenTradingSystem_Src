@@ -11,15 +11,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import kmg.im.stock.core.domain.model.ImStkSimpleSptsMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegModel;
+import kmg.im.stock.core.domain.model.ImStkSpRawDataAcqMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpRawDataAcqModel;
 import kmg.im.stock.core.domain.model.ImStkSpcvInitMgtModel;
-import kmg.im.stock.core.domain.model.SimpleSptsMgtModel;
-import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
-import kmg.im.stock.core.domain.model.SpDataRegModel;
-import kmg.im.stock.core.domain.model.SpRawDataAcqMgtModel;
-import kmg.im.stock.core.domain.model.SpRawDataAcqModel;
+import kmg.im.stock.core.domain.model.impl.ImStkSpDataRegMgtModelImpl;
+import kmg.im.stock.core.domain.model.impl.ImStkSpDataRegModelImpl;
 import kmg.im.stock.core.domain.model.impl.ImStkSpcvInitMgtModelImpl;
-import kmg.im.stock.core.domain.model.impl.SpDataRegMgtModelImpl;
-import kmg.im.stock.core.domain.model.impl.SpDataRegModelImpl;
 import kmg.im.stock.core.domain.service.ImStkStockBrandService;
 import kmg.im.stock.core.domain.service.ImStkStockPriceTimeSeriesService;
 import kmg.im.stock.core.infrastructure.exception.ImStkDomainException;
@@ -99,24 +99,24 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
     @Override
     public void registerAllSpData() throws TsstsDomainException {
 
-        /* 株価生データ取得管理モデルを全て取得する */
-        final Map<Long, SpRawDataAcqMgtModel> acqMgtMap = this.tsstsSpRawDataLoadLogic.getSpDataMgtMap();
+        /* 投資株式株価生データ取得管理モデルを全て取得する */
+        final Map<Long, ImStkSpRawDataAcqMgtModel> acqMgtMap = this.tsstsSpRawDataLoadLogic.getImStkSpDataMgtMap();
 
-        /* 株価データ登録管理モデルに詰め替える */
-        final SpDataRegMgtModel regMgt = new SpDataRegMgtModelImpl();
+        /* 投資株式株価データ登録管理モデルに詰め替える */
+        final ImStkSpDataRegMgtModel regMgt = new ImStkSpDataRegMgtModelImpl();
         for (final long key : acqMgtMap.keySet()) {
-            final SpRawDataAcqMgtModel acqMgt = acqMgtMap.get(key);
+            final ImStkSpRawDataAcqMgtModel acqMgt = acqMgtMap.get(key);
 
             regMgt.setStockBrandCode(acqMgt.getStockBrandCode());
-            for (final SpRawDataAcqModel acq : acqMgt.getDataList()) {
-                final SpDataRegModel reg = new SpDataRegModelImpl();
+            for (final ImStkSpRawDataAcqModel acq : acqMgt.getDataList()) {
+                final ImStkSpDataRegModel reg = new ImStkSpDataRegModelImpl();
                 BeanUtils.copyProperties(acq, reg);
                 regMgt.addData(reg);
             }
         }
 
-        /* 株価データ管理モデルを登録する */
-        this.registerSpDataMgtModel(regMgt);
+        /* 投資株式株価データ登録管理モデルを登録する */
+        this.registerImStkSpDataMgtModel(regMgt);
     }
 
     /**
@@ -167,54 +167,55 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
     @Override
     public void registerSpDataOfFile(final Path filePath) throws TsstsDomainException {
 
-        /* 株価生データ取得管理モデルを取得する */
-        final SpRawDataAcqMgtModel acqMgt = this.tsstsSpRawDataLoadLogic.getSpDataMgtModel(filePath);
+        /* 投資株式株価生データ取得管理モデルを取得する */
+        final ImStkSpRawDataAcqMgtModel acqMgt = this.tsstsSpRawDataLoadLogic.getImStkSpRawDataAcqMgtModel(filePath);
 
-        /* 株価データ登録管理モデルに詰め替える */
-        final SpDataRegMgtModel regMgt = new SpDataRegMgtModelImpl();
+        /* 投資株式株価データ登録管理モデルに詰め替える */
+        final ImStkSpDataRegMgtModel regMgt = new ImStkSpDataRegMgtModelImpl();
         regMgt.setStockBrandCode(acqMgt.getStockBrandCode());
-        for (final SpRawDataAcqModel acq : acqMgt.getDataList()) {
-            final SpDataRegModel reg = new SpDataRegModelImpl();
+        for (final ImStkSpRawDataAcqModel acq : acqMgt.getDataList()) {
+            final ImStkSpDataRegModel reg = new ImStkSpDataRegModelImpl();
             BeanUtils.copyProperties(acq, reg);
             regMgt.addData(reg);
         }
 
-        /* 株価データ登録管理モデルを登録する */
-        this.registerSpDataMgtModel(regMgt);
+        /* 投資株式株価データ登録管理モデルを登録する */
+        this.registerImStkSpDataMgtModel(regMgt);
 
     }
 
     /**
-     * 株価データ登録管理モデルを登録する<br>
+     * 投資株式株価データ登録管理モデルを登録する<br>
      *
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param spDataRegMgtModel
-     *                          株価データ登録管理モデル
+     * @param imStkSpDataRegMgtModel
+     *                               投資株式株価データ登録管理モデル
      * @throws TsstsDomainException
      *                              三段階スクリーン・トレーディング・システムドメイン例外
      */
-    private void registerSpDataMgtModel(final SpDataRegMgtModel spDataRegMgtModel) throws TsstsDomainException {
+    private void registerImStkSpDataMgtModel(final ImStkSpDataRegMgtModel imStkSpDataRegMgtModel)
+        throws TsstsDomainException {
 
         /* 株価時系列日足 */
         /* 株銘柄ＩＤの取得 */
         final long dailyStockBrandId = this.imStkStockBrandService
-            .getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+            .getStockBrandId(imStkSpDataRegMgtModel.getStockBrandCode());
         // 株価時系列日足登録サービスの生成
         final TsstsSptsDailyRegService tsstsSptsDailyRegService = this.context
             .getBean(TsstsSptsDailyRegServiceImpl.class);
         // 株価時系列日足登録サービスの初期化
-        tsstsSptsDailyRegService.initialize(dailyStockBrandId, spDataRegMgtModel);
+        tsstsSptsDailyRegService.initialize(dailyStockBrandId, imStkSpDataRegMgtModel);
         // 株価時系列日足登録サービスの削除する
         tsstsSptsDailyRegService.delete();
         // 株価時系列日足登録サービスの登録する
         tsstsSptsDailyRegService.register();
         // 登録データを取得する
-        SimpleSptsMgtModel simpleSptsMgtDailyModel = null;
+        ImStkSimpleSptsMgtModel imStkSimpleSptsMgtDailyModel = null;
         try {
-            simpleSptsMgtDailyModel = this.imStkStockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
-                ImStkPeriodTypeTypes.DAILY);
+            imStkSimpleSptsMgtDailyModel = this.imStkStockPriceTimeSeriesService
+                .findSimpleBySbIdAndPti(dailyStockBrandId, ImStkPeriodTypeTypes.DAILY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
@@ -222,7 +223,7 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         }
         // 株価計算値を登録する
         final ImStkSpcvInitMgtModel imStkSpcvInitMgtDailyModel = new ImStkSpcvInitMgtModelImpl();
-        imStkSpcvInitMgtDailyModel.from(simpleSptsMgtDailyModel);
+        imStkSpcvInitMgtDailyModel.from(imStkSimpleSptsMgtDailyModel);
         final TsstsStockPriceCalcValueService calcVlueDailyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
         calcVlueDailyService.initialize(imStkSpcvInitMgtDailyModel);
@@ -231,21 +232,21 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         /* 株価時系列週足 */
         /* 株銘柄ＩＤの取得 */
         final long weeklyStockBrandId = this.imStkStockBrandService
-            .getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+            .getStockBrandId(imStkSpDataRegMgtModel.getStockBrandCode());
         // 株価時系列週足登録サービスの生成
         final TsstsSptsWeeklyRegService tsstsSptsWeeklyRegService = this.context
             .getBean(TsstsSptsWeeklyRegServiceImpl.class);
         // 株価時系列週足登録サービの初期化
-        tsstsSptsWeeklyRegService.initialize(weeklyStockBrandId, spDataRegMgtModel);
+        tsstsSptsWeeklyRegService.initialize(weeklyStockBrandId, imStkSpDataRegMgtModel);
         // 株価時系列週足登録サービの削除する
         tsstsSptsWeeklyRegService.delete();
         // 株価時系列週足登録サービの登録する
         tsstsSptsWeeklyRegService.register();
         // 登録データを取得する
-        SimpleSptsMgtModel simpleSptsMgtWeeklyModel = null;
+        ImStkSimpleSptsMgtModel imStkSimpleSptsMgtWeeklyModel = null;
         try {
-            simpleSptsMgtWeeklyModel = this.imStkStockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
-                ImStkPeriodTypeTypes.WEEKLY);
+            imStkSimpleSptsMgtWeeklyModel = this.imStkStockPriceTimeSeriesService
+                .findSimpleBySbIdAndPti(dailyStockBrandId, ImStkPeriodTypeTypes.WEEKLY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
@@ -253,7 +254,7 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         }
         // 株価計算値を登録する
         final ImStkSpcvInitMgtModel tsstsSpcvInitMgtWeeklyModel = new ImStkSpcvInitMgtModelImpl();
-        tsstsSpcvInitMgtWeeklyModel.from(simpleSptsMgtWeeklyModel);
+        tsstsSpcvInitMgtWeeklyModel.from(imStkSimpleSptsMgtWeeklyModel);
         final TsstsStockPriceCalcValueService calcVlueWeeklyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
         calcVlueWeeklyService.initialize(tsstsSpcvInitMgtWeeklyModel);
@@ -262,21 +263,21 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         /* 株価時系列月足 */
         /* 株銘柄ＩＤの取得 */
         final long monthlyStockBrandId = this.imStkStockBrandService
-            .getStockBrandId(spDataRegMgtModel.getStockBrandCode());
+            .getStockBrandId(imStkSpDataRegMgtModel.getStockBrandCode());
         // 株価時系列月足登録サービスの生成
         final TsstsSptsMonthlyRegService tsstsSptsMonthlyRegService = this.context
             .getBean(TsstsSptsMonthlyRegServiceImpl.class);
         // 株価時系列月足登録サービスの初期化
-        tsstsSptsMonthlyRegService.initialize(monthlyStockBrandId, spDataRegMgtModel);
+        tsstsSptsMonthlyRegService.initialize(monthlyStockBrandId, imStkSpDataRegMgtModel);
         // 株価時系列月足登録サービスの削除する
         tsstsSptsMonthlyRegService.delete();
         // 株価時系列月足登録サービスの登録する
         tsstsSptsMonthlyRegService.register();
         // 登録データを取得する
-        SimpleSptsMgtModel simpleSptsMgtMonthlyModel = null;
+        ImStkSimpleSptsMgtModel imStkSimpleSptsMgtMonthlyModel = null;
         try {
-            simpleSptsMgtMonthlyModel = this.imStkStockPriceTimeSeriesService.findSimpleBySbIdAndPti(dailyStockBrandId,
-                ImStkPeriodTypeTypes.MONTHLY);
+            imStkSimpleSptsMgtMonthlyModel = this.imStkStockPriceTimeSeriesService
+                .findSimpleBySbIdAndPti(dailyStockBrandId, ImStkPeriodTypeTypes.MONTHLY);
         } catch (final ImStkDomainException e) {
             // TODO KenichiroArai 2021/12/11 例外処理
             final String errMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
@@ -284,7 +285,7 @@ public class TsstsSpDataRegisterServiceImpl implements TsstsSpDataRegisterServic
         }
         // 株価計算値を登録する
         final ImStkSpcvInitMgtModel tsstsSpcvInitMgtMonthlyModel = new ImStkSpcvInitMgtModelImpl();
-        tsstsSpcvInitMgtMonthlyModel.from(simpleSptsMgtMonthlyModel);
+        tsstsSpcvInitMgtMonthlyModel.from(imStkSimpleSptsMgtMonthlyModel);
         final TsstsStockPriceCalcValueService calcVlueMonthlyService = this.context
             .getBean(TsstsStockPriceCalcValueService.class);
         calcVlueMonthlyService.initialize(tsstsSpcvInitMgtMonthlyModel);

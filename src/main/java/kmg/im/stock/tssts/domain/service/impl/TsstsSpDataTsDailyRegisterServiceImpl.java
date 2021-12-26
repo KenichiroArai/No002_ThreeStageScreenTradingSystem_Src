@@ -1,6 +1,6 @@
 package kmg.im.stock.tssts.domain.service.impl;
 
-import kmg.im.stock.core.domain.model.SpDataRegMgtModel;
+import kmg.im.stock.core.domain.model.ImStkSpDataRegMgtModel;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.domain.logic.TsstsSpDataTsRegisterLogic;
 import kmg.im.stock.tssts.domain.service.TsstsSpDataTsDailyRegisterService;
@@ -18,8 +18,8 @@ public class TsstsSpDataTsDailyRegisterServiceImpl implements TsstsSpDataTsDaily
     /** 投資株式期間の種類の種類 */
     private static final ImStkPeriodTypeTypes PERIOD_TYPE_TYPES = ImStkPeriodTypeTypes.DAILY;
 
-    /** 株価データ登録管理モデル */
-    private SpDataRegMgtModel spDataRegMgtModel;
+    /** 投資株式株価データ登録管理モデル */
+    private ImStkSpDataRegMgtModel imStkSpDataRegMgtModel;
 
     /** 三段階スクリーン・トレーディング・システム株価データ時系列登録ロジック */
     private final TsstsSpDataTsRegisterLogic tsstsSpDataTsRegisterLogic;
@@ -43,13 +43,13 @@ public class TsstsSpDataTsDailyRegisterServiceImpl implements TsstsSpDataTsDaily
      * @author KenichiroArai
      * @sine 1.0.0
      * @version 1.0.0
-     * @param spDataRegMgtModel
-     *                          株価データ登録管理モデル
+     * @param imStkSpDataRegMgtModel
+     *                               投資株式株価データ登録管理モデル
      */
     @SuppressWarnings("hiding")
     @Override
-    public void initialize(final SpDataRegMgtModel spDataRegMgtModel) {
-        this.spDataRegMgtModel = spDataRegMgtModel;
+    public void initialize(final ImStkSpDataRegMgtModel imStkSpDataRegMgtModel) {
+        this.imStkSpDataRegMgtModel = imStkSpDataRegMgtModel;
     }
 
     /**

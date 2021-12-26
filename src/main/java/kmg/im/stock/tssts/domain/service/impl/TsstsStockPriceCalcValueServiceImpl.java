@@ -8,8 +8,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import kmg.im.stock.core.domain.model.ImStkSpcvInitMgtModel;
-import kmg.im.stock.core.domain.model.StockPriceCalcValueMgtModel;
-import kmg.im.stock.core.domain.model.impl.StockPriceCalcValueMgtModelImpl;
+import kmg.im.stock.core.domain.model.ImStkStockPriceCalcValueMgtModel;
+import kmg.im.stock.core.domain.model.impl.ImStkStockPriceCalcValueMgtModelImpl;
 import kmg.im.stock.core.domain.service.ImStkLowestPriceInPastService;
 import kmg.im.stock.core.domain.service.ImStkMacdService;
 import kmg.im.stock.core.domain.service.ImStkPowerIndexService;
@@ -98,30 +98,30 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
         imStkMacdService.initialize(this.imStkSpcvInitMgtModel.toSupplierDataList());
         // ＭＣＡＤライン
         imStkMacdService.clacLine();
-        final StockPriceCalcValueMgtModel spcvMgtMacdlModel = new StockPriceCalcValueMgtModelImpl(
+        final ImStkStockPriceCalcValueMgtModel spcvMgtMacdlModel = new ImStkStockPriceCalcValueMgtModelImpl(
             this.imStkSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.MCADL, imStkMacdService.getLineList());
         // ＭＣＡＤシグナル
         imStkMacdService.clacSignal();
-        final StockPriceCalcValueMgtModel spcvMgtMacdsModel = new StockPriceCalcValueMgtModelImpl(
+        final ImStkStockPriceCalcValueMgtModel spcvMgtMacdsModel = new ImStkStockPriceCalcValueMgtModelImpl(
             this.imStkSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.MCADS, imStkMacdService.getSignalList());
         // ＭＣＡＤヒストグラム
         imStkMacdService.clacHistogram();
-        final StockPriceCalcValueMgtModel spcvMgtMacdhModel = new StockPriceCalcValueMgtModelImpl(
+        final ImStkStockPriceCalcValueMgtModel spcvMgtMacdhModel = new ImStkStockPriceCalcValueMgtModelImpl(
             this.imStkSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.MCADH, imStkMacdService.getHistogramList());
 
         // 勢力指数
         final ImStkPowerIndexService piService = this.context.getBean(ImStkPowerIndexService.class);
-        piService.initialize(this.imStkSpcvInitMgtModel.toPowerIndexCalcModelList());
+        piService.initialize(this.imStkSpcvInitMgtModel.toImStkPowerIndexCalcModelList());
         piService.calc();
-        final StockPriceCalcValueMgtModel spcvMgtPiModel = new StockPriceCalcValueMgtModelImpl(
+        final ImStkStockPriceCalcValueMgtModel spcvMgtPiModel = new ImStkStockPriceCalcValueMgtModelImpl(
             this.imStkSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.PI, piService.getCalcResultList());
         // 勢力指数２ＥＭＡ
         piService.defaultStSmoothing();
-        final StockPriceCalcValueMgtModel spcvMgtPi2EmaModel = new StockPriceCalcValueMgtModelImpl(
+        final ImStkStockPriceCalcValueMgtModel spcvMgtPi2EmaModel = new ImStkStockPriceCalcValueMgtModelImpl(
             this.imStkSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.PI2EMA, piService.getSmoothingList());
         // 勢力指数１３ＥＭＡ
         piService.defaultLtSmoothing();
-        final StockPriceCalcValueMgtModel spcvMgtPi13EmaModel = new StockPriceCalcValueMgtModelImpl(
+        final ImStkStockPriceCalcValueMgtModel spcvMgtPi13EmaModel = new ImStkStockPriceCalcValueMgtModelImpl(
             this.imStkSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.PI13EMA, piService.getSmoothingList());
 
         // 過去３期間の最安値
@@ -131,7 +131,7 @@ public class TsstsStockPriceCalcValueServiceImpl implements TsstsStockPriceCalcV
             .toSupplierDataList();
         imStkLowestPriceInPastService.initialize(lowestPriceInPastCalcResultList, 3);
         imStkLowestPriceInPastService.calc();
-        final StockPriceCalcValueMgtModel spcvMgtLpl3pPModel = new StockPriceCalcValueMgtModelImpl(
+        final ImStkStockPriceCalcValueMgtModel spcvMgtLpl3pPModel = new ImStkStockPriceCalcValueMgtModelImpl(
             this.imStkSpcvInitMgtModel, ImStkStockPriceCalcValueTypeTypes.LOWEST_PRICE_IN_LAST3_PERIODS,
             imStkLowestPriceInPastService.getClacResultList());
 
