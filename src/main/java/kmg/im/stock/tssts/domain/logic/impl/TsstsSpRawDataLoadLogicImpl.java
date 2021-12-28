@@ -9,7 +9,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import kmg.core.infrastructure.utils.PathUtils;
+import kmg.core.infrastructure.utils.KmgPathUtils;
 import kmg.im.stock.core.data.dao.ImStkSpRawDataDao;
 import kmg.im.stock.core.data.dto.ImStkSpRawDataAcqDto;
 import kmg.im.stock.core.data.dto.ImStkSpRawDataAcqMgtDto;
@@ -143,7 +143,7 @@ public class TsstsSpRawDataLoadLogicImpl implements TsstsSpRawDataLoadLogic {
         long result = 0L;
 
         try {
-            final String fileName = PathUtils.getFileNameOnly(filePath);
+            final String fileName = KmgPathUtils.getFileNameOnly(filePath);
             result = Integer.parseInt(fileName);
         } catch (final NumberFormatException e) {
 

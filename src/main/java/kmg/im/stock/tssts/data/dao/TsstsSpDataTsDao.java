@@ -7,8 +7,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import kmg.core.domain.model.SqlPathModel;
-import kmg.core.domain.model.impl.SqlPathModelImpl;
+import kmg.core.domain.model.KmgSqlPathModel;
+import kmg.core.domain.model.impl.KmgSqlPathModelImpl;
 import kmg.core.infrastructure.exception.KmgDomainException;
 import kmg.im.stock.core.data.dto.ImStkSptsptDto;
 import kmg.im.stock.core.data.dto.impl.ImStkSptsptDtoImpl;
@@ -26,7 +26,7 @@ import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 public class TsstsSpDataTsDao {
 
     /** 株価データ時系列を削除するＳＱＬパス */
-    private static final SqlPathModel DELETE_SQL_PATH = new SqlPathModelImpl(TsstsSpDataTsDao.class,
+    private static final KmgSqlPathModel DELETE_SQL_PATH = new KmgSqlPathModelImpl(TsstsSpDataTsDao.class,
         Paths.get("delete.sql"));
 
     /** データベース接続 */

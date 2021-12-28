@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import kmg.core.infrastructure.utils.ListUtils;
+import kmg.core.infrastructure.utils.KmgListUtils;
 import kmg.im.stock.core.domain.logic.ImStkSptsptLogic;
 import kmg.im.stock.core.domain.logic.ImStkStockPriceCalcValueLogic;
 import kmg.im.stock.core.domain.logic.ImStkStockPriceTimeSeriesLogic;
@@ -209,7 +209,7 @@ public class TsstsSptsWeeklyRegServiceImpl extends AbstractTsstsSptsRegService i
 
         /* 事前チェック */
         // 投資株式株価データ登録管理モデルのデータリストが空か
-        if (ListUtils.isEmpty(this.imStkkSpDataRegMgtModel.getDataList())) {
+        if (KmgListUtils.isEmpty(this.imStkkSpDataRegMgtModel.getDataList())) {
             // 空の場合
 
             // 後続処理なし

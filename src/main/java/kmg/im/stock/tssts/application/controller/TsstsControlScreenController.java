@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import kmg.core.domain.model.PfaMeasModel;
+import kmg.core.domain.model.KmgPfaMeasModel;
 import kmg.core.infrastructure.type.KmgString;
 import kmg.im.stock.core.domain.service.ImStkSigChkService;
 import kmg.im.stock.core.domain.service.ImStkSimulationService;
@@ -229,8 +229,8 @@ public class TsstsControlScreenController {
         this.lblProcTime.setText(KmgString.EMPTY);
         this.lblProcTimeUnit.setText(KmgString.EMPTY);
 
-        final PfaMeasModel pfaMeas = new PfaMeasModel();
-        pfaMeas.start();
+        final KmgPfaMeasModel kmgPfaMeas = new KmgPfaMeasModel();
+        kmgPfaMeas.start();
         try {
             final Path importPath = Paths.get(this.txtStorageDirectory.getText());
             if (!Files.isDirectory(importPath)) {
@@ -256,9 +256,9 @@ public class TsstsControlScreenController {
             final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             TsstsControlScreenController.LOGGER.error(logMsg, e);
         } finally {
-            pfaMeas.end();
-            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
-            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
+            kmgPfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(kmgPfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(kmgPfaMeas.getTimeUnit().getUnitName());
         }
     }
 
@@ -306,8 +306,8 @@ public class TsstsControlScreenController {
         this.lblProcTime.setText(KmgString.EMPTY);
         this.lblProcTimeUnit.setText(KmgString.EMPTY);
 
-        final PfaMeasModel pfaMeas = new PfaMeasModel();
-        pfaMeas.start();
+        final KmgPfaMeasModel kmgPfaMeas = new KmgPfaMeasModel();
+        kmgPfaMeas.start();
         try {
             final Path importPath = Paths.get(this.txtBrandFile.getText());
             if (!Files.exists(importPath)) {
@@ -344,9 +344,9 @@ public class TsstsControlScreenController {
             final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             TsstsControlScreenController.LOGGER.error(logMsg, e);
         } finally {
-            pfaMeas.end();
-            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
-            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
+            kmgPfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(kmgPfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(kmgPfaMeas.getTimeUnit().getUnitName());
         }
     }
 
@@ -365,8 +365,8 @@ public class TsstsControlScreenController {
         this.lblProcTime.setText(KmgString.EMPTY);
         this.lblProcTimeUnit.setText(KmgString.EMPTY);
 
-        final PfaMeasModel pfaMeas = new PfaMeasModel();
-        pfaMeas.start();
+        final KmgPfaMeasModel kmgPfaMeas = new KmgPfaMeasModel();
+        kmgPfaMeas.start();
         try {
             /* シミュレーションする */
             // 選択対象がすべてか
@@ -395,9 +395,9 @@ public class TsstsControlScreenController {
             final String logMsg = this.tsstsLogMessageResolver.getMessage(TsstsLogMessageTypes.NONE);
             TsstsControlScreenController.LOGGER.error(logMsg, e);
         } finally {
-            pfaMeas.end();
-            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
-            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
+            kmgPfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(kmgPfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(kmgPfaMeas.getTimeUnit().getUnitName());
         }
     }
 
@@ -416,8 +416,8 @@ public class TsstsControlScreenController {
         this.lblProcTime.setText(KmgString.EMPTY);
         this.lblProcTimeUnit.setText(KmgString.EMPTY);
 
-        final PfaMeasModel pfaMeas = new PfaMeasModel();
-        pfaMeas.start();
+        final KmgPfaMeasModel kmgPfaMeas = new KmgPfaMeasModel();
+        kmgPfaMeas.start();
         try {
             /* シグナルを確認する */
             // 選択対象がすべてか
@@ -434,9 +434,9 @@ public class TsstsControlScreenController {
                 this.imStkSigChkService.chkSig(code);
             }
         } finally {
-            pfaMeas.end();
-            this.lblProcTime.setText(String.valueOf(pfaMeas.getElapsedTime()));
-            this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
+            kmgPfaMeas.end();
+            this.lblProcTime.setText(String.valueOf(kmgPfaMeas.getElapsedTime()));
+            this.lblProcTimeUnit.setText(kmgPfaMeas.getTimeUnit().getUnitName());
         }
     }
 
