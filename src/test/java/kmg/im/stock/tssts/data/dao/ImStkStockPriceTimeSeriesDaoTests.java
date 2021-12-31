@@ -16,7 +16,7 @@ import kmg.im.stock.core.data.dto.impl.ImStkStockPriceTimeSeriesDtoImpl;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 
 /**
- * 株価時系列ＤＡＯテスト<br>
+ * 投資株式株価時系列ＤＡＯテスト<br>
  *
  * @author KenichiroArai
  * @sine 1.0.0
