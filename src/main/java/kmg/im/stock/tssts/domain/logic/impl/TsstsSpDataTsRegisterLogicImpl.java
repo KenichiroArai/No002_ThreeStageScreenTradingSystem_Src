@@ -1,6 +1,7 @@
 package kmg.im.stock.tssts.domain.logic.impl;
 
 import kmg.core.infrastructure.exception.KmgDomainException;
+import kmg.core.infrastructure.type.KmgString;
 import kmg.im.stock.core.infrastructure.types.ImStkPeriodTypeTypes;
 import kmg.im.stock.tssts.data.dao.TsstsSpDataTsDao;
 import kmg.im.stock.tssts.domain.logic.TsstsSpDataTsRegisterLogic;
@@ -43,7 +44,7 @@ public class TsstsSpDataTsRegisterLogicImpl implements TsstsSpDataTsRegisterLogi
             result = this.tsstsSpDataTsDao.delete(stockBrandId, imStkPeriodTypeTypes);
         } catch (final KmgDomainException e) {
             // TODO KenichiroArai 2021/06/09 例外処理
-            final String errMsg = "";
+            final String errMsg = KmgString.EMPTY;
             final TsstsLogMessageTypes logMsgTypes = TsstsLogMessageTypes.NONE;
             final Object[] logMsgArg = {};
             throw new TsstsDomainException(errMsg, logMsgTypes, logMsgArg, e);
